@@ -1,11 +1,11 @@
 package net.cubespace.CloudChat.Config;
 
+import com.google.common.collect.ArrayListMultimap;
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Config;
 import net.cubespace.CloudChat.CloudChatPlugin;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by Fabian on 29.11.13.
@@ -14,6 +14,8 @@ public class IRC extends Config {
     public IRC(CloudChatPlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "irc.yml");
         CONFIG_HEADER = "Config for IRC";
+
+        Channels.put("global", "#cloudchat");
     }
 
     @Comment("Is the IRC Bot enabled ?")
@@ -27,11 +29,7 @@ public class IRC extends Config {
     @Comment("Which Host should the bot join ?")
     public String Host = "irc.esper.net";
     @Comment("Which Channels should the Bot join ?")
-    public ArrayList<String> Channels = new ArrayList<String>();
-    @Comment("Which Channels should be relayed into IRC ?")
-    public String RelayChannels = "global";
+    public ArrayListMultimap<String, String> Channels = ArrayListMultimap.create();
     @Comment("Which Ingame Nickname should the IRC Bot have ?")
-    public String IngameName = "IRC";
-    @Comment("Which Format should the bot use to print messages into MC ?")
-    public String Format = "&8[&2%name8] &6%nick&7: %message";
+    public String IngameName = "&8[&2IRC&8]&r";
 }

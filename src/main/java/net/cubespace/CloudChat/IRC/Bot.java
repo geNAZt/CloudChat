@@ -3,7 +3,6 @@ package net.cubespace.CloudChat.IRC;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Event.CloudChatIRCChatEvent;
 import net.cubespace.CloudChat.IRC.Commands.Players;
-import net.cubespace.CloudChat.Util.MCFormat;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
 
@@ -43,27 +42,25 @@ public class Bot extends PircBot implements Runnable {
             return;
         }
 
-        for(String channel : plugin.getIrcConfig().Channels)
+        for(String channel : plugin.getIrcConfig().Channels.values()) {
             joinChannel(channel);
-
-        sendToChannel(plugin.getIrcConfig().JoinMessage);
+            sendToChannel(plugin.getIrcConfig().JoinMessage, channel);
+        }
     }
 
-    public synchronized void sendToChannel(String message) {
-        for(String channel : plugin.getIrcConfig().Channels)
-            sendMessage(channel, message);
+    public synchronized void sendToChannel(String message, String channel) {
+        sendMessage(channel, message);
     }
 
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         IRCSender ircSender = new IRCSender();
-        ircSender.setNick(sender);
+        ircSender.setNick(plugin.getIrcConfig().IngameName + " " + sender);
         ircSender.setChannel(channel);
 
         System.out.println(new Date().toString() + " " + ircSender.getNick() + ": " + message);
 
         if(!cmdManager.dispatchCommand(ircSender, message)) {
-            String formatted = MCFormat.format(plugin, ircSender, message);
-            plugin.getProxy().getPluginManager().callEvent(new CloudChatIRCChatEvent(formatted, ircSender));
+            plugin.getProxy().getPluginManager().callEvent(new CloudChatIRCChatEvent(message, ircSender));
         }
     }
 

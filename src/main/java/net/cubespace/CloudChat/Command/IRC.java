@@ -6,6 +6,7 @@ import net.cubespace.CloudChat.Command.Handler.Command;
 import net.cubespace.CloudChat.IRC.Bot;
 import net.md_5.bungee.api.CommandSender;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,7 +21,10 @@ public class IRC implements CLICommand {
 
     @Command(command = "irc:reconnect", arguments = 0)
     public void ircReconnectCommand(CommandSender sender, String[] args) {
-        plugin.getIrcBot().sendToChannel(plugin.getIrcConfig().LeaveMessage);
+        for(Map.Entry<String, String> channel : plugin.getIrcConfig().Channels.entries()) {
+            plugin.getIrcBot().sendToChannel(plugin.getIrcConfig().LeaveMessage, channel.getValue());
+        }
+
 
         plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
             @Override

@@ -20,9 +20,12 @@ public class IRCListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChatMessage(CloudChatFormattedChatEvent event) {
         if(!plugin.getIrcConfig().Enabled || !plugin.getIrcBot().isConnected()) return;
-        if(!plugin.getIrcConfig().RelayChannels.equals(event.getChannel().Name)) return;
+        if(!plugin.getIrcConfig().Channels.containsKey(event.getChannel().Name)) return;
 
         String ircMessage = MCToIrcFormat.translateString(event.getMessage());
-        plugin.getIrcBot().sendToChannel(ircMessage);
+
+        for(String channel : plugin.getIrcConfig().Channels.get(event.getChannel().Name)) {
+            plugin.getIrcBot().sendToChannel(ircMessage, channel);
+        }
     }
 }

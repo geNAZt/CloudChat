@@ -49,7 +49,7 @@ public class ChatListener implements Listener {
                 if(plugin.getChannelManager().getAllInChannel(channelDatabase).contains(player)) {
                     //Format the Message
                     String[] msgParts = Arrays.copyOfRange(cmd, 1, cmd.length);
-                    String message = MessageFormat.format(StringUtils.join(msgParts, " "), channelDatabase, playerDatabase, player);
+                    String message = MessageFormat.format(StringUtils.join(msgParts, " "), channelDatabase, playerDatabase);
                     plugin.getProxy().getPluginManager().callEvent(new CloudChatFormattedChatEvent(message, channelDatabase, player));
 
                     event.setCancelled(true);
@@ -61,7 +61,7 @@ public class ChatListener implements Listener {
 
         //For da focus chat
         ChannelDatabase channelDatabase = plugin.getChannelManager().get(playerDatabase.Focus);
-        String message = MessageFormat.format(event.getMessage(), channelDatabase, playerDatabase, player);
+        String message = MessageFormat.format(event.getMessage(), channelDatabase, playerDatabase);
         plugin.getProxy().getPluginManager().callEvent(new CloudChatFormattedChatEvent(message, channelDatabase, player));
     }
 }
