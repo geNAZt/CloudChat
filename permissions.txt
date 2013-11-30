@@ -1,0 +1,1 @@
+cloudchat.command.join          - Allows to use the join command

@@ -1,0 +1,4 @@
+name: CloudChat
+main : net.cubespace.CloudChat.CloudChatPlugin
+version: 0.1.0
+author: geNAZt
