@@ -1,1 +1,9 @@
 cloudchat.command.join          - Allows to use the join command
+cloudchat.command.leave         - Allows to use the leave command
+cloudchat.command.msg           - Allows to use the msg command
+cloudchat.command.reply         - Allows to use the reply command
+cloudchat.command.focus         - Allows to use the focus command
+cloudchat.command.irc.reconnect - Allows to use the irc:reconnect command
+cloudchat.command.cc.reload     - Allows to use the cc:reload command
+
+cloudchat.channel.<channelname> - Allows the User to join the Channel
