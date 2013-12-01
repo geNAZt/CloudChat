@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat;
 
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.ChannelBinder;
 import net.cubespace.CloudChat.Command.Binder.JoinedChannelBinder;
@@ -40,7 +39,7 @@ public class CloudChatPlugin extends Plugin {
         try {
             config.init();
             ircConfig.init();
-        } catch (InvalidConfigurationException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Could not load Main or IRC Config", e);
         }
 
@@ -90,6 +89,9 @@ public class CloudChatPlugin extends Plugin {
             ircBot = new Bot(this);
             botTask = getProxy().getScheduler().runAsync(this, ircBot);
         }
+
+        //Start logging
+
     }
 
     public CommandExecutor getCommandExecutor() {

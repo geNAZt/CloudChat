@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Manager;
 
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Database.PlayerDatabase;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -26,7 +25,7 @@ public class PlayerManager {
             try {
                 playerDatabase.init();
                 loadedPlayers.put(player, playerDatabase);
-            } catch (InvalidConfigurationException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Could not init PlayerDatabase for " + player.getName(), e);
             }
         }
@@ -40,7 +39,7 @@ public class PlayerManager {
                 loadedPlayers.get(player).Reply = "";
                 loadedPlayers.get(player).save();
                 loadedPlayers.remove(player);
-            } catch (InvalidConfigurationException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Could not save PlayerDatabase for " + player.getName(), e);
             }
         }

@@ -6,7 +6,7 @@
 
     <groupId>net.cubespace</groupId>
     <artifactId>CloudChat</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -72,6 +72,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>pircbot:*</include>
+                                    <include>com.j256.ormlite:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

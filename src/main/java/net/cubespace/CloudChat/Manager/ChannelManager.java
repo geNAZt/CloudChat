@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Manager;
 
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Database.PlayerDatabase;
@@ -51,7 +50,7 @@ public class ChannelManager {
             try {
                 channelDatabase.init();
                 loadedChannels.put(channelDatabase.Name, channelDatabase);
-            } catch (InvalidConfigurationException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Could not load Channel", e);
             }
         }
@@ -84,7 +83,7 @@ public class ChannelManager {
         try {
             global.save();
             loadedChannels.put("global", global);
-        } catch (InvalidConfigurationException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Could not create Basic Channel Global", e);
         }
     }
