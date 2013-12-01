@@ -9,6 +9,7 @@ import net.cubespace.CloudChat.Command.Handler.CommandExecutor;
 import net.cubespace.CloudChat.Command.Nick;
 import net.cubespace.CloudChat.Command.PM;
 import net.cubespace.CloudChat.Command.Reload;
+import net.cubespace.CloudChat.Config.Database;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.IRC.Bot;
@@ -30,15 +31,19 @@ public class CloudChatPlugin extends Plugin {
     private IRC ircConfig;
     private Bot ircBot;
     private ScheduledTask botTask;
+    private Database databaseConfig;
+    private net.cubespace.CloudChat.Database.Logging.Database database;
 
     @Override
     public void onEnable() {
         //Load the Config
         config = new Main(this);
         ircConfig = new IRC(this);
+        databaseConfig = new Database(this);
         try {
             config.init();
             ircConfig.init();
+            databaseConfig.init();
         } catch (Exception e) {
             throw new RuntimeException("Could not load Main or IRC Config", e);
         }
@@ -91,7 +96,15 @@ public class CloudChatPlugin extends Plugin {
         }
 
         //Start logging
-
+        if(databaseConfig.Enabled) {
+            final CloudChatPlugin plugin = this;
+            getProxy().getScheduler().runAsync(this, new Runnable() {
+                @Override
+                public void run() {
+                    plugin.setDatabase(new net.cubespace.CloudChat.Database.Logging.Database(plugin));
+                }
+            });
+        }
     }
 
     public CommandExecutor getCommandExecutor() {
@@ -128,5 +141,17 @@ public class CloudChatPlugin extends Plugin {
 
     public void setBotTask(ScheduledTask botTask) {
         this.botTask = botTask;
+    }
+
+    public Database getDatabaseConfig() {
+        return databaseConfig;
+    }
+
+    public void setDatabase(net.cubespace.CloudChat.Database.Logging.Database database) {
+        this.database = database;
+    }
+
+    public net.cubespace.CloudChat.Database.Logging.Database getDatabase() {
+        return database;
     }
 }
