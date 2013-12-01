@@ -67,7 +67,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}/BungeeCord/plugins</outputDirectory>
                             <finalName>${project.artifactId}</finalName>
                             <artifactSet>
                                 <includes>
