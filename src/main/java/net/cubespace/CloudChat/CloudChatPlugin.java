@@ -62,8 +62,8 @@ public class CloudChatPlugin extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new ChannelBinder(this, "join", "cloudchat.command.join"));
         getProxy().getPluginManager().registerCommand(this, new JoinedChannelBinder(this, "leave", "cloudchat.command.leave"));
         getProxy().getPluginManager().registerCommand(this, new JoinedChannelBinder(this, "focus", "cloudchat.command.focus"));
-        getProxy().getPluginManager().registerCommand(this, new PlayerBinder(this, "msg", "cloudchat.command.msg", "m"));
-        getProxy().getPluginManager().registerCommand(this, new Binder(this, "reply", "cloudchat.command.reply", "r"));
+        if(!getConfig().DoNotBind.contains("msg")) getProxy().getPluginManager().registerCommand(this, new PlayerBinder(this, "msg", "cloudchat.command.msg", "m"));
+        if(!getConfig().DoNotBind.contains("reply")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "reply", "cloudchat.command.reply", "r"));
         if(!getConfig().DoNotBind.contains("nick")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "nick", "cloudchat.command.nick"));
 
         //IRC Commands
