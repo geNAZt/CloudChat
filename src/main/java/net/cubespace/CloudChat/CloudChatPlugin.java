@@ -59,20 +59,20 @@ public class CloudChatPlugin extends Plugin {
 
         //Tell BungeeCord to bind this plugin to this commands
         //User Commands
-        getProxy().getPluginManager().registerCommand(this, new ChannelBinder(this, "join", "cloudchat.command.join"));
-        getProxy().getPluginManager().registerCommand(this, new JoinedChannelBinder(this, "leave", "cloudchat.command.leave"));
-        getProxy().getPluginManager().registerCommand(this, new JoinedChannelBinder(this, "focus", "cloudchat.command.focus"));
-        if(!getConfig().DoNotBind.contains("msg")) getProxy().getPluginManager().registerCommand(this, new PlayerBinder(this, "msg", "cloudchat.command.msg", "m"));
-        if(!getConfig().DoNotBind.contains("reply")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "reply", "cloudchat.command.reply", "r"));
-        if(!getConfig().DoNotBind.contains("nick")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "nick", "cloudchat.command.nick"));
+        getProxy().getPluginManager().registerCommand(this, new ChannelBinder(this, "join"));
+        getProxy().getPluginManager().registerCommand(this, new JoinedChannelBinder(this, "leave"));
+        getProxy().getPluginManager().registerCommand(this, new JoinedChannelBinder(this, "focus"));
+        if(!getConfig().DoNotBind.contains("msg")) getProxy().getPluginManager().registerCommand(this, new PlayerBinder(this, "msg", "m"));
+        if(!getConfig().DoNotBind.contains("reply")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "reply", "r"));
+        if(!getConfig().DoNotBind.contains("nick")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "nick"));
 
         //IRC Commands
-        getProxy().getPluginManager().registerCommand(this, new Binder(this, "irc:connect", "cloudchat.command.irc.connect"));
-        getProxy().getPluginManager().registerCommand(this, new Binder(this, "irc:reconnect", "cloudchat.command.irc.reconnect"));
-        getProxy().getPluginManager().registerCommand(this, new Binder(this, "irc:disconnect", "cloudchat.command.irc.disconnect"));
+        getProxy().getPluginManager().registerCommand(this, new Binder(this, "irc:connect"));
+        getProxy().getPluginManager().registerCommand(this, new Binder(this, "irc:reconnect"));
+        getProxy().getPluginManager().registerCommand(this, new Binder(this, "irc:disconnect"));
 
         //CloudChat (cc) Commands
-        getProxy().getPluginManager().registerCommand(this, new Binder(this, "cc:reload", "cloudchat.command.cc.reload"));
+        getProxy().getPluginManager().registerCommand(this, new Binder(this, "cc:reload"));
 
         //Register the Listeners
         getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));

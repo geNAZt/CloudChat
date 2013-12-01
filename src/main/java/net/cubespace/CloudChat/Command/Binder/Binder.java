@@ -12,8 +12,8 @@ public class Binder extends Command {
     protected String commandName;
     protected CloudChatPlugin plugin;
 
-    public Binder(CloudChatPlugin plugin, String name, String permission, String... aliases) {
-        super(name, permission, aliases);
+    public Binder(CloudChatPlugin plugin, String name, String... aliases) {
+        super(name, null, aliases);
 
         this.plugin = plugin;
         this.commandName = name;
@@ -21,6 +21,10 @@ public class Binder extends Command {
 
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
-        plugin.getCommandExecutor().onCommand(commandSender, commandName, strings);
+        if(commandSender.hasPermission("cloudchat.command.*") || commandSender.hasPermission("cloudchat.command." + commandName.replace(":", "."))) {
+            plugin.getCommandExecutor().onCommand(commandSender, commandName, strings);
+        } else {
+            commandSender.sendMessage("You don't have the Permission to use this Command");
+        }
     }
 }

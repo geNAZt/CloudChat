@@ -14,8 +14,8 @@ import net.md_5.bungee.api.plugin.TabExecutor;
  * @date Last changed: 30.11.13 13:45
  */
 public class PlayerBinder extends Binder implements TabExecutor {
-    public PlayerBinder(CloudChatPlugin plugin, String name, String permission, String... aliases) {
-        super(plugin, name, permission, aliases);
+    public PlayerBinder(CloudChatPlugin plugin, String name, String... aliases) {
+        super(plugin, name, aliases);
     }
 
     @Override

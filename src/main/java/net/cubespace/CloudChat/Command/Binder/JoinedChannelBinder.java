@@ -15,8 +15,8 @@ import java.util.Collections;
  * @date Last changed: 30.11.13 13:45
  */
 public class JoinedChannelBinder extends Binder implements TabExecutor {
-    public JoinedChannelBinder(CloudChatPlugin plugin, String name, String permission, String... aliases) {
-        super(plugin, name, permission, aliases);
+    public JoinedChannelBinder(CloudChatPlugin plugin, String name, String... aliases) {
+        super(plugin, name, aliases);
     }
 
     @Override
