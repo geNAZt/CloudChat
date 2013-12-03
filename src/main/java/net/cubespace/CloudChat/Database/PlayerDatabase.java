@@ -24,4 +24,6 @@ public class PlayerDatabase extends Config {
     public String Prefix = "";
     public String Suffix = "";
     public String Reply = "";
+    public String World = "";
+    public String WorldAlias = "";
 }

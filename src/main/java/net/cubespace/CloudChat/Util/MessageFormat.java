@@ -23,6 +23,10 @@ public class MessageFormat {
         //Message things
         output = output.replace("%message", message);
 
+        //World things
+        output = output.replace("%world", playerDatabase.World);
+        output = output.replace("%world_alias", playerDatabase.WorldAlias);
+
         return FontFormat.translateString(output);
     }
 
@@ -39,6 +43,10 @@ public class MessageFormat {
 
         //Message things
         output = output.replace("%message", message);
+
+        //World things
+        output = output.replace("%world", "");
+        output = output.replace("%world_alias", "");
 
         return FontFormat.translateString(output);
     }

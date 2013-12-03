@@ -37,12 +37,18 @@ public class PluginMessageListener implements Listener {
             return;
         }
 
+        PlayerDatabase playerDatabase = plugin.getPlayerManager().get(player);
+
         //New pair of Pre/Suffix
         if (channel.equalsIgnoreCase("Affix")) {
-            PlayerDatabase playerDatabase = plugin.getPlayerManager().get(player);
-
             playerDatabase.Prefix = in.readUTF();
             playerDatabase.Suffix = in.readUTF();
+        }
+
+        //New World
+        if (channel.equalsIgnoreCase("World")) {
+            playerDatabase.World = in.readUTF();
+            playerDatabase.WorldAlias = in.readUTF();
         }
     }
 }
