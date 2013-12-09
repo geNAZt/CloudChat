@@ -10,8 +10,16 @@ import net.cubespace.CloudChat.IRC.IRCSender;
  */
 public class MessageFormat {
     public static String format(String message, ChannelDatabase channel, PlayerDatabase playerDatabase) {
+        return format(message, channel, playerDatabase, false);
+    }
+
+    public static String format(String message, ChannelDatabase channel, PlayerDatabase playerDatabase, boolean useMessageAsFormat) {
         //Channel things
         String output = channel.Format;
+        if(useMessageAsFormat) {
+            output = message;
+        }
+
         output = output.replace("%channel_short", channel.Short);
         output = output.replace("%channel_name", channel.Name);
 
@@ -21,7 +29,7 @@ public class MessageFormat {
         output = output.replace("%suffix", playerDatabase.Suffix);
 
         //Message things
-        output = output.replace("%message", message);
+        if(!useMessageAsFormat) output = output.replace("%message", message);
 
         //World things
         output = output.replace("%world", playerDatabase.World);

@@ -21,4 +21,12 @@ public class Main extends Config {
     public int MaxChannelsPerChatter = 3;
     @Comment("At which commands should CloudChat NOT bind ?")
     public ArrayList<String> DoNotBind = new ArrayList<>();
+    @Comment("Should the Chat announce Player joins ?")
+    public boolean Announce_PlayerJoin = false;
+    @Comment("Which format should be used for the Join Message ?")
+    public String Announce_PlayerJoinMessage = "&8[&2%channel_short&8]&r %prefix%nick%suffix&r joined the Server";
+    @Comment("Should the Chat announce Player quits ?")
+    public boolean Announce_PlayerQuit = false;
+    @Comment("Which format should be used for the Quit Message ?")
+    public String Announce_PlayerQuitMessage = "&8[&2%channel_short&8]&r %prefix%nick%suffix&r left the Server";
 }
