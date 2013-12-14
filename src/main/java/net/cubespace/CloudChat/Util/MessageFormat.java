@@ -32,15 +32,19 @@ public class MessageFormat {
         if(!useMessageAsFormat) output = output.replace("%message", message);
 
         //World things
-        output = output.replace("%world", playerDatabase.World);
         output = output.replace("%world_alias", playerDatabase.WorldAlias);
+        output = output.replace("%world", playerDatabase.World);
 
         return FontFormat.translateString(output);
     }
 
-    public static String format(String message, ChannelDatabase channel, IRCSender sender) {
+    public static String format(String message, ChannelDatabase channel, IRCSender sender, boolean format) {
         //Channel things
         String output = channel.Format;
+        if(!format) {
+            output = message;
+        }
+
         output = output.replace("%channel_short", channel.Short);
         output = output.replace("%channel_name", channel.Name);
 
@@ -50,11 +54,11 @@ public class MessageFormat {
         output = output.replace("%suffix", "");
 
         //Message things
-        output = output.replace("%message", message);
+        if(format) output = output.replace("%message", message);
 
         //World things
-        output = output.replace("%world", "");
         output = output.replace("%world_alias", "");
+        output = output.replace("%world", "");
 
         return FontFormat.translateString(output);
     }
