@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Database.Logging.ChatMessage;
 import net.cubespace.CloudChat.Event.CloudChatFormattedChatEvent;
 import net.cubespace.CloudChat.Event.CloudChatIRCChatEvent;
+import net.cubespace.CloudChat.Util.FontFormat;
 import net.cubespace.CloudChat.Util.MessageFormat;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
@@ -65,7 +66,7 @@ public class CloudChatFormattedListener implements Listener {
                 //Get the Channel
                 final ChannelDatabase channelDatabase = plugin.getChannelManager().get(channel.getKey());
                 ArrayList<ProxiedPlayer> playersInChannel = plugin.getChannelManager().getAllInChannel(channelDatabase);
-                String message = MessageFormat.format(event.getMessage(), channelDatabase, event.getSender());
+                String message = MessageFormat.format(event.getMessage(), channelDatabase, event.getSender(), event.isFormat());
 
                 for(ProxiedPlayer proxiedPlayer : playersInChannel) {
                     proxiedPlayer.sendMessage(message);

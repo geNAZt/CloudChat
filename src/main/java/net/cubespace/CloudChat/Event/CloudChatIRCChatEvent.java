@@ -10,10 +10,12 @@ import net.md_5.bungee.api.plugin.Event;
 public class CloudChatIRCChatEvent extends Event {
     private String message;
     private IRCSender sender;
+    private boolean format;
 
-    public CloudChatIRCChatEvent(String message, IRCSender sender) {
+    public CloudChatIRCChatEvent(String message, IRCSender sender, boolean format) {
         this.message = message;
         this.sender = sender;
+        this.format = format;
     }
 
     public String getMessage() {
@@ -22,5 +24,9 @@ public class CloudChatIRCChatEvent extends Event {
 
     public IRCSender getSender() {
         return sender;
+    }
+
+    public boolean isFormat() {
+        return format;
     }
 }
