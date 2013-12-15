@@ -29,4 +29,8 @@ public class Main extends Config {
     public boolean Announce_PlayerQuit = false;
     @Comment("Which format should be used for the Quit Message ?")
     public String Announce_PlayerQuitMessage = "&8[&2%channel_short&8]&r %prefix%nick%suffix&r left the Server";
+    @Comment("Which format should be used if a Player goes AFK ?")
+    public String Announce_PlayerGotAfk = "&8[&2%channel_short&8]&r %prefix%nick%suffix&r is afk";
+    @Comment("Which format should be used if a Player comes out of AFK ?")
+    public String Announce_PlayerGotOutOfAfk = "&8[&2%channel_short&8]&r %prefix%nick%suffix&r no longer is afk";
 }

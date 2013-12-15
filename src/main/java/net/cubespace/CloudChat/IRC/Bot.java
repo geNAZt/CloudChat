@@ -10,6 +10,7 @@ import org.jibble.pircbot.User;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Fabian on 29.11.13.
@@ -116,7 +117,7 @@ public class Bot extends PircBot implements Runnable {
     protected void onJoin(String channel, String sender, String login, String hostname) {
         if(plugin.getIrcConfig().Relay_Join) {
             if(!sender.equals(plugin.getIrcConfig().Name)) {
-                relayMessage(sender, channel, plugin.getIrcConfig().Relay_JoinPrefix, false);
+                relayMessage(sender, channel, plugin.getIrcConfig().Relay_JoinMessage, false);
             }
         }
 
@@ -125,12 +126,26 @@ public class Bot extends PircBot implements Runnable {
 
     protected void onNickChange(String oldNick, String login, String hostname, String newNick) {
         if(plugin.getIrcConfig().Relay_Nickchange) {
-            relayMessage(oldNick, (String) plugin.getIrcConfig().Channels.values().toArray()[0], NickchangeFormatter.format(plugin.getIrcConfig().Relay_NickchangeMessage, oldNick, newNick), false);
+            List<String> joinedChannels = ircManager.getJoinedChannels(oldNick);
+
+            for(String channel : joinedChannels) {
+                relayMessage(oldNick, channel, NickchangeFormatter.format(plugin.getIrcConfig().Relay_NickchangeMessage, oldNick, newNick), false);
+                ircManager.addJoinedChannel(newNick, channel);
+            }
+
+            ircManager.removeJoinedChannels(oldNick);
         }
     }
 
     protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason) {
+        if(plugin.getIrcConfig().Relay_Quit) {
+            List<String> joinedChannels = ircManager.getJoinedChannels(sourceNick);
 
+            for(String channel : joinedChannels)
+                relayMessage(sourceNick, channel, plugin.getIrcConfig().Relay_QuitMessage, false);
+        }
+
+        ircManager.removeJoinedChannels(sourceNick);
     }
 
     private void relayMessage(String sender, String channel, String message, boolean format) {

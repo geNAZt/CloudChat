@@ -1,7 +1,10 @@
 package net.cubespace.CloudChat.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Database.PlayerDatabase;
+import net.cubespace.CloudChat.Event.CloudChatFormattedChatEvent;
+import net.cubespace.CloudChat.Util.MessageFormat;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -49,6 +52,31 @@ public class PluginMessageListener implements Listener {
         if (channel.equalsIgnoreCase("World")) {
             playerDatabase.World = in.readUTF();
             playerDatabase.WorldAlias = in.readUTF();
+        }
+
+        //AFK
+        if (channel.equalsIgnoreCase("AFK")) {
+            boolean afk = in.readBoolean();
+
+            if(afk && !playerDatabase.AFK) {
+                //The Player has gone AFK
+                for(String inGameChannel : playerDatabase.JoinedChannels) {
+                    ChannelDatabase channelDatabase = plugin.getChannelManager().get(inGameChannel);
+                    String message = MessageFormat.format(plugin.getConfig().Announce_PlayerGotAfk, channelDatabase, playerDatabase, true);
+                    CloudChatFormattedChatEvent cloudChatFormattedChatEvent = new CloudChatFormattedChatEvent(message, channelDatabase, player);
+                    plugin.getProxy().getPluginManager().callEvent(cloudChatFormattedChatEvent);
+                }
+            } else if(!afk && playerDatabase.AFK) {
+                //The Player has got out of AFK
+                for(String inGameChannel : playerDatabase.JoinedChannels) {
+                    ChannelDatabase channelDatabase = plugin.getChannelManager().get(inGameChannel);
+                    String message = MessageFormat.format(plugin.getConfig().Announce_PlayerGotOutOfAfk, channelDatabase, playerDatabase, true);
+                    CloudChatFormattedChatEvent cloudChatFormattedChatEvent = new CloudChatFormattedChatEvent(message, channelDatabase, player);
+                    plugin.getProxy().getPluginManager().callEvent(cloudChatFormattedChatEvent);
+                }
+            }
+
+            playerDatabase.AFK = afk;
         }
     }
 }

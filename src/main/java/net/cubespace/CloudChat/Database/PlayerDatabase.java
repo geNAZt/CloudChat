@@ -26,4 +26,5 @@ public class PlayerDatabase extends Config {
     public String Reply = "";
     public String World = "";
     public String WorldAlias = "";
+    public Boolean AFK = false;
 }

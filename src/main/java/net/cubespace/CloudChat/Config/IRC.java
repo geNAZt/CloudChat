@@ -38,10 +38,14 @@ public class IRC extends Config {
     public String Relay_ActionPrefix = "&8[&2%channel_short&8] [&2IRC&8]&r&5 * ";
     @Comment("Should the joins from IRC be relayed ?")
     public boolean Relay_Join = false;
-    @Comment("The prefix for joins")
-    public String Relay_JoinPrefix = "&8[&2%channel_short&8] %nick&2 joined IRC";
+    @Comment("The message for joins")
+    public String Relay_JoinMessage = "&8[&2%channel_short&8] %nick&2 joined IRC";
     @Comment("Relay nickchanges ?")
-    public boolean Relay_Nickchange;
+    public boolean Relay_Nickchange = false;
     @Comment("Nickchange message")
     public String Relay_NickchangeMessage = "&8[&2%channel_short&8] %old_nick changed nick to %new_nick";
+    @Comment("Relay quit ?")
+    public boolean Relay_Quit = false;
+    @Comment("Quit message")
+    public String Relay_QuitMessage = "&8[&2%channel_short&8] %nick&2 quit IRC";
 }
