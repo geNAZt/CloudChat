@@ -6,8 +6,8 @@ package net.cubespace.CloudChat.IRC;
  */
 public class NickchangeFormatter {
     public static String format(String message, String oldNick, String newNick) {
-        message.replace("%old_nick", oldNick);
-        message.replace("%new_nick", newNick);
+        message = message.replace("%old_nick", oldNick);
+        message = message.replace("%new_nick", newNick);
 
         return message;
     }
