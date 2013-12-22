@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Command.Binder.ChannelBinder;
 import net.cubespace.CloudChat.Command.Binder.JoinedChannelBinder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Command.Channels;
+import net.cubespace.CloudChat.Command.CreateChannel;
 import net.cubespace.CloudChat.Command.Handler.CommandExecutor;
 import net.cubespace.CloudChat.Command.Nick;
 import net.cubespace.CloudChat.Command.PM;
@@ -60,6 +61,7 @@ public class CloudChatPlugin extends Plugin {
         commandExecutor.add(new net.cubespace.CloudChat.Command.IRC(this));
         commandExecutor.add(new Channels(this));
         commandExecutor.add(new PM(this));
+        commandExecutor.add(new CreateChannel(this));
 
         //Tell BungeeCord to bind this plugin to this commands
         //User Commands
@@ -69,6 +71,8 @@ public class CloudChatPlugin extends Plugin {
         if(!getConfig().DoNotBind.contains("msg")) getProxy().getPluginManager().registerCommand(this, new PlayerBinder(this, "msg", "m"));
         if(!getConfig().DoNotBind.contains("reply")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "reply", "r"));
         if(!getConfig().DoNotBind.contains("nick")) getProxy().getPluginManager().registerCommand(this, new Binder(this, "nick"));
+        getProxy().getPluginManager().registerCommand(this, new Binder(this, "createchannel"));
+        getProxy().getPluginManager().registerCommand(this, new PlayerBinder(this, "invite"));
 
         //IRC Commands
         getProxy().getPluginManager().registerCommand(this, new Binder(this, "irc:connect"));

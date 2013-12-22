@@ -5,6 +5,7 @@ import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Config;
 import net.cubespace.CloudChat.CloudChatPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -34,4 +35,7 @@ public class ChannelDatabase extends Config {
 
     @Comment("The Password of the Channel \"\" for none")
     public String Password = "";
+
+    @Comment("The people who can invite others")
+    public ArrayList<String> CanInvite = new ArrayList<>();
 }
