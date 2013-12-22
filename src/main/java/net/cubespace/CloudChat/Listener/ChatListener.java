@@ -35,7 +35,8 @@ public class ChatListener implements Listener {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
         //Check if his Server gets handled via CloudChat
-        if(!plugin.getConfig().DontHandleForServers.contains(player.getServer().getInfo().getName())) {
+        if(plugin.getConfig().DontHandleForServers.contains(player.getServer().getInfo().getName()) ||
+           plugin.getConfig().FactionServers.contains(player.getServer().getInfo().getName())) {
             return;
         }
 

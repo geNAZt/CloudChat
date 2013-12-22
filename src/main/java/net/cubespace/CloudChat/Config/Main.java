@@ -35,4 +35,6 @@ public class Main extends Config {
     public String Announce_PlayerGotOutOfAfk = "&8[&2%channel_short&8]&r %prefix%nick%suffix&r no longer is afk";
     @Comment("Disabled Servers (they handle Chat on their own)")
     public ArrayList<String> DontHandleForServers = new ArrayList<>();
+    @Comment("Faction Servers. Which Servers in your network are some ? :D")
+    public ArrayList<String> FactionServers = new ArrayList<>();
 }

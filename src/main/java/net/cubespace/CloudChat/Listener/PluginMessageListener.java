@@ -78,5 +78,13 @@ public class PluginMessageListener implements Listener {
 
             playerDatabase.AFK = afk;
         }
+
+        //Factions
+        if (channel.equalsIgnoreCase("FactionChat")) {
+            ChannelDatabase channelDatabase = plugin.getChannelManager().get(playerDatabase.Focus);
+            String message = MessageFormat.format(in.readUTF(), channelDatabase, playerDatabase, true);
+            CloudChatFormattedChatEvent cloudChatFormattedChatEvent = new CloudChatFormattedChatEvent(message, channelDatabase, player);
+            plugin.getProxy().getPluginManager().callEvent(cloudChatFormattedChatEvent);
+        }
     }
 }
