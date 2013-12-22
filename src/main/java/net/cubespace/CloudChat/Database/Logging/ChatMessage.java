@@ -21,7 +21,7 @@ public class ChatMessage {
     private String nick;
     @Column
     private String channel;
-    @Column
+    @DatabaseField(canBeNull = true)
     private String message;
     @DatabaseField
     private Date date;
