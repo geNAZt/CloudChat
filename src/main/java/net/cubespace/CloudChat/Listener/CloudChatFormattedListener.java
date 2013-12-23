@@ -35,7 +35,8 @@ public class CloudChatFormattedListener implements Listener {
         ArrayList<ProxiedPlayer> playersInChannel = plugin.getChannelManager().getAllInChannel(event.getChannel());
 
         for(ProxiedPlayer proxiedPlayer : playersInChannel) {
-            if(!plugin.getConfig().DontHandleForServers.contains(proxiedPlayer.getServer().getInfo().getName()))
+            //Dont relay chat to Players which are not connect to any Server
+            if(proxiedPlayer.getServer() != null && !plugin.getConfig().DontHandleForServers.contains(proxiedPlayer.getServer().getInfo().getName()))
                 proxiedPlayer.sendMessage(event.getMessage());
         }
 
