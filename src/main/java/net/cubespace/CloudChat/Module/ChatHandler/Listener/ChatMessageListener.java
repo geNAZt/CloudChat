@@ -25,7 +25,7 @@ public class ChatMessageListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChatMessage(ChatMessageEvent event) {
         for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
-            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, event.getMessage()));
+            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, event.getMessage(), event.getSender()));
         }
     }
 }
