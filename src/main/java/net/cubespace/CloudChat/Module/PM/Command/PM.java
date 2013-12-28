@@ -27,7 +27,7 @@ public class PM implements CLICommand {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("msg")) {
-            plugin.getProxy().getPluginManager().registerCommand(plugin, new PlayerBinder(plugin, "msg", "m", "t"));
+            plugin.getProxy().getPluginManager().registerCommand(plugin, new PlayerBinder(plugin, "msg", "m", "t", "tell"));
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("reply")) {
