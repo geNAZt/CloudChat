@@ -135,7 +135,6 @@ public class AsyncEventBus {
             } else {
                 try {
                     plugin.getPluginLogger().debug("Calling Listener " + handlerInfo.getMethod().getDeclaringClass().getName() + "." + handlerInfo.getMethod().getName());
-                    System.out.println(handlerInfo.getSubscriber());
                     handlerInfo.getMethod().invoke(handlerInfo.getSubscriber(), event);
                 } catch (Exception e) {
                     plugin.getPluginLogger().warn("Listener " + handlerInfo.getMethod().getDeclaringClass().getName() + "." + handlerInfo.getMethod().getName() + " has thrown an Exception", e);

@@ -1,6 +1,5 @@
 package net.cubespace.lib.EventBus;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
 /**
@@ -9,14 +8,14 @@ import java.lang.reflect.Method;
  */
 public class HandlerInfo {
     private final Method method;
-    private final WeakReference<?> subscriber;
+    private final Object subscriber;
     private final EventHandler annotation;
     private final Class event;
 
     public HandlerInfo(Class event, Method method, Object subscriber, EventHandler annotation) {
         this.event = event;
         this.method = method;
-        this.subscriber = new WeakReference<>(subscriber);
+        this.subscriber = subscriber;
         this.annotation = annotation;
     }
 
@@ -25,7 +24,7 @@ public class HandlerInfo {
     }
 
     public Object getSubscriber() {
-        return subscriber.get();
+        return subscriber;
     }
 
     public EventHandler getAnnotation() {
