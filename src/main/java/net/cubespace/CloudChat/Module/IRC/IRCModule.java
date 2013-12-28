@@ -18,7 +18,6 @@ public class IRCModule {
 
             ircBot = new Bot(this, plugin);
 
-
             plugin.getAsyncEventBus().addListener(new ChatMessageListener(this, plugin));
         }
     }

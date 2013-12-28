@@ -13,6 +13,7 @@ import net.cubespace.CloudChat.Module.CloudChat.CloudChatModule;
 import net.cubespace.CloudChat.Module.ColorHandler.ColorHandlerModule;
 import net.cubespace.CloudChat.Module.FormatHandler.FormatHandlerModule;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
+import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Module.PM.PMModule;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
 import net.cubespace.lib.CubespacePlugin;
@@ -45,6 +46,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         new PMModule(this);
         new IRCModule(this);
         new CloudChatModule(this);
+        new MuteModule(this);
 
         //Register the Listeners
         getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
