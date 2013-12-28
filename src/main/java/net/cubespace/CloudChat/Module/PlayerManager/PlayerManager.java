@@ -73,7 +73,7 @@ public class PlayerManager implements IManager {
      */
     public void load(String player) {
         plugin.getPluginLogger().debug("Check for load of PlayerDatabase for " + player);
-        /*if(!loadedPlayers.containsKey(player)) {
+        if(!loadedPlayers.containsKey(player)) {
             plugin.getPluginLogger().info("Loading PlayerDatabase for " + player);
             PlayerDatabase playerDatabase = new PlayerDatabase(plugin, player);
 
@@ -84,6 +84,6 @@ public class PlayerManager implements IManager {
                 plugin.getPluginLogger().error("Could not init PlayerDatabase for " + player, e);
                 throw new RuntimeException();
             }
-        } */
+        }
     }
 }
