@@ -34,7 +34,6 @@ public enum FontFormat {
     private final String value;
     private static final String characterValue = "\u00a7";
     private static final HashMap<String, String> translate = new HashMap<>();
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf("&") + "[0-9A-FK-OR]");
 
     private FontFormat(String value) {
         this.value = characterValue + value;
@@ -83,12 +82,16 @@ public enum FontFormat {
         return value;
     }
 
-    public static String stripColor(final String input) {
+    public static String stripColor(String input) {
         if (input == null) {
             return null;
         }
 
-        return STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
+        for (String code : translate.keySet()) {
+            input = input.replace(code, "");
+        }
+
+        return input;
     }
 
 }
