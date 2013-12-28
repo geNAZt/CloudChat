@@ -146,6 +146,8 @@ public class Bot extends PircBot implements Runnable {
         if(ircConfig.Relay_Join) {
             if(!sender.equals(ircConfig.Name)) {
                 relayMessage(sender, channel, ircConfig.Relay_JoinMessage, false);
+            } else {
+                plugin.getPluginLogger().info("Bot joined " + channel);
             }
         }
 
