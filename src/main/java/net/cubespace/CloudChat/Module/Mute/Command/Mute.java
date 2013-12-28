@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.Mute.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
+import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -29,8 +30,12 @@ public class Mute implements CLICommand {
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
-            sender.sendMessage("You can't mute offline Players");
-            return;
+            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+
+            if(player == null) {
+                sender.sendMessage("You can't mute offline Players");
+                return;
+            }
         }
 
         muteModule.getMuteManager().addPlayerMute(sender.getName(), player.getName());
@@ -46,8 +51,12 @@ public class Mute implements CLICommand {
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
-            sender.sendMessage("You can't unmute offline Players");
-            return;
+            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+
+            if(player == null) {
+                sender.sendMessage("You can't unmute offline Players");
+                return;
+            }
         }
 
         muteModule.getMuteManager().removePlayerMute(sender.getName(), player.getName());
@@ -63,8 +72,12 @@ public class Mute implements CLICommand {
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
-            sender.sendMessage("You can't mute offline Players");
-            return;
+            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+
+            if(player == null) {
+                sender.sendMessage("You can't mute offline Players");
+                return;
+            }
         }
 
         muteModule.getMuteManager().addGlobalMute(player.getName());
@@ -80,11 +93,15 @@ public class Mute implements CLICommand {
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
-            sender.sendMessage("You can't unmute offline Players");
-            return;
+            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+
+            if(player == null) {
+                sender.sendMessage("You can't unmute offline Players");
+                return;
+            }
         }
 
         muteModule.getMuteManager().removeGlobalMute(player.getName());
-        sender.sendMessage("You muted " + player.getName());
+        sender.sendMessage("You unmuted " + player.getName());
     }
 }

@@ -3,9 +3,9 @@ package net.cubespace.CloudChat.Module.ChannelManager.Command;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
-import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -31,8 +31,12 @@ public class Invite implements CLICommand {
         String player = args[0];
         ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
         if(rec == null) {
-            sender.sendMessage(FontFormat.translateString("&7The player is not online"));
-            return;
+            rec = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+
+            if(rec == null) {
+                sender.sendMessage("You can't invite offline Players");
+                return;
+            }
         }
 
         //Check for an optional Argument

@@ -7,6 +7,7 @@ import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
@@ -48,8 +49,14 @@ public class PM implements CLICommand {
         ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
         ProxiedPlayer sen = (ProxiedPlayer) sender;
         if(rec == null) {
-            sender.sendMessage(FontFormat.translateString("&7The player is not online"));
-            return;
+            //Check for autocomplete
+            player = AutoComplete.completeUsername(player);
+            rec = plugin.getProxy().getPlayer(player);
+
+            if(rec == null) {
+                sender.sendMessage(FontFormat.translateString("&7The player is not online"));
+                return;
+            }
         }
 
         if (sen.equals(rec)) {
