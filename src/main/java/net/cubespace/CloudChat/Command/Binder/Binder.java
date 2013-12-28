@@ -4,10 +4,6 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 
-/**
- * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 24.11.13 18:25
- */
 public class Binder extends Command {
     protected String commandName;
     protected CloudChatPlugin plugin;

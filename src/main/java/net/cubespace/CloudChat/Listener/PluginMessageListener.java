@@ -1,10 +1,13 @@
 package net.cubespace.CloudChat.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
-import net.cubespace.CloudChat.Database.ChannelDatabase;
-import net.cubespace.CloudChat.Database.PlayerDatabase;
-import net.cubespace.CloudChat.Event.CloudChatFormattedChatEvent;
-import net.cubespace.CloudChat.Util.MessageFormat;
+import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
+import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
+import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
+import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
+import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -20,9 +23,13 @@ import java.io.IOException;
  */
 public class PluginMessageListener implements Listener {
     private CloudChatPlugin plugin;
+    private PlayerManager playerManager;
+    private ChannelManager channelManager;
 
     public PluginMessageListener(CloudChatPlugin plugin) {
         this.plugin = plugin;
+        this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
+        this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
     }
 
     @EventHandler
@@ -40,7 +47,7 @@ public class PluginMessageListener implements Listener {
             return;
         }
 
-        PlayerDatabase playerDatabase = plugin.getPlayerManager().get(player);
+        PlayerDatabase playerDatabase = playerManager.get(player.getName());
 
         //New pair of Pre/Suffix
         if (channel.equalsIgnoreCase("Affix")) {
@@ -61,18 +68,16 @@ public class PluginMessageListener implements Listener {
             if(afk && !playerDatabase.AFK) {
                 //The Player has gone AFK
                 for(String inGameChannel : playerDatabase.JoinedChannels) {
-                    ChannelDatabase channelDatabase = plugin.getChannelManager().get(inGameChannel);
-                    String message = MessageFormat.format(plugin.getConfig().Announce_PlayerGotAfk, channelDatabase, playerDatabase, true);
-                    CloudChatFormattedChatEvent cloudChatFormattedChatEvent = new CloudChatFormattedChatEvent(message, channelDatabase, player);
-                    plugin.getProxy().getPluginManager().callEvent(cloudChatFormattedChatEvent);
+                    ChannelDatabase channelDatabase = channelManager.get(inGameChannel);
+                    Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, ((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerGotAfk));
                 }
             } else if(!afk && playerDatabase.AFK) {
                 //The Player has got out of AFK
                 for(String inGameChannel : playerDatabase.JoinedChannels) {
-                    ChannelDatabase channelDatabase = plugin.getChannelManager().get(inGameChannel);
-                    String message = MessageFormat.format(plugin.getConfig().Announce_PlayerGotOutOfAfk, channelDatabase, playerDatabase, true);
-                    CloudChatFormattedChatEvent cloudChatFormattedChatEvent = new CloudChatFormattedChatEvent(message, channelDatabase, player);
-                    plugin.getProxy().getPluginManager().callEvent(cloudChatFormattedChatEvent);
+                    ChannelDatabase channelDatabase = channelManager.get(inGameChannel);
+                    Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, ((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerGotOutOfAfk));
                 }
             }
 
@@ -81,10 +86,10 @@ public class PluginMessageListener implements Listener {
 
         //Factions
         if (channel.equalsIgnoreCase("FactionChat")) {
-            ChannelDatabase channelDatabase = plugin.getChannelManager().get(playerDatabase.Focus);
-            String message = MessageFormat.format(in.readUTF(), channelDatabase, playerDatabase, true);
-            CloudChatFormattedChatEvent cloudChatFormattedChatEvent = new CloudChatFormattedChatEvent(message, channelDatabase, player);
-            plugin.getProxy().getPluginManager().callEvent(cloudChatFormattedChatEvent);
+            ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
+            String message = in.readUTF();
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
         }
     }
 }

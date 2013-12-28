@@ -2,20 +2,17 @@ package net.cubespace.CloudChat.Config;
 
 import com.google.common.collect.ArrayListMultimap;
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Config;
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.lib.Configuration.Config;
 
 import java.io.File;
 
-/**
- * Created by Fabian on 29.11.13.
- */
 public class IRC extends Config {
     public IRC(CloudChatPlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "irc.yml");
         CONFIG_HEADER = "Config for IRC";
 
-        Channels.put("global", "#cloudchat");
+        Channels.put("global", "#dhjksa");
     }
 
     @Comment("Is the IRC Bot enabled ?")

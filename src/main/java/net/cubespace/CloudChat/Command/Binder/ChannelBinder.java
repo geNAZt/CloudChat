@@ -4,29 +4,28 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import net.cubespace.CloudChat.CloudChatPlugin;
-import net.cubespace.CloudChat.Database.ChannelDatabase;
+import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
+import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
-/**
- * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 30.11.13 13:45
- */
 public class ChannelBinder extends Binder implements TabExecutor {
+    private ChannelManager channelManager;
+
     public ChannelBinder(CloudChatPlugin plugin, String name, String... aliases) {
         super(plugin, name, aliases);
     }
 
     @Override
     public Iterable<String> onTabComplete(final CommandSender commandSender, String[] args) {
+        channelManager = plugin.getManagerRegistry().getManager("channelManager");
+
         final String lastArg = ( args.length > 0 ) ? args[args.length - 1] : "";
 
-        return Iterables.transform(Iterables.filter(plugin.getChannelManager().getChannels(), new Predicate<ChannelDatabase>() {
+        return Iterables.transform(Iterables.filter(channelManager.getChannels(), new Predicate<ChannelDatabase>() {
             @Override
             public boolean apply(ChannelDatabase database) {
-                if(!commandSender.hasPermission("cloudchat.channel." + database.Name)) return false;
-
-                return database.Name.startsWith(lastArg) || database.Short.startsWith(lastArg);
+                return commandSender.hasPermission("cloudchat.channel." + database.Name) && (database.Name.startsWith(lastArg) || database.Short.startsWith(lastArg));
             }
         }), new Function<ChannelDatabase, String>() {
             @Override
