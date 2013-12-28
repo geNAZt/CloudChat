@@ -26,6 +26,8 @@ import net.cubespace.lib.Logger.Level;
 public class CloudChatPlugin extends CubespacePlugin {
     @Override
     public void onEnable() {
+        getReportManager().openSession("Test");
+
         //Setup the Logging Level
         getPluginLogger().setLogLevel(Level.DEBUG);
 
