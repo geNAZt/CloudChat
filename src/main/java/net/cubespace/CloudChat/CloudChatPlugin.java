@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.Config.Database;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Spam;
+import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Listener.ChatListener;
 import net.cubespace.CloudChat.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
@@ -18,6 +19,7 @@ import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Module.PM.PMModule;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
 import net.cubespace.CloudChat.Module.Spam.SpamModule;
+import net.cubespace.CloudChat.Module.Twitter.TwitterModule;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
 
@@ -36,6 +38,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("irc", new IRC(this));
         getConfigManager().initConfig("database", new Database(this));
         getConfigManager().initConfig("spam", new Spam(this));
+        getConfigManager().initConfig("twitter", new Twitter(this));
 
         //Register Plugin Channels
         getProxy().registerChannel("CloudChat");
@@ -51,6 +54,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         new CloudChatModule(this);
         new MuteModule(this);
         new SpamModule(this);
+        new TwitterModule(this);
 
         //Register the Listeners
         getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
