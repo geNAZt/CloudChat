@@ -205,7 +205,7 @@ public class Bot extends PircBot implements Runnable {
 
                     String sendMessage = message;
                     if(useChannelFormat) {
-                        sendMessage = channelDatabase.Format.replace("%message", message);
+                        sendMessage = ircConfig.Relay_Message.replace("%message", message);
                     }
 
                     plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender1, sendMessage));
