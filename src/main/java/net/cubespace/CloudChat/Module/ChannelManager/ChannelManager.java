@@ -190,6 +190,9 @@ public class ChannelManager implements IManager {
      * @param player
      */
     public void remove(ProxiedPlayer player) {
+        //Check if player is in any channels
+        if(!playerJoinedChannels.containsKey(player)) return;
+
         for(ChannelDatabase channel : new ArrayList<>(playerJoinedChannels.get(player))) {
             leave(player, channel);
         }
