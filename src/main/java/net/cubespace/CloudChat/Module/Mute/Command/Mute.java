@@ -65,11 +65,6 @@ public class Mute implements CLICommand {
 
     @Command(command = "cc:mute", arguments = 1)
     public void ccMuteCommand(CommandSender sender, String[] args) {
-        if(!(sender instanceof ProxiedPlayer)) {
-            sender.sendMessage("You only can mute as Player");
-            return;
-        }
-
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
@@ -86,11 +81,6 @@ public class Mute implements CLICommand {
 
     @Command(command = "cc:unmute", arguments = 1)
     public void ccUnMuteCommand(CommandSender sender, String[] args) {
-        if(!(sender instanceof ProxiedPlayer)) {
-            sender.sendMessage("You only can mute as Player");
-            return;
-        }
-
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
