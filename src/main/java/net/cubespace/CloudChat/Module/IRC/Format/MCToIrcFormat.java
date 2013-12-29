@@ -3,7 +3,6 @@ package net.cubespace.CloudChat.Module.IRC.Format;
 import org.jibble.pircbot.Colors;
 
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 /**
  * Created by Fabian on 29.11.13.
@@ -34,7 +33,6 @@ public enum MCToIrcFormat {
 
     private final String value;
     private static final HashMap<String, String> translate = new HashMap<>();
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf("&") + "|" + String.valueOf("§") + "[0-9A-FK-OR]");
 
     private MCToIrcFormat(String value) {
         this.value = value;
@@ -105,12 +103,16 @@ public enum MCToIrcFormat {
         return value;
     }
 
-    public static String stripColor(final String input) {
+    public static String stripColor(String input) {
         if (input == null) {
             return null;
         }
 
-        return STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
+        for (String code : translate.keySet()) {
+            input = input.replace(code, "");
+        }
+
+        return input;
     }
 
 }
