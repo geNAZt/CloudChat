@@ -41,7 +41,7 @@ public class TwitterCheckTweetTask implements Runnable {
             ResponseList<User> users = twitter.lookupUsers(srch);
             for (User user : users) {
                 if (user.getStatus() != null) {
-                    List<Status> statusess = twitter.getUserTimeline(user.getName());
+                    List<Status> statusess = twitter.getUserTimeline(user.getScreenName());
                     if(!twitterModule.getTwitterManager().isRegistered(user.getName())) {
                         twitterModule.getTwitterManager().updateLastTweet(user.getName(), statusess.get(0).getCreatedAt());
                         continue;

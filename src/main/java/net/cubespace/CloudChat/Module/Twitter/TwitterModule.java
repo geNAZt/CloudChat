@@ -30,7 +30,7 @@ public class TwitterModule {
             twitterFactory = new TwitterFactory(cb.build());
             twitterManager = new TwitterManager();
 
-            plugin.getProxy().getScheduler().schedule(plugin, new TwitterCheckTweetTask(this, plugin), 30, 30, TimeUnit.SECONDS);
+            plugin.getProxy().getScheduler().schedule(plugin, new TwitterCheckTweetTask(this, plugin), 2, 60, TimeUnit.SECONDS);
         }
     }
 
