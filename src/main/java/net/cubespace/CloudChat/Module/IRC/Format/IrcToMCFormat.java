@@ -41,25 +41,22 @@ public enum IrcToMCFormat {
 
     private static void createMap() {
         //IRC Colors
-        translate.put(Colors.BLACK, "&0");
-        translate.put(Colors.DARK_BLUE, "&1");
-        translate.put(Colors.DARK_GREEN, "&2");
-        translate.put(Colors.CYAN, "&3");
-        translate.put(Colors.RED, "&4");
-        translate.put(Colors.PURPLE, "&5");
-        translate.put(Colors.LIGHT_GRAY, "&7");
-        translate.put(Colors.DARK_GRAY, "&8");
-        translate.put(Colors.BLUE, "&9");
-        translate.put(Colors.GREEN, "&a");
-        translate.put(Colors.MAGENTA, "&d");
-        translate.put(Colors.BOLD, "&l");
-        translate.put(Colors.UNDERLINE, "&n");
-        translate.put(Colors.YELLOW, "&e");
-        translate.put(Colors.WHITE, "&f");
-        translate.put(Colors.REVERSE, "&k");
-        translate.put(Colors.UNDERLINE, "&n");
-        translate.put(Colors.NORMAL, "&r");
-
+        translate.put("1", "&0");
+        translate.put("2", "&1");
+        translate.put("3", "&2");
+        translate.put("10", "&3");
+        translate.put("4", "&4");
+        translate.put("6", "&5");
+        translate.put("15", "&7");
+        translate.put("14", "&8");
+        translate.put("12", "&9");
+        translate.put("9", "&a");
+        translate.put("11", "&b");
+        translate.put("13", "&d");
+        translate.put("8", "&e");
+        translate.put("0", "&f");
+        translate.put("5", "&0");
+        translate.put("7", "&c");
     }
 
     private IrcToMCFormat(String value) {
@@ -70,11 +67,42 @@ public enum IrcToMCFormat {
         return this.value;
     }
 
-    public static String translateString(String value) {
-        for (String code : translate.keySet()) {
-            value = value.replace(code, translate.get(code));
+    public static String translateString(String message) {
+        int length = message.length();
+        StringBuilder buffer = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            char ch = message.charAt(i);
+            if ((byte) ch == 3) {
+                String color = "";
+                i++;
+
+                while (i < length) {
+                    char d = message.charAt(i);
+                    if ((d >= '0') && (d <= '9')) {
+                        if (color.length() == 2) {
+                            i--;
+                            break;
+                        }
+
+                        color += d;
+                        i++;
+                    } else {
+                        i--;
+                        break;
+                    }
+                }
+
+
+                if (translate.containsKey(color)) {
+                    buffer.append(translate.get(color));
+                    break;
+                }
+            } else {
+                buffer.append(ch);
+            }
         }
 
-        return value;
+        return buffer.toString();
     }
 }
