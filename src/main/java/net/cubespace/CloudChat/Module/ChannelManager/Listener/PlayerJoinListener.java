@@ -31,5 +31,7 @@ public class PlayerJoinListener implements Listener {
         for(String channel : playerDatabase.JoinedChannels) {
             channelManager.join(event.getPlayer(), channelManager.get(channel));
         }
+
+        channelManager.joinForcedChannels(event.getPlayer());
     }
 }
