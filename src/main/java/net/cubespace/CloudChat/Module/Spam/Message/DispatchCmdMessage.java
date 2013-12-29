@@ -28,7 +28,6 @@ public class DispatchCmdMessage implements IPluginMessage{
 
         try {
             output.writeUTF("DispatchCmd");
-            output.writeUTF(player.getName());
             output.writeUTF(command);
 
             return bStream.toByteArray();
