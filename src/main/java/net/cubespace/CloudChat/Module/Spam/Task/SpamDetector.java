@@ -2,6 +2,8 @@ package net.cubespace.CloudChat.Module.Spam.Task;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Sub.SpamEntry;
+import net.cubespace.CloudChat.Module.Mute.MuteManager;
+import net.cubespace.CloudChat.Module.Spam.Message.DispatchCmdMessage;
 import net.cubespace.CloudChat.Module.Spam.SpamCounter;
 import net.cubespace.CloudChat.Module.Spam.SpamModule;
 
@@ -16,10 +18,12 @@ import java.util.concurrent.TimeUnit;
 public class SpamDetector implements Runnable {
     private CloudChatPlugin plugin;
     private SpamModule spamModule;
+    private MuteManager muteManager;
 
     public SpamDetector(SpamModule spamModule, CloudChatPlugin plugin) {
         this.spamModule = spamModule;
         this.plugin = plugin;
+        this.muteManager = plugin.getManagerRegistry().getManager("muteManager");
     }
 
     @Override
@@ -32,14 +36,14 @@ public class SpamDetector implements Runnable {
                 if(spamCounterEntry.getValue().getMessageCount() >= spamCounterEntry.getKey().AmountOfMessages) {
                     switch (spamCounterEntry.getKey().ActionIfReached) {
                         case MUTE:
-                            plugin.getProxy().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), "cc:mute " + playerSpam.getKey());
+                            muteManager.addGlobalMute(playerSpam.getKey());
                             plugin.getProxy().getPlayer(playerSpam.getKey()).sendMessage(spamCounterEntry.getKey().MuteMessage.replace("%amount", spamCounterEntry.getKey().HowLongToMuteInSeconds.toString()));
 
                             final String player = playerSpam.getKey();
                             plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
                                 @Override
                                 public void run() {
-                                    plugin.getProxy().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), "cc:unmute " + player);
+                                    muteManager.removeGlobalMute(player);
                                 }
                             }, spamCounterEntry.getKey().HowLongToMuteInSeconds, TimeUnit.SECONDS);
                             break;
@@ -49,7 +53,7 @@ public class SpamDetector implements Runnable {
                             break;
 
                         case DISPATCH_CMD:
-                            plugin.getPluginLogger().warn("Currently the Spam Action for DISPATCH_CMD is not implemented");
+                            plugin.getPluginMessageManager("CloudChat").sendPluginMessage(new DispatchCmdMessage(plugin.getProxy().getPlayer(playerSpam.getKey()), spamCounterEntry.getKey().CommandToDispatch.replace("%player", playerSpam.getKey())));
                             break;
                     }
                 }

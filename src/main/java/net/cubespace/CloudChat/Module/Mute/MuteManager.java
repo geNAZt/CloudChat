@@ -1,5 +1,7 @@
 package net.cubespace.CloudChat.Module.Mute;
 
+import net.cubespace.lib.Manager.IManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +10,7 @@ import java.util.Map;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  * @date Last changed: 28.12.13 22:37
  */
-public class MuteManager {
+public class MuteManager implements IManager {
     private HashMap<String, ArrayList<String>> playerMute = new HashMap<>();
     private ArrayList<String> globalMute = new ArrayList<>();
 

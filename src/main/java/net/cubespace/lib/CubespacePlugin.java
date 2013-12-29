@@ -5,10 +5,12 @@ import net.cubespace.lib.Configuration.ConfigManager;
 import net.cubespace.lib.EventBus.AsyncEventBus;
 import net.cubespace.lib.Logger.Logger;
 import net.cubespace.lib.Manager.ManagerRegistry;
+import net.cubespace.lib.PluginMessage.PluginMessageManager;
 import net.cubespace.lib.Report.ReportManager;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -21,6 +23,7 @@ public class CubespacePlugin extends Plugin {
     private AsyncEventBus asyncEventBus;
     private CommandExecutor commandExecutor;
     private ManagerRegistry managerRegistry;
+    private HashMap<String, PluginMessageManager> pluginMessageManagerHashMap = new HashMap<>();
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
@@ -63,6 +66,10 @@ public class CubespacePlugin extends Plugin {
         return configManager;
     }
 
+    /**
+     * Get the Async Event Bus which is run in an extra Thread
+     * @return
+     */
     public AsyncEventBus getAsyncEventBus() {
         if(asyncEventBus == null) {
             asyncEventBus = new AsyncEventBus(this);
@@ -71,6 +78,10 @@ public class CubespacePlugin extends Plugin {
         return asyncEventBus;
     }
 
+    /**
+     * Get the Command Executor
+     * @return
+     */
     public CommandExecutor getCommandExecutor() {
         if(commandExecutor == null) {
             commandExecutor = new CommandExecutor();
@@ -79,12 +90,29 @@ public class CubespacePlugin extends Plugin {
         return commandExecutor;
     }
 
+    /**
+     * Get the Manager Registry where all Managers are registered into
+     * @return
+     */
     public ManagerRegistry getManagerRegistry() {
         if(managerRegistry == null) {
             managerRegistry = new ManagerRegistry();
         }
 
         return managerRegistry;
+    }
+
+    /**
+     * Get the correct PluginMessageManager for the channel
+     * @param channel
+     * @return
+     */
+    public PluginMessageManager getPluginMessageManager(String channel) {
+        if(!pluginMessageManagerHashMap.containsKey(channel)) {
+            pluginMessageManagerHashMap.put(channel, new PluginMessageManager(this, channel));
+        }
+
+        return pluginMessageManagerHashMap.get(channel);
     }
 
     /**
