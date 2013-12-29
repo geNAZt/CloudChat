@@ -8,6 +8,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.IRC.CommandManager;
 import net.cubespace.CloudChat.Module.IRC.Commands.Players;
+import net.cubespace.CloudChat.Module.IRC.Format.IrcToMCFormat;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 import net.cubespace.CloudChat.Module.IRC.Format.NickchangeFormatter;
 import net.cubespace.CloudChat.Module.IRC.IRCManager;
@@ -116,7 +117,7 @@ public class Bot extends PircBot implements Runnable {
      * @param message
      */
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
-        relayMessage(sender, channel, message, true);
+        relayMessage(sender, channel, IrcToMCFormat.translateString(message), true);
     }
 
     /**

@@ -51,12 +51,12 @@ public enum IrcToMCFormat {
         translate.put("14", "&8");
         translate.put("12", "&9");
         translate.put("9", "&a");
-        translate.put("11", "&b");
         translate.put("13", "&d");
         translate.put("8", "&e");
         translate.put("0", "&f");
         translate.put("5", "&0");
-        translate.put("7", "&c");
+        translate.put("7", "&6");
+        translate.put("11", "&b");
     }
 
     private IrcToMCFormat(String value) {
@@ -67,42 +67,65 @@ public enum IrcToMCFormat {
         return this.value;
     }
 
-    public static String translateString(String message) {
-        int length = message.length();
-        StringBuilder buffer = new StringBuilder();
+    public static String translateString(String value) {
+        int length = value.length();
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            char ch = message.charAt(i);
-            if ((byte) ch == 3) {
-                String color = "";
-                i++;
+            char ch = value.charAt(i);
 
-                while (i < length) {
-                    char d = message.charAt(i);
-                    if ((d >= '0') && (d <= '9')) {
-                        if (color.length() == 2) {
+            switch ((byte) ch) {
+                case 3:
+                    String color = "";
+                    i++;
+
+                    while (i < length) {
+                        char d = value.charAt(i);
+                        if ((d >= '0') && (d <= '9')) {
+                            if (color.length() == 2) {
+                                i--;
+                                break;
+                            }
+
+                            color += d;
+                            i++;
+                        } else {
                             i--;
                             break;
                         }
-
-                        color += d;
-                        i++;
-                    } else {
-                        i--;
-                        break;
                     }
-                }
 
+                    if(translate.containsKey(color)) {
+                        sb.append(translate.get(color));
+                    }
 
-                if (translate.containsKey(color)) {
-                    buffer.append(translate.get(color));
                     break;
-                }
-            } else {
-                buffer.append(ch);
+
+                case 4:
+                    sb.append("&l");
+                    break;
+
+                case 15:
+                    sb.append("&r");
+                    break;
+
+                case 19:
+                    sb.append("&m");
+                    break;
+
+                case 9:
+                    sb.append("&o");
+                    break;
+
+                case 21:
+                case 31:
+                    sb.append("&n");
+
+                default:
+                    sb.append(ch);
             }
         }
 
-        return buffer.toString();
+        return sb.toString();
     }
 }
