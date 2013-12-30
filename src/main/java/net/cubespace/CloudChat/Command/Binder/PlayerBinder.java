@@ -36,7 +36,7 @@ public class PlayerBinder extends Binder implements TabExecutor {
             @Override
             public String apply(ProxiedPlayer player) {
                 PlayerDatabase playerDatabase = playerManager.get(player.getName());
-                return MessageFormat.format(config.Complete_Player, null, playerDatabase);
+                return MessageFormat.format(config.Complete_Player, null, playerDatabase, true);
             }
         });
     }

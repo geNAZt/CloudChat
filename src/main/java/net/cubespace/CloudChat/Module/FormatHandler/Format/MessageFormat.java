@@ -9,6 +9,10 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
  */
 public class MessageFormat {
     public static String format(String message, ChannelDatabase channel, PlayerDatabase playerDatabase) {
+        return format(message, channel, playerDatabase, false);
+    }
+
+    public static String format(String message, ChannelDatabase channel, PlayerDatabase playerDatabase, boolean stipcolor) {
         //Channel things
         String output = message;
 
@@ -29,6 +33,9 @@ public class MessageFormat {
         output = output.replace("%world_alias", playerDatabase.WorldAlias);
         output = output.replace("%world", playerDatabase.World);
 
-        return FontFormat.translateString(output);
+        if(stipcolor)
+            return FontFormat.stripColor(output);
+        else
+            return FontFormat.translateString(output);
     }
 }
