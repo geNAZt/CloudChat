@@ -2,6 +2,8 @@ package net.cubespace.CloudChat.Module.FormatHandler.Format;
 
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
+import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -19,6 +21,9 @@ public class MessageFormat {
         output = output.replace("%nick", playerDatabase.Nick);
         output = output.replace("%prefix", playerDatabase.Prefix);
         output = output.replace("%suffix", playerDatabase.Suffix);
+
+        //Server things
+        output = output.replace("%server", playerDatabase.Server);
 
         //World things
         output = output.replace("%world_alias", playerDatabase.WorldAlias);

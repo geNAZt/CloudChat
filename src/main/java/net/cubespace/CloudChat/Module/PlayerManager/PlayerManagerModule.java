@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.Command.Nick;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerNickchangeListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerQuitListener;
+import net.cubespace.CloudChat.Module.PlayerManager.Listener.ServerConnectListener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -19,6 +20,7 @@ public class PlayerManagerModule {
         plugin.getAsyncEventBus().addListener(new PlayerJoinListener(plugin));
         plugin.getAsyncEventBus().addListener(new PlayerQuitListener(plugin));
         plugin.getAsyncEventBus().addListener(new PlayerNickchangeListener(plugin));
+        plugin.getAsyncEventBus().addListener(new ServerConnectListener(plugin));
 
         //Register the Commands
         new Nick(plugin);

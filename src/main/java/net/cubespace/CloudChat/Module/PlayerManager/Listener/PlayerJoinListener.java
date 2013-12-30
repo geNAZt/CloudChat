@@ -13,14 +13,16 @@ import net.cubespace.lib.EventBus.Listener;
  */
 public class PlayerJoinListener implements Listener {
     private CloudChatPlugin plugin;
+    private PlayerManager playerManager;
 
     public PlayerJoinListener(CloudChatPlugin plugin) {
         this.plugin = plugin;
+        this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         //Load the Player
-        ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).load(event.getPlayer().getName());
+        playerManager.load(event.getPlayer().getName());
     }
 }
