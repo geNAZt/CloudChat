@@ -2,8 +2,6 @@ package net.cubespace.CloudChat.Module.FormatHandler.Format;
 
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
-import net.md_5.bungee.BungeeCord;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -14,8 +12,10 @@ public class MessageFormat {
         //Channel things
         String output = message;
 
-        output = output.replace("%channel_short", channel.Short);
-        output = output.replace("%channel_name", channel.Name);
+        if(channel != null) {
+            output = output.replace("%channel_short", channel.Short);
+            output = output.replace("%channel_name", channel.Name);
+        }
 
         //Player things
         output = output.replace("%nick", playerDatabase.Nick);

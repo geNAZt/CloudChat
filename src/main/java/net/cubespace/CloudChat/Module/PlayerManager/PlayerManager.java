@@ -37,6 +37,14 @@ public class PlayerManager implements IManager {
     }
 
     /**
+     * Get all loaded Players
+     * @return
+     */
+    public HashMap<String, PlayerDatabase> getLoadedPlayers() {
+        return new HashMap<>(loadedPlayers);
+    }
+
+    /**
      * Removes the Player from the Cache and saves its AsyncDatabaseLogger
      *
      * @param player

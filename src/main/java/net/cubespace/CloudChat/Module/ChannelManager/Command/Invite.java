@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
@@ -34,8 +35,12 @@ public class Invite implements CLICommand {
             rec = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(rec == null) {
-                sender.sendMessage("You can't invite offline Players");
-                return;
+                rec = NicknameParser.getPlayer(plugin, player);
+
+                if(rec == null) {
+                    sender.sendMessage("You can't invite offline Players");
+                    return;
+                }
             }
         }
 

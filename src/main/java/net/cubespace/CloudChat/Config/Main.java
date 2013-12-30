@@ -33,4 +33,6 @@ public class Main extends Config {
     public ArrayList<String> DontHandleForServers = new ArrayList<>();
     @Comment("Faction Servers. Which Servers in your network are some ? :D")
     public ArrayList<String> FactionServers = new ArrayList<>();
+    @Comment("Tablist Message for Player completion")
+    public String Complete_Player = "%prefix%nick%suffix&r";
 }

@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.Mute.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Command.CLICommand;
@@ -33,8 +34,12 @@ public class Mute implements CLICommand {
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
-                sender.sendMessage("You can't mute offline Players");
-                return;
+                player = NicknameParser.getPlayer(plugin, args[0]);
+
+                if(player == null) {
+                    sender.sendMessage("You can't mute offline Players");
+                    return;
+                }
             }
         }
 
@@ -54,8 +59,12 @@ public class Mute implements CLICommand {
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
-                sender.sendMessage("You can't unmute offline Players");
-                return;
+                player = NicknameParser.getPlayer(plugin, args[0]);
+
+                if(player == null) {
+                    sender.sendMessage("You can't unmute offline Players");
+                    return;
+                }
             }
         }
 
@@ -70,8 +79,12 @@ public class Mute implements CLICommand {
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
-                sender.sendMessage("You can't mute offline Players");
-                return;
+                player = NicknameParser.getPlayer(plugin, args[0]);
+
+                if(player == null) {
+                    sender.sendMessage("You can't mute offline Players");
+                    return;
+                }
             }
         }
 
@@ -86,8 +99,12 @@ public class Mute implements CLICommand {
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
-                sender.sendMessage("You can't unmute offline Players");
-                return;
+                player = NicknameParser.getPlayer(plugin, args[0]);
+
+                if(player == null) {
+                    sender.sendMessage("You can't unmute offline Players");
+                    return;
+                }
             }
         }
 

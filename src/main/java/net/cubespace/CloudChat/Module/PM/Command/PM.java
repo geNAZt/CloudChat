@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Module.PM.Command;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
+import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
@@ -54,8 +55,12 @@ public class PM implements CLICommand {
             rec = plugin.getProxy().getPlayer(player);
 
             if(rec == null) {
-                sender.sendMessage(FontFormat.translateString("&7The player is not online"));
-                return;
+                rec = NicknameParser.getPlayer(plugin, player);
+
+                if(rec == null) {
+                    sender.sendMessage(FontFormat.translateString("&7The player is not online"));
+                    return;
+                }
             }
         }
 
