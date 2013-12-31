@@ -34,8 +34,11 @@ public class Nick implements CLICommand {
 
     @Command(command="nick", arguments = 1)
     public void nickCommand(CommandSender sender, String[] args) {
+        plugin.getPluginLogger().debug("Got a Nickchange");
+
         //Check if the Sender is a Player since we only can change Players Nicknames
         if(!(sender instanceof ProxiedPlayer)) {
+            plugin.getPluginLogger().debug("But not for a Player");
             sender.sendMessage("You must be a Player to change the Nickname");
             return;
         }

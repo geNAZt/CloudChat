@@ -22,6 +22,7 @@ public class PlayerNickchangeListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onNickchangeEvent(PlayerNickchangeEvent event) {
+        plugin.getPluginLogger().info(event.getSender().getName() + " changed its nick to " + event.getNewNick());
         playerManager.get(event.getSender().getName()).Nick = event.getNewNick();
         event.getSender().sendMessage("Your nick was changed to: " + event.getNewNick());
     }

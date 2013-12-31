@@ -14,6 +14,8 @@ public class MuteModule {
     private MuteManager muteManager;
 
     public MuteModule(CloudChatPlugin plugin) {
+        plugin.getPluginLogger().info("Starting Mute Module...");
+
         this.muteManager = new MuteManager();
 
         plugin.getManagerRegistry().registerManager("muteManager", muteManager);

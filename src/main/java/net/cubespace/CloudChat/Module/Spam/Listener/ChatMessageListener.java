@@ -23,6 +23,7 @@ public class ChatMessageListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onChatMessage(ChatMessageEvent event) {
+        plugin.getPluginLogger().debug("Got a ChatMessageEvent for Spam Detection");
         final ProxiedPlayer player = plugin.getProxy().getPlayer(event.getSender().getNick());
         if(player == null) return;
 

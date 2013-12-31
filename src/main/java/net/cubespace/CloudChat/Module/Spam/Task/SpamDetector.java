@@ -29,6 +29,7 @@ public class SpamDetector implements Runnable {
     @Override
     public void run() {
         //Get all Spam Players
+        plugin.getPluginLogger().debug("Checking for Spam Rule violations");
         HashMap<String, HashMap<SpamEntry, SpamCounter>> playerSpamHashMap = spamModule.getSpamManager().getPlayerSpamCounter();
 
         for(Map.Entry<String, HashMap<SpamEntry, SpamCounter>> playerSpam : playerSpamHashMap.entrySet()) {
@@ -36,6 +37,7 @@ public class SpamDetector implements Runnable {
                 if(spamCounterEntry.getValue().getMessageCount() >= spamCounterEntry.getKey().AmountOfMessages) {
                     switch (spamCounterEntry.getKey().ActionIfReached) {
                         case MUTE:
+                            plugin.getPluginLogger().info("Muting Player " + playerSpam.getValue() + " for " + spamCounterEntry.getKey().HowLongToMuteInSeconds + " seconds due to Spamming");
                             muteManager.addGlobalMute(playerSpam.getKey());
                             plugin.getProxy().getPlayer(playerSpam.getKey()).sendMessage(spamCounterEntry.getKey().MuteMessage.replace("%amount", spamCounterEntry.getKey().HowLongToMuteInSeconds.toString()));
 
@@ -43,17 +45,21 @@ public class SpamDetector implements Runnable {
                             plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
                                 @Override
                                 public void run() {
+                                    plugin.getPluginLogger().info("Unmuting Player " + player + " which was muted for Spamming");
                                     muteManager.removeGlobalMute(player);
                                 }
                             }, spamCounterEntry.getKey().HowLongToMuteInSeconds, TimeUnit.SECONDS);
                             break;
 
                         case KICK:
+                            plugin.getPluginLogger().info("Kicking Player " + playerSpam.getKey() + " due to spamming");
                             plugin.getProxy().getPlayer(playerSpam.getKey()).disconnect(spamCounterEntry.getKey().KickMessage);
                             break;
 
                         case DISPATCH_CMD:
-                            plugin.getPluginMessageManager("CloudChat").sendPluginMessage(new DispatchCmdMessage(plugin.getProxy().getPlayer(playerSpam.getKey()), spamCounterEntry.getKey().CommandToDispatch.replace("%player", playerSpam.getKey())));
+                            String cmd = spamCounterEntry.getKey().CommandToDispatch.replace("%player", playerSpam.getKey());
+                            plugin.getPluginLogger().info("Emitting " + cmd + " for " + playerSpam.getKey() + " due to spamming");
+                            plugin.getPluginMessageManager("CloudChat").sendPluginMessage(new DispatchCmdMessage(plugin.getProxy().getPlayer(playerSpam.getKey()), cmd));
                             break;
                     }
                 }

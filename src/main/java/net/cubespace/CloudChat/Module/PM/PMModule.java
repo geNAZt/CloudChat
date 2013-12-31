@@ -9,6 +9,8 @@ import net.cubespace.CloudChat.Module.PM.Command.PM;
  */
 public class PMModule {
     public PMModule(CloudChatPlugin plugin) {
+        plugin.getPluginLogger().info("Starting PM Module...");
+
         //Register Commands
         new PM(plugin);
     }

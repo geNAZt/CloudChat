@@ -29,10 +29,12 @@ public class PM implements CLICommand {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("msg")) {
+            plugin.getPluginLogger().debug("Registering the /msg command");
             plugin.getProxy().getPluginManager().registerCommand(plugin, new PlayerBinder(plugin, "msg", "m", "t", "tell"));
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("reply")) {
+            plugin.getPluginLogger().debug("Registering the /reply command");
             plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "reply", "r"));
         }
 
@@ -41,7 +43,10 @@ public class PM implements CLICommand {
 
     @Command(command = "msg", arguments = 2)
     public void msgCommand(CommandSender sender, String[] args) {
+        plugin.getPluginLogger().debug("Got a new PM");
+
         if(!(sender instanceof ProxiedPlayer)) {
+            plugin.getPluginLogger().debug("But sender was not a Player");
             sender.sendMessage("You only can PM as a Player");
             return;
         }
@@ -50,14 +55,18 @@ public class PM implements CLICommand {
         ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
         ProxiedPlayer sen = (ProxiedPlayer) sender;
         if(rec == null) {
+            plugin.getPluginLogger().debug("Direct lookup returned null");
+
             //Check for autocomplete
             player = AutoComplete.completeUsername(player);
             rec = plugin.getProxy().getPlayer(player);
 
             if(rec == null) {
+                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
                 rec = NicknameParser.getPlayer(plugin, player);
 
                 if(rec == null) {
+                    plugin.getPluginLogger().debug("Nickname parsing returned null");
                     sender.sendMessage(FontFormat.translateString("&7The player is not online"));
                     return;
                 }
@@ -65,6 +74,7 @@ public class PM implements CLICommand {
         }
 
         if (sen.equals(rec)) {
+            plugin.getPluginLogger().debug("Sender and Receiver are equal.");
             sender.sendMessage(FontFormat.translateString("&7You cannot send a pm to yourself"));
             return;
         }
@@ -72,6 +82,7 @@ public class PM implements CLICommand {
         String message = FontFormat.translateString(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
         rec.sendMessage(FontFormat.translateString("&6" + sen.getName() +" &8 -> &6You&8:&7 " + message));
         sen.sendMessage(FontFormat.translateString("&6You&8 -> &6"+ rec.getName() +"&8:&7 " + message));
+        plugin.getPluginLogger().info(sen.getName() + " -> " + rec.getName() + ": " + message);
 
         playerManager.get(sen.getName()).Reply = rec.getName();
         playerManager.get(rec.getName()).Reply = sen.getName();
@@ -79,7 +90,10 @@ public class PM implements CLICommand {
 
     @Command(command = "reply", arguments = 1)
     public void replyCommand(CommandSender sender, String[] args) {
+        plugin.getPluginLogger().debug("Got a PM Reply");
+
         if(!(sender instanceof ProxiedPlayer)) {
+            plugin.getPluginLogger().debug("But it was not send from a Player");
             sender.sendMessage("You only can PM as a Player");
             return;
         }
@@ -88,12 +102,14 @@ public class PM implements CLICommand {
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
 
         if(playerDatabase.Reply.equals("")) {
+            plugin.getPluginLogger().debug("Can't be replied because the Player has no conversation up");
             sender.sendMessage(FontFormat.translateString("&7You can't reply because you have no PM conversation"));
             return;
         }
 
         ProxiedPlayer rec = plugin.getProxy().getPlayer(playerDatabase.Reply);
         if(rec == null) {
+            plugin.getPluginLogger().debug("The Reply Player is not online anymore");
             sender.sendMessage(FontFormat.translateString("&7The player is not online"));
             playerDatabase.Reply = "";
             return;
@@ -102,6 +118,7 @@ public class PM implements CLICommand {
         String message = FontFormat.translateString(StringUtils.join(args, " "));
         rec.sendMessage(FontFormat.translateString("&6" + player.getName() +" &8 -> &6You&8:&7 " + message));
         player.sendMessage(FontFormat.translateString("&6You&8 -> &6"+ rec.getName() +"&8:&7 " + message));
+        plugin.getPluginLogger().info(player.getName() + " -> " + rec.getName() + ": " + message);
 
         playerManager.get(player.getName()).Reply = rec.getName();
         playerManager.get(rec.getName()).Reply = player.getName();

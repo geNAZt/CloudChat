@@ -18,6 +18,8 @@ public class TwitterModule {
 
     public TwitterModule(CloudChatPlugin plugin) {
         if(((Twitter) plugin.getConfigManager().getConfig("twitter")).Enabled) {
+            plugin.getPluginLogger().info("Starting Twitter Module...");
+
             Twitter config = plugin.getConfigManager().getConfig("twitter");
 
             ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -27,6 +29,7 @@ public class TwitterModule {
               .setOAuthAccessToken(config.AccessToken)
               .setOAuthAccessTokenSecret(config.AccessTokenSecret);
 
+            plugin.getPluginLogger().debug("Setting up Twitter Factory");
             twitterFactory = new TwitterFactory(cb.build());
             twitterManager = new TwitterManager();
 

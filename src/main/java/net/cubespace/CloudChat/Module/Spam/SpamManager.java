@@ -23,11 +23,14 @@ public class SpamManager {
     }
 
     public void prepareSpamEntry(ProxiedPlayer player) {
+        plugin.getPluginLogger().debug("Creating new SpamManager Entry for " + player.getName());
+
         ArrayList<SpamEntry> spamEntries = ((Spam) plugin.getConfigManager().getConfig("spam")).SpamRules;
         HashMap<SpamEntry, SpamCounter> spamCounterHashMap = new HashMap<>();
 
         for(SpamEntry spamEntry : spamEntries) {
             if(!player.hasPermission(spamEntry.ExcludePermission)) {
+                plugin.getPluginLogger().debug("Player does not have " + spamEntry.ExcludePermission + " adding Spam Rule Entry");
                 spamCounterHashMap.put(spamEntry, new SpamCounter());
             }
         }
@@ -36,6 +39,7 @@ public class SpamManager {
     }
 
     public void removeSpamEntries(ProxiedPlayer player) {
+        plugin.getPluginLogger().debug("Removing Player from the Spam Manager " + player.getName());
         playerSpamCounter.remove(player.getName());
     }
 
@@ -45,6 +49,8 @@ public class SpamManager {
 
     public synchronized void addOneMessage(final ProxiedPlayer player) {
         if(!playerSpamCounter.containsKey(player.getName())) return;
+
+        plugin.getPluginLogger().debug("Adding a Message for " + player.getName());
 
         for(final Map.Entry<SpamEntry, SpamCounter> spamCounterEntry : playerSpamCounter.get(player.getName()).entrySet()) {
             spamCounterEntry.getValue().addOne();
@@ -62,6 +68,7 @@ public class SpamManager {
     public synchronized void removeOneMessage(ProxiedPlayer player, SpamEntry spamEntry) {
         if(!playerSpamCounter.containsKey(player.getName())) return;
 
+        plugin.getPluginLogger().debug("Removing a Message for " + player.getName());
         playerSpamCounter.get(player.getName()).get(spamEntry).removeOne();
     }
 }

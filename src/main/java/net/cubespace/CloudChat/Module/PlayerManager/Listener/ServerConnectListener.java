@@ -22,6 +22,8 @@ public class ServerConnectListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onServerConnect(ServerConnectEvent event) {
+        plugin.getPluginLogger().debug("Player " + event.getPlayer().getName() + " changed its Server Format to " + event.getServerInfo().getName());
+
         if(playerManager.get(event.getPlayer().getName()) != null) {
             playerManager.get(event.getPlayer().getName()).Server = event.getServerInfo().getName();
         }

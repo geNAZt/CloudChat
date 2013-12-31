@@ -24,19 +24,25 @@ public class Mute implements CLICommand {
 
     @Command(command = "mute", arguments = 1)
     public void muteCommand(CommandSender sender, String[] args) {
+        plugin.getPluginLogger().debug("Got a mute Request");
+
         if(!(sender instanceof ProxiedPlayer)) {
+            plugin.getPluginLogger().debug("But the sender is not a Player");
             sender.sendMessage("You only can mute as Player");
             return;
         }
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
+            plugin.getPluginLogger().debug("Direct lookup returned null");
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
+                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
                 player = NicknameParser.getPlayer(plugin, args[0]);
 
                 if(player == null) {
+                    plugin.getPluginLogger().debug("Nickname Parser returned null");
                     sender.sendMessage("You can't mute offline Players");
                     return;
                 }
@@ -45,23 +51,30 @@ public class Mute implements CLICommand {
 
         muteModule.getMuteManager().addPlayerMute(sender.getName(), player.getName());
         sender.sendMessage("You muted " + player.getName());
+        plugin.getPluginLogger().info(sender.getName() + " muted " + player.getName());
     }
 
     @Command(command = "unmute", arguments = 1)
     public void unMuteCommand(CommandSender sender, String[] args) {
+        plugin.getPluginLogger().debug("Got a unmute Request");
+
         if(!(sender instanceof ProxiedPlayer)) {
+            plugin.getPluginLogger().debug("But the sender is not a Player");
             sender.sendMessage("You only can mute as Player");
             return;
         }
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
+            plugin.getPluginLogger().debug("Direct lookup returned null");
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
+                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
                 player = NicknameParser.getPlayer(plugin, args[0]);
 
                 if(player == null) {
+                    plugin.getPluginLogger().debug("Nickname Parser returned null");
                     sender.sendMessage("You can't unmute offline Players");
                     return;
                 }
@@ -70,18 +83,24 @@ public class Mute implements CLICommand {
 
         muteModule.getMuteManager().removePlayerMute(sender.getName(), player.getName());
         sender.sendMessage("You unmuted " + player.getName());
+        plugin.getPluginLogger().info(sender.getName() + " unmuted " + player.getName());
     }
 
     @Command(command = "cc:mute", arguments = 1)
     public void ccMuteCommand(CommandSender sender, String[] args) {
+        plugin.getPluginLogger().debug("Got a global mute Request");
+
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
+            plugin.getPluginLogger().debug("Direct lookup returned null");
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
+                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
                 player = NicknameParser.getPlayer(plugin, args[0]);
 
                 if(player == null) {
+                    plugin.getPluginLogger().debug("Nickname Parser returned null");
                     sender.sendMessage("You can't mute offline Players");
                     return;
                 }
@@ -90,18 +109,24 @@ public class Mute implements CLICommand {
 
         muteModule.getMuteManager().addGlobalMute(player.getName());
         sender.sendMessage("You muted " + player.getName());
+        plugin.getPluginLogger().info(sender.getName() + " globally muted " + player.getName());
     }
 
     @Command(command = "cc:unmute", arguments = 1)
     public void ccUnMuteCommand(CommandSender sender, String[] args) {
+        plugin.getPluginLogger().debug("Got a global unmute Request");
+
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
         if(player == null) {
+            plugin.getPluginLogger().debug("Direct lookup returned null");
             player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
 
             if(player == null) {
+                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
                 player = NicknameParser.getPlayer(plugin, args[0]);
 
                 if(player == null) {
+                    plugin.getPluginLogger().debug("Nickname Parser returned null");
                     sender.sendMessage("You can't unmute offline Players");
                     return;
                 }
@@ -110,5 +135,6 @@ public class Mute implements CLICommand {
 
         muteModule.getMuteManager().removeGlobalMute(player.getName());
         sender.sendMessage("You unmuted " + player.getName());
+        plugin.getPluginLogger().info(sender.getName() + " globally unmuted " + player.getName());
     }
 }

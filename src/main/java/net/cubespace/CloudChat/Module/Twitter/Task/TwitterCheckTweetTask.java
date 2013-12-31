@@ -29,6 +29,8 @@ public class TwitterCheckTweetTask implements Runnable {
         this.twitterModule = twitterModule;
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
+
+        plugin.getPluginLogger().debug("Initialised Twitter Tweet Checker task");
     }
 
     @Override
@@ -40,9 +42,12 @@ public class TwitterCheckTweetTask implements Runnable {
             String[] srch = config.AccountToMonitor.toArray(new String[0]);
             ResponseList<User> users = twitter.lookupUsers(srch);
             for (User user : users) {
+                plugin.getPluginLogger().debug("Checking for new Tweets for " + user.getName());
+
                 if (user.getStatus() != null) {
                     List<Status> statusess = twitter.getUserTimeline(user.getScreenName());
                     if(!twitterModule.getTwitterManager().isRegistered(user.getName())) {
+                        plugin.getPluginLogger().debug("New Twitter user. Generating new entry in the Manager");
                         twitterModule.getTwitterManager().updateLastTweet(user.getName(), statusess.get(0).getCreatedAt());
                         continue;
                     }
@@ -53,6 +58,8 @@ public class TwitterCheckTweetTask implements Runnable {
                             String message = config.Message.replace("%tweet", status3.getText());
                             PlayerDatabase twitterDatabase = new PlayerDatabase(plugin, "IRC");
                             twitterDatabase.Nick = config.IngameName + " " + status3.getUser().getScreenName();
+
+                            plugin.getPluginLogger().info("Found new Tweet: " + status3.getText());
 
                             for(String channel : config.PostToChannels) {
                                 ChannelDatabase channelDatabase = channelManager.get(channel);

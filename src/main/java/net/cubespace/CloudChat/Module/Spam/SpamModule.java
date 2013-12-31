@@ -16,6 +16,8 @@ public class SpamModule {
     private SpamManager spamManager;
 
     public SpamModule(CloudChatPlugin plugin) {
+        plugin.getPluginLogger().info("Starting Spam Module...");
+
         spamManager = new SpamManager(plugin);
 
         plugin.getAsyncEventBus().addListener(new ChatMessageListener(this, plugin));

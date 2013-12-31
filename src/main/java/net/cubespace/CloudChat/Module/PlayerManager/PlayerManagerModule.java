@@ -13,6 +13,8 @@ import net.cubespace.CloudChat.Module.PlayerManager.Listener.ServerConnectListen
  */
 public class PlayerManagerModule {
     public PlayerManagerModule(CloudChatPlugin plugin) {
+        plugin.getPluginLogger().info("Starting Player Manager Module...");
+
         //Register the PlayerManager
         plugin.getManagerRegistry().registerManager("playerManager", new PlayerManager(plugin));
 
