@@ -84,7 +84,7 @@ public class CubespacePlugin extends Plugin {
      */
     public CommandExecutor getCommandExecutor() {
         if(commandExecutor == null) {
-            commandExecutor = new CommandExecutor();
+            commandExecutor = new CommandExecutor(this);
         }
 
         return commandExecutor;
@@ -96,7 +96,7 @@ public class CubespacePlugin extends Plugin {
      */
     public ManagerRegistry getManagerRegistry() {
         if(managerRegistry == null) {
-            managerRegistry = new ManagerRegistry();
+            managerRegistry = new ManagerRegistry(this);
         }
 
         return managerRegistry;

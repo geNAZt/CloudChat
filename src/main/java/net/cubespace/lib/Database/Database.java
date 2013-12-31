@@ -26,7 +26,7 @@ public class Database {
     public Database(CubespacePlugin plugin, String url, String username, String password) {
         this.plugin = plugin;
 
-        plugin.getPluginLogger().info("Connecting to AsyncDatabaseLogger " + url);
+        plugin.getPluginLogger().info("Connecting to Database " + url);
 
         try {
             //Create the Pooled Connection
@@ -35,10 +35,10 @@ public class Database {
                     username,
                     password);
 
-            plugin.getPluginLogger().info("Connected to the AsyncDatabaseLogger " + url);
+            plugin.getPluginLogger().info("Connected to the Database " + url);
         } catch(SQLException e) {
-            plugin.getPluginLogger().error("Could not connect to AsyncDatabaseLogger", e);
-            throw new RuntimeException("Could not connect to AsyncDatabaseLogger", e);
+            plugin.getPluginLogger().error("Could not connect to Database", e);
+            throw new RuntimeException("Could not connect to Database", e);
         }
     }
 

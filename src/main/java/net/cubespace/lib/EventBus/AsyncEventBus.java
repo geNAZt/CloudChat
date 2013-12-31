@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -37,12 +38,15 @@ public class AsyncEventBus {
 
     private final HashMap<Class, ArrayList<HandlerInfo>> handlers = new HashMap<>();
     private final BlockingQueue<Event> queue = new LinkedBlockingQueue<>();
-    private final BlockingQueue<HandlerInfo> killQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<HandlerInfo> killQueue = new LinkedBlockingQueue<>(5000);
 
     private ScheduledTask killQueueTask;
     private ScheduledTask eventQueueTask;
 
     private int handledEvents = 0;
+    private int addedEvents = 0;
+
+    private long lastWarning = 0;
 
     private final CubespacePlugin plugin;
 
@@ -86,13 +90,47 @@ public class AsyncEventBus {
                 }
             }
         });
+
+        //Check the EventQueue stats
+        plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+            @Override
+            public void run() {
+                plugin.getPluginLogger().debug("Handled " + handledEvents + " Events, " + addedEvents + " new Events had been added");
+                handledEvents = 0;
+                addedEvents = 0;
+            }
+        }, 1, 1, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Add one to the Handled events
+     */
+    private synchronized void addOneHandledEvent() {
+        handledEvents++;
+    }
+
+    /**
+     * Add one to the added Events
+     */
+    private synchronized void addOneAddedEvent() {
+        addedEvents++;
     }
 
     public void callEvent(Event event) {
+        //Emit an warning if the Queue has already over 3000 events (maybe the EventHandler is too slow)
+        if(queue.size() > 3000) {
+            if(System.currentTimeMillis() - lastWarning > 10000) {
+                plugin.getPluginLogger().warn("The AsyncEventBus has more than 3000 queued Events. Please issue /cc:report and post the Reportfile to geNAZt");
+                lastWarning = System.currentTimeMillis();
+            }
+        }
+
+        addOneAddedEvent();
         queue.add(event);
     }
 
     public Event callEventSync(Event event) {
+        addOneAddedEvent();
         return handleEvent(event);
     }
 
@@ -159,7 +197,7 @@ public class AsyncEventBus {
             plugin.getPluginLogger().debug("Handled in " + (System.nanoTime() - start) + " ns");
         }
 
-        handledEvents++;
+        addOneHandledEvent();
         return event;
     }
 

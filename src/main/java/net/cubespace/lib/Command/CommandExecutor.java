@@ -1,5 +1,7 @@
 package net.cubespace.lib.Command;
 
+import net.cubespace.CloudChat.Util.StringUtils;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 
 import java.lang.annotation.Annotation;
@@ -13,6 +15,11 @@ import java.util.HashMap;
  */
 public class CommandExecutor {
     private HashMap<String, CommandStruct> commandMap = new HashMap<String, CommandStruct>();
+    private CubespacePlugin plugin;
+
+    public CommandExecutor(CubespacePlugin plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Add a new CLICommand into the executor
@@ -20,6 +27,8 @@ public class CommandExecutor {
      * @param cliCommand the cli command
      */
     public void add(CLICommand cliCommand) {
+        plugin.getPluginLogger().info("Registered new Command " + cliCommand.toString());
+
         for (Method method : cliCommand.getClass().getDeclaredMethods()) {
             //Check if Command Annotation is present
             if (method.isAnnotationPresent(Command.class)) {
@@ -37,6 +46,7 @@ public class CommandExecutor {
                         command.setInstance(cliCommand);
 
                         commandMap.put(aCmd.command(), command);
+                        plugin.getPluginLogger().debug("Added command " + aCmd.command() + " for the method " + method.getName());
 
                         break;
                     }
@@ -46,6 +56,8 @@ public class CommandExecutor {
     }
 
     public boolean onCommand(CommandSender commandSender, String command, String[] args) {
+        plugin.getPluginLogger().info(commandSender.getName() + " emitted command: " + command + " with args " + StringUtils.join(args, " "));
+
         for (int argsIncluded = args.length; argsIncluded >= -1; argsIncluded--) {
             StringBuilder identifierBuilder = new StringBuilder(command);
             for(int i = 0; i < argsIncluded; i++) {
@@ -59,17 +71,17 @@ public class CommandExecutor {
                 CommandStruct command1 = commandMap.get(identifier);
 
                 if(realArgs.length < command1.getAnnotation().arguments()) {
+                    plugin.getPluginLogger().debug("Command has not enough Arguments to be handled");
                     onNotEnoughArguments(commandSender, command1);
 
                     return true;
                 }
 
                 try {
+                    plugin.getPluginLogger().debug("Invoking command with arguments " + StringUtils.join(realArgs, " "));
                     command1.getCommand().invoke(command1.getInstance(), commandSender, realArgs);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    plugin.getPluginLogger().error("Exception thrown while executing a Command", e);
                 }
 
                 return true;
@@ -80,15 +92,15 @@ public class CommandExecutor {
             CommandStruct commandStruct = commandMap.get(command);
 
             try {
+                plugin.getPluginLogger().debug("Invoking command with arguments " + StringUtils.join(args, " "));
                 commandStruct.getCommand().invoke(commandStruct.getInstance(), commandSender, args);
                 return true;
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                plugin.getPluginLogger().error("Exception thrown while executing a Command", e);
             }
         }
 
+        plugin.getPluginLogger().debug("Executed a unknown Command");
         onUnknownCommand(commandSender, command);
 
         return true;
@@ -101,7 +113,7 @@ public class CommandExecutor {
      * @param command the command
      */
     public void onNotEnoughArguments(CommandSender sender, CommandStruct command) {
-
+        sender.sendMessage("You have not given enough Arguments. You need at least " + command.getAnnotation().arguments() + " arguments");
     }
 
     /**
