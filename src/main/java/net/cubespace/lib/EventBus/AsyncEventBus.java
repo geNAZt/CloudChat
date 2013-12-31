@@ -1,6 +1,7 @@
 package net.cubespace.lib.EventBus;
 
 import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Logger.Level;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import java.lang.reflect.Method;
@@ -40,6 +41,8 @@ public class AsyncEventBus {
 
     private ScheduledTask killQueueTask;
     private ScheduledTask eventQueueTask;
+
+    private int handledEvents = 0;
 
     private final CubespacePlugin plugin;
 
@@ -94,13 +97,20 @@ public class AsyncEventBus {
     }
 
     private Event handleEvent(Event event) {
-        long start = System.nanoTime();
+        long start = 0;
+        if(plugin.getPluginLogger().getLogLevel().getLevelCode().equals(Level.DEBUG.getLevelCode())) {
+            start = System.nanoTime();
+        }
+
         plugin.getPluginLogger().debug("Firing Event: " + event.getClass().getName());
 
         //Get all Handlers
         if(!handlers.containsKey(event.getClass())) {
             plugin.getPluginLogger().debug("Event: " + event.getClass().getName() + " has no Listeners. Skipped.");
-            plugin.getPluginLogger().debug("Handled in " + (System.nanoTime() - start) + " ns");
+            if(plugin.getPluginLogger().getLogLevel().getLevelCode().equals(Level.DEBUG.getLevelCode())) {
+                plugin.getPluginLogger().debug("Handled in " + (System.nanoTime() - start) + " ns");
+            }
+
             return event;
         }
 
@@ -108,7 +118,10 @@ public class AsyncEventBus {
 
         if(handlerInfos.size() == 0) {
             plugin.getPluginLogger().debug("Event: " + event.getClass().getName() + " has no Listeners. Skipped.");
-            plugin.getPluginLogger().debug("Handled in " + (System.nanoTime() - start) + " ns");
+            if(plugin.getPluginLogger().getLogLevel().getLevelCode().equals(Level.DEBUG.getLevelCode())) {
+                plugin.getPluginLogger().debug("Handled in " + (System.nanoTime() - start) + " ns");
+            }
+
             return event;
         }
 
@@ -142,7 +155,11 @@ public class AsyncEventBus {
             }
         }
 
-        plugin.getPluginLogger().debug("Handled in " + (System.nanoTime() - start) + " ns");
+        if(plugin.getPluginLogger().getLogLevel().getLevelCode().equals(Level.DEBUG.getLevelCode())) {
+            plugin.getPluginLogger().debug("Handled in " + (System.nanoTime() - start) + " ns");
+        }
+
+        handledEvents++;
         return event;
     }
 

@@ -61,6 +61,14 @@ public class Logger {
     }
 
     /**
+     * Get the current set Loglevel
+     * @return
+     */
+    public Level getLogLevel() {
+        return logLevel;
+    }
+
+    /**
      * Log a debug message together with a Exception
      *
      * @param message The message to Log
