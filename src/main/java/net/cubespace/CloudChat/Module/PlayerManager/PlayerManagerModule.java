@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.PlayerManager;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.PlayerManager.Command.Nick;
+import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerChangeAFKListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerNickchangeListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerQuitListener;
@@ -23,6 +24,7 @@ public class PlayerManagerModule {
         plugin.getAsyncEventBus().addListener(new PlayerQuitListener(plugin));
         plugin.getAsyncEventBus().addListener(new PlayerNickchangeListener(plugin));
         plugin.getAsyncEventBus().addListener(new ServerConnectListener(plugin));
+        plugin.getAsyncEventBus().addListener(new PlayerChangeAFKListener(plugin));
 
         //Register the Commands
         new Nick(plugin);

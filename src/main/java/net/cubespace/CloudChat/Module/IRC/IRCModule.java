@@ -4,6 +4,9 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.IRC.Bot.Bot;
 import net.cubespace.CloudChat.Module.IRC.Listener.ChatMessageListener;
+import net.cubespace.CloudChat.Module.IRC.Listener.PlayerChangeAFKListener;
+import net.cubespace.CloudChat.Module.IRC.Listener.PlayerJoinListener;
+import net.cubespace.CloudChat.Module.IRC.Listener.PlayerQuitListener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -19,6 +22,9 @@ public class IRCModule {
             ircBot = new Bot(this, plugin);
 
             plugin.getAsyncEventBus().addListener(new ChatMessageListener(this, plugin));
+            plugin.getAsyncEventBus().addListener(new PlayerJoinListener(this, plugin));
+            plugin.getAsyncEventBus().addListener(new PlayerQuitListener(this, plugin));
+            plugin.getAsyncEventBus().addListener(new PlayerChangeAFKListener(this, plugin));
         }
     }
 

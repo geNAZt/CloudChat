@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.ChatMessageListener;
+import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerChangeAFKListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageListener;
@@ -14,13 +15,16 @@ import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageList
  */
 public class ChatHandlerModule {
     public ChatHandlerModule(CloudChatPlugin plugin) {
+        Main config = plugin.getConfigManager().getConfig("main");
+
         //Register the Listener
-        if(((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerJoin)
+        if(config.Announce_PlayerJoin)
             plugin.getAsyncEventBus().addListener(new PlayerJoinListener(plugin));
 
-        if(((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerQuit)
+        if(config.Announce_PlayerQuit)
             plugin.getAsyncEventBus().addListener(new PlayerQuitListener(plugin));
 
+        plugin.getAsyncEventBus().addListener(new PlayerChangeAFKListener(plugin));
         plugin.getAsyncEventBus().addListener(new AsyncChatListener(plugin));
         plugin.getAsyncEventBus().addListener(new ChatMessageListener(plugin));
         plugin.getAsyncEventBus().addListener(new PlayerSendMessageListener());
