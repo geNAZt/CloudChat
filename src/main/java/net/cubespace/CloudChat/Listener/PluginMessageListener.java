@@ -5,7 +5,9 @@ import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
+import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -16,6 +18,7 @@ import net.md_5.bungee.event.EventHandler;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -67,18 +70,40 @@ public class PluginMessageListener implements Listener {
 
             if(afk && !playerDatabase.AFK) {
                 //The Player has gone AFK
-                for(String inGameChannel : playerDatabase.JoinedChannels) {
-                    ChannelDatabase channelDatabase = channelManager.get(inGameChannel);
-                    Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, ((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerGotAfk));
+                ArrayList<ProxiedPlayer> sent = new ArrayList<>();
+
+                for(ChannelDatabase channel1 : channelManager.getAllJoinedChannels(player)) {
+                    ArrayList<ProxiedPlayer> inChannel = channelManager.getAllInChannel(channel1);
+                    String message = MessageFormat.format(((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerGotAfk, channel1, playerDatabase);
+                    Sender sender = new Sender(player.getName(), channel1, playerDatabase);
+
+                    for(ProxiedPlayer player1 : inChannel) {
+                        if(sent.contains(player1)) continue;
+
+                        plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, message, sender));
+                        sent.add(player1);
+                    }
                 }
+
+                sent.clear();
             } else if(!afk && playerDatabase.AFK) {
                 //The Player has got out of AFK
-                for(String inGameChannel : playerDatabase.JoinedChannels) {
-                    ChannelDatabase channelDatabase = channelManager.get(inGameChannel);
-                    Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, ((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerGotOutOfAfk));
+                ArrayList<ProxiedPlayer> sent = new ArrayList<>();
+
+                for(ChannelDatabase channel1 : channelManager.getAllJoinedChannels(player)) {
+                    ArrayList<ProxiedPlayer> inChannel = channelManager.getAllInChannel(channel1);
+                    String message = MessageFormat.format(((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerGotOutOfAfk, channel1, playerDatabase);
+                    Sender sender = new Sender(player.getName(), channel1, playerDatabase);
+
+                    for(ProxiedPlayer player1 : inChannel) {
+                        if(sent.contains(player1)) continue;
+
+                        plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, message, sender));
+                        sent.add(player1);
+                    }
                 }
+
+                sent.clear();
             }
 
             playerDatabase.AFK = afk;
