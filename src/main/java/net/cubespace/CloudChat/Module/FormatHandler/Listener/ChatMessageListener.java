@@ -24,7 +24,7 @@ public class ChatMessageListener implements Listener {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChatMessage(ChatMessageEvent event) {
         event.setMessage(MessageFormat.format(event.getMessage(), event.getSender().getChannel(), event.getSender().getPlayerDatabase()));
     }

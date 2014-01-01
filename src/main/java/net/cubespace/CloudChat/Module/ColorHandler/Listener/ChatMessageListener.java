@@ -25,7 +25,7 @@ public class ChatMessageListener implements Listener {
 
         if(player == null) return;
 
-        if(!player.hasPermission("cloudchat.use.color")) {
+        if(!player.hasPermission("cloudchat.use.color") && !player.hasPermission("cloudchat.use.color.message")) {
             event.setMessage(FontFormat.stripColor(event.getMessage()));
         }
     }
