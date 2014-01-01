@@ -47,4 +47,6 @@ public class IRC extends Config {
     public String Relay_QuitMessage = "&8[&2%channel_short&8] %nick&2 quit IRC";
     @Comment("Which format should be used to relay IRC Messages ?")
     public String Relay_Message = "&8[&2%channel_short&8]&r %nick: %message";
+    @Comment("Which format should be used in the .players IRC Command")
+    public String Command_Players = "%prefix%nick%suffix&r";
 }
