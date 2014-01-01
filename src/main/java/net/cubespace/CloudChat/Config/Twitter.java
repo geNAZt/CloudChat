@@ -30,7 +30,7 @@ public class Twitter extends Config {
     @Comment("Which Tiwtter Account should be searched?")
     public ArrayList<String> AccountToMonitor = new ArrayList<>();
     @Comment("Ingame Prefix for Twitter")
-    public String IngameName = "[&2Twitter&8]";
+    public String IngameName = "&8[&2Twitter&8]&r";
     @Comment("The message to use when a new Tweet comes")
     public String Message = "&8[&2%channel_short&8]&r %nick: %tweet";
     @Comment("Post it to this Channels")
