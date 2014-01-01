@@ -180,6 +180,8 @@ public class ChannelManager implements IManager {
         for(Map.Entry<String, ChannelDatabase> channelDatabaseEntry : loadedChannels.entrySet()) {
             if(channelDatabaseEntry.getValue().Forced) {
                 join(player, channelDatabaseEntry.getValue());
+            } else if(channelDatabaseEntry.getValue().ForceIntoWhenPermission && player.hasPermission("cloudchat.channel." + channelDatabaseEntry.getValue().Name)) {
+                join(player, channelDatabaseEntry.getValue());
             }
         }
     }

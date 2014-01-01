@@ -23,19 +23,16 @@ public class ChannelDatabase extends Config {
 
     @Comment("The full Name of the Channel")
     public String Name;
-
     @Comment("The short Accessor for the Channel")
     public String Short;
-
     @Comment("The used printout Format")
     public String Format;
-
     @Comment("If the User must follow this Channel")
     public Boolean Forced;
-
+    @Comment("If the User has the Permission to this Channel then force them into it")
+    public Boolean ForceIntoWhenPermission = false;
     @Comment("The Password of the Channel \"\" for none")
     public String Password = "";
-
     @Comment("The people who can invite others")
     public ArrayList<String> CanInvite = new ArrayList<>();
 }
