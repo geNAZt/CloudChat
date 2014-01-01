@@ -1,7 +1,7 @@
 package net.cubespace.CloudChat.Module.ColorHandler;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
-import net.cubespace.CloudChat.Module.ColorHandler.Listener.ChatMessageListener;
+import net.cubespace.CloudChat.Module.ColorHandler.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ColorHandler.Listener.PlayerNickchangeListener;
 
 /**
@@ -10,7 +10,7 @@ import net.cubespace.CloudChat.Module.ColorHandler.Listener.PlayerNickchangeList
  */
 public class ColorHandlerModule {
     public ColorHandlerModule(CloudChatPlugin plugin) {
-        plugin.getAsyncEventBus().addListener(new ChatMessageListener(plugin));
+        plugin.getAsyncEventBus().addListener(new AsyncChatListener(plugin));
         plugin.getAsyncEventBus().addListener(new PlayerNickchangeListener(plugin));
     }
 }

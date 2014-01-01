@@ -167,6 +167,7 @@ public class Bot extends PircBot implements Runnable {
 
     protected void onNickChange(String oldNick, String login, String hostname, String newNick) {
         if(ircConfig.Relay_Nickchange) {
+            plugin.getPluginLogger().debug("IRC Nick changed from " + oldNick + " to " + newNick);
             List<String> joinedChannels = ircManager.getJoinedChannels(oldNick);
 
             for(String channel : joinedChannels) {
@@ -180,9 +181,9 @@ public class Bot extends PircBot implements Runnable {
 
     protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason) {
         if(ircConfig.Relay_Quit) {
-            List<String> joinedChannels = ircManager.getJoinedChannels(sourceNick);
+            plugin.getPluginLogger().debug("IRC User " + sourceNick + " disconnected");
 
-            for(String channel : joinedChannels)
+            for(String channel : ircManager.getJoinedChannels(sourceNick))
                 relayMessage(sourceNick, channel, ircConfig.Relay_QuitMessage, false);
         }
 
@@ -190,6 +191,8 @@ public class Bot extends PircBot implements Runnable {
     }
 
     protected void onPrivateMessage(String sender, String login, String hostname, String message) {
+        plugin.getPluginLogger().debug("IRC PM to bot from " + sender + ": " + message);
+
         IRCSender ircSender = new IRCSender();
         ircSender.setNick(sender);
         ircSender.setChannel(sender);
@@ -200,11 +203,14 @@ public class Bot extends PircBot implements Runnable {
     }
 
     private void relayMessage(String sender, String channel, String message, boolean useChannelFormat) {
+        plugin.getPluginLogger().debug("Got a new relay Message from IRC: " + sender + ": " + message);
+
         IRCSender ircSender = new IRCSender();
         ircSender.setNick(ircConfig.IngameName + " " + sender);
         ircSender.setChannel(channel);
 
         if(!cmdManager.dispatchCommand(ircSender, message)) {
+            plugin.getPluginLogger().debug("Message is not a Command");
             for(Map.Entry<String, String> channelEntry : ircConfig.Channels.entries()) {
                 if(channelEntry.getValue().equals(channel)) {
                     ChannelDatabase channelDatabase = channelManager.get(channelEntry.getKey());

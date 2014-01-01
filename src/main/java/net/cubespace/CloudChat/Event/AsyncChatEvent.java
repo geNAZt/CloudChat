@@ -9,7 +9,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  */
 public class AsyncChatEvent implements Event {
     private final ProxiedPlayer sender;
-    private final String message;
+    private String message;
     private final boolean isCommand;
     private boolean cancelParent = false;
 
@@ -37,5 +37,9 @@ public class AsyncChatEvent implements Event {
 
     public void setCancelParent(boolean cancelParent) {
         this.cancelParent = cancelParent;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
