@@ -14,7 +14,7 @@ public class IRCModule {
 
     public IRCModule(CloudChatPlugin plugin) {
         if(((IRC) plugin.getConfigManager().getConfig("irc")).Enabled) {
-            plugin.getPluginLogger().info("IRC is enabled. Starting bot...");
+            plugin.getPluginLogger().info("Starting IRC Module...");
 
             ircBot = new Bot(this, plugin);
 

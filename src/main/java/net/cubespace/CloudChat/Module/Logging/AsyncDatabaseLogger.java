@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Module.Logging;
 import com.j256.ormlite.dao.DaoManager;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.Logging.Entity.ChatMessage;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Database.Database;
 import net.cubespace.lib.EventBus.Listener;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
@@ -17,9 +18,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class AsyncDatabaseLogger implements Listener {
     private Database database;
     private ScheduledTask asyncWriter;
-    private LinkedBlockingQueue<ChatMessage> chatMessages = new LinkedBlockingQueue<>();
+    private LinkedBlockingQueue<ChatMessage> chatMessages = new LinkedBlockingQueue<>(5000);
+    private CubespacePlugin plugin;
+    private long lastWarning = 0;
 
     public AsyncDatabaseLogger(final CloudChatPlugin plugin) {
+        this.plugin = plugin;
         net.cubespace.CloudChat.Config.Database config = plugin.getConfigManager().getConfig("database");
 
         database = new Database(plugin, config.Url, config.Username, config.Password);
@@ -47,6 +51,13 @@ public class AsyncDatabaseLogger implements Listener {
     }
 
     public void addChatMessage(ChatMessage chatMessage) {
+        if(chatMessages.size() > 3000) {
+            if(System.currentTimeMillis() - lastWarning > 10000) {
+                plugin.getPluginLogger().warn("The AsyncDatabaseLogger has more than 3000 queued Chat Messages. Please issue /cc:report and post the Reportfile to geNAZt");
+                lastWarning = System.currentTimeMillis();
+            }
+        }
+
         chatMessages.add(chatMessage);
     }
 }

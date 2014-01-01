@@ -37,6 +37,7 @@ public class Bot extends PircBot implements Runnable {
         ircConfig = plugin.getConfigManager().getConfig("irc");
         channelManager = plugin.getManagerRegistry().getManager("channelManager");
 
+        plugin.getPluginLogger().info("Setting Botname to " + ircConfig.Name);
         setName(ircConfig.Name);
 
         cmdManager = new CommandManager();
@@ -54,7 +55,9 @@ public class Bot extends PircBot implements Runnable {
     public void run() {
         // Connect to the IRC server.
         try {
+            plugin.getPluginLogger().info("Connecting to IRC");
             connect(ircConfig.Host);
+            plugin.getPluginLogger().info("Connected to IRC");
         } catch (IrcException | IOException e) {
             plugin.getPluginLogger().warn("Error in connecting the IRC Bot", e);
             throw new RuntimeException();
@@ -68,6 +71,7 @@ public class Bot extends PircBot implements Runnable {
 
         for(String channel : ircConfig.Channels.values()) {
             if(!ircManager.hasJoined(channel)) {
+                plugin.getPluginLogger().debug("Attempt to join Channel " + channel);
                 joinChannel(channel);
                 sendToChannel(ircConfig.JoinMessage, channel);
                 ircManager.addJoinedChannel(channel);
@@ -79,6 +83,7 @@ public class Bot extends PircBot implements Runnable {
      * Shuts the bot down
      */
     public void shutdown() {
+        plugin.getPluginLogger().info("Shutting IRC Bot down");
         for(String channel : ircManager.getJoinedChannels()) {
             sendToChannel(ircConfig.LeaveMessage, channel);
         }
@@ -94,6 +99,7 @@ public class Bot extends PircBot implements Runnable {
      */
     protected void onUserList(String channel, User[] users) {
         for(User user : users) {
+            plugin.getPluginLogger().debug("Adding user " + user.getNick() + " to the IRC User list for Channel " + channel);
             ircManager.addJoinedChannel(user.getNick(), channel);
         }
     }
@@ -104,6 +110,7 @@ public class Bot extends PircBot implements Runnable {
      * @param channel
      */
     public synchronized void sendToChannel(String message, String channel) {
+        plugin.getPluginLogger().debug("Got Minecraft Message sending it to " + channel + ": " + message);
         sendMessage(channel, MCToIrcFormat.translateString(message));
     }
 
@@ -117,6 +124,7 @@ public class Bot extends PircBot implements Runnable {
      * @param message
      */
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+        plugin.getPluginLogger().debug("Got IRC Message from " + channel + ": " + message);
         relayMessage(sender, channel, IrcToMCFormat.translateString(message), true);
     }
 
@@ -131,6 +139,7 @@ public class Bot extends PircBot implements Runnable {
      */
     protected void onAction(String sender, String login, String hostname, String target, String action) {
         if(ircConfig.Relay_Action) {
+            plugin.getPluginLogger().debug("Relaying a Action from IRC: " + sender + " " + action);
             relayMessage(sender, target, ircConfig.Relay_ActionPrefix + sender + " " + action, false);
         }
     }
@@ -146,6 +155,7 @@ public class Bot extends PircBot implements Runnable {
     protected void onJoin(String channel, String sender, String login, String hostname) {
         if(ircConfig.Relay_Join) {
             if(!sender.equals(ircConfig.Name)) {
+                plugin.getPluginLogger().debug("Adding user " + sender + " to the IRC User list for Channel " + channel);
                 relayMessage(sender, channel, ircConfig.Relay_JoinMessage, false);
             } else {
                 plugin.getPluginLogger().info("Bot joined " + channel);

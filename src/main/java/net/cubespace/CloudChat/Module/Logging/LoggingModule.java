@@ -13,6 +13,8 @@ public class LoggingModule {
 
     public LoggingModule(CloudChatPlugin plugin) {
         if(((Database) plugin.getConfigManager().getConfig("database")).Enabled) {
+            plugin.getPluginLogger().info("Starting Database Logger...");
+
             asyncDatabaseLogger = new AsyncDatabaseLogger(plugin);
 
             plugin.getAsyncEventBus().addListener(new ChatMessageListener(this));
