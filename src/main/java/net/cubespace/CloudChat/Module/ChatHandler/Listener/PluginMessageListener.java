@@ -9,7 +9,6 @@ import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Message.FactionChatMessage;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
-import net.cubespace.CloudChat.Module.PlayerManager.Message.AffixMessage;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -37,5 +36,7 @@ public class PluginMessageListener implements PacketListener {
 
         Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
         plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, factionChatMessage.getMessage()));
+
+        plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
     }
 }

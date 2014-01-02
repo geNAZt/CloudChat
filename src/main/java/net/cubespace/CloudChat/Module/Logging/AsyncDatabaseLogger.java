@@ -37,6 +37,7 @@ public class AsyncDatabaseLogger implements Listener {
                         while(true) {
                             ChatMessage chatMessage = chatMessages.take();
                             database.getDAO(ChatMessage.class).create(chatMessage);
+                            plugin.getPluginLogger().debug("Persisted Chat Message");
                         }
                     } catch(Exception e) {
                         plugin.getPluginLogger().error("Error in AsyncDatabaseLogger", e);

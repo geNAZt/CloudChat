@@ -22,6 +22,7 @@ public class PlayerNickchangeListener implements Listener {
     public void onPlayerNickchange(PlayerNickchangeEvent event) {
         if(!event.getSender().hasPermission("cloudchat.use.color") && !event.getSender().hasPermission("cloudchat.use.color.nick")) {
             event.setNewNick(FontFormat.stripColor(event.getNewNick()));
+            plugin.getPluginLogger().debug("Stripped Colors away");
         }
     }
 }

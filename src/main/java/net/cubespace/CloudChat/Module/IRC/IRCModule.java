@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.IRC;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.IRC.Bot.Bot;
 import net.cubespace.CloudChat.Module.IRC.Listener.ChatMessageListener;
@@ -25,6 +26,9 @@ public class IRCModule {
             plugin.getAsyncEventBus().addListener(new PlayerJoinListener(this, plugin));
             plugin.getAsyncEventBus().addListener(new PlayerQuitListener(this, plugin));
             plugin.getAsyncEventBus().addListener(new PlayerChangeAFKListener(this, plugin));
+
+            plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "irc:reconnect"));
+            plugin.getCommandExecutor().add(new net.cubespace.CloudChat.Module.IRC.Command.IRC(this, plugin));
         }
     }
 

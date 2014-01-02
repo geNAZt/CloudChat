@@ -6,6 +6,7 @@ import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Spam;
 import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Listener.*;
+import net.cubespace.CloudChat.Module.Admin.AdminModule;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule;
 import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
 import net.cubespace.CloudChat.Module.CloudChat.CloudChatModule;
@@ -56,6 +57,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         new MuteModule(this);
         new SpamModule(this);
         new TwitterModule(this);
+        new AdminModule(this);
 
         //Register the Listeners
         getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));

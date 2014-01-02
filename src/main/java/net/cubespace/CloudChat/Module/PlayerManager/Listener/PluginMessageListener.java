@@ -31,6 +31,8 @@ public class PluginMessageListener implements PacketListener {
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         playerDatabase.Prefix = affixMessage.getPrefix();
         playerDatabase.Suffix = affixMessage.getSuffix();
+
+        plugin.getPluginLogger().debug("Got new Affix Message for " + player.getName() + " - " + affixMessage.getPrefix() + "/" + affixMessage.getSuffix());
     }
 
     @PacketHandler
@@ -40,6 +42,8 @@ public class PluginMessageListener implements PacketListener {
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         playerDatabase.World = worldMessage.getName();
         playerDatabase.WorldAlias = worldMessage.getAlias();
+
+        plugin.getPluginLogger().debug("Got new World Message for " + player.getName() + " - " + worldMessage.getName() + "/" + worldMessage.getAlias());
     }
 
     @PacketHandler
@@ -56,5 +60,6 @@ public class PluginMessageListener implements PacketListener {
         }
 
         playerDatabase.AFK = afkMessage.isAfk();
+        plugin.getPluginLogger().debug("Got new AFK Message for " + player.getName() + " - " + afkMessage.isAfk());
     }
 }

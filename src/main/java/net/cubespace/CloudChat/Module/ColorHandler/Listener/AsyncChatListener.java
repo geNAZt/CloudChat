@@ -22,6 +22,7 @@ public class AsyncChatListener {
         //Format the Message
         if(!event.getSender().hasPermission("cloudchat.use.color") && !event.getSender().hasPermission("cloudchat.use.color.message")) {
             event.setMessage(FontFormat.stripColor(event.getMessage()));
+            plugin.getPluginLogger().debug("Stripped Colors away");
         }
     }
 }

@@ -1,6 +1,5 @@
 package net.cubespace.lib.Report;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,14 +11,14 @@ import java.util.concurrent.TimeUnit;
  * @date Last changed: 26.12.13 11:34
  */
 public class ReportFileWriterTask implements Runnable {
-    private BufferedWriter writer;
+    private FileWriter writer;
     private LinkedBlockingQueue<String> linesToWrite = new LinkedBlockingQueue<>();
     private Boolean closed = false;
 
     public ReportFileWriterTask(File reportFile) {
         //Open the FileWriter
         try {
-            writer = new BufferedWriter(new FileWriter(reportFile));
+            writer = new FileWriter(reportFile);
         } catch (IOException e) {
             throw new RuntimeException("Could not open the File for writing", e);
         }
@@ -30,8 +29,7 @@ public class ReportFileWriterTask implements Runnable {
         while (!closed || linesToWrite.size() > 0) {
             try {
                 String line = linesToWrite.poll(10, TimeUnit.MILLISECONDS);
-                writer.write(line);
-                writer.newLine();
+                writer.write(line + "\n");
             } catch (Exception e) {
 
             }
