@@ -209,6 +209,8 @@ public class ChannelManager implements IManager {
      * @param channelDatabase
      */
     public void leave(ProxiedPlayer player, ChannelDatabase channelDatabase) {
+        if(!playerInChannel.containsKey(channelDatabase)) return;
+
         playerInChannel.get(channelDatabase).remove(player);
         playerJoinedChannels.get(player).remove(channelDatabase);
         plugin.getPluginLogger().info("Player " + player.getName() + " left Channel " + channelDatabase.Name);
