@@ -71,7 +71,7 @@ public class Channels implements CLICommand {
             return;
         }
 
-        if(channelDatabase.Forced) {
+        if((channelDatabase.ForceIntoWhenPermission || channelDatabase.Forced) && !(sender.hasPermission("cloudchat.channel." + channelDatabase.Name + ".canleave") || sender.hasPermission("cloudchat.canleaveforced"))) {
             sender.sendMessage("You can't leave a forced Channel");
             return;
         }
