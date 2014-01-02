@@ -14,6 +14,7 @@ import net.cubespace.CloudChat.Module.IRC.Format.NickchangeFormatter;
 import net.cubespace.CloudChat.Module.IRC.IRCManager;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
+import net.cubespace.CloudChat.Module.IRC.Permission.WhoisResolver;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import org.jibble.pircbot.IrcException;
@@ -43,7 +44,7 @@ public class Bot extends PircBot implements Runnable {
         cmdManager = new CommandManager();
         cmdManager.registerCommand("players", new Players(ircModule, plugin));
 
-        ircManager = new IRCManager();
+        ircManager = new IRCManager(plugin);
 
         botTask = plugin.getProxy().getScheduler().runAsync(plugin, this);
     }
@@ -70,11 +71,11 @@ public class Bot extends PircBot implements Runnable {
         }
 
         for(String channel : ircConfig.Channels.values()) {
-            if(!ircManager.hasJoined(channel)) {
+            if(!ircManager.botHasJoined(channel)) {
                 plugin.getPluginLogger().debug("Attempt to join Channel " + channel);
                 joinChannel(channel);
                 sendToChannel(ircConfig.JoinMessage, channel);
-                ircManager.addJoinedChannel(channel);
+                ircManager.botJoinedChannel(channel);
             }
         }
     }
@@ -84,7 +85,7 @@ public class Bot extends PircBot implements Runnable {
      */
     public void shutdown() {
         plugin.getPluginLogger().info("Shutting IRC Bot down");
-        for(String channel : ircManager.getJoinedChannels()) {
+        for(String channel : ircManager.getBotJoinedChannels()) {
             sendToChannel(ircConfig.LeaveMessage, channel);
         }
 
@@ -100,6 +101,12 @@ public class Bot extends PircBot implements Runnable {
     protected void onUserList(String channel, User[] users) {
         for(User user : users) {
             plugin.getPluginLogger().debug("Adding user " + user.getNick() + " to the IRC User list for Channel " + channel);
+
+            if(!ircManager.isResolving(user.getNick())) {
+                ircManager.addWhoIsResolver(user.getNick(), new WhoisResolver());
+                sendRawLine("WHOIS " + user.getNick());
+            }
+
             ircManager.addJoinedChannel(user.getNick(), channel);
         }
     }
@@ -112,6 +119,11 @@ public class Bot extends PircBot implements Runnable {
     public synchronized void sendToChannel(String message, String channel) {
         plugin.getPluginLogger().debug("Got Minecraft Message sending it to " + channel + ": " + message);
         sendMessage(channel, MCToIrcFormat.translateString(message));
+    }
+
+    protected void onServerResponse(int code, String response) {
+        plugin.getPluginLogger().debug("Got server Message: " + code + " " + response);
+        ircManager.newWhoisLine(code, response);
     }
 
     /**
@@ -169,17 +181,20 @@ public class Bot extends PircBot implements Runnable {
         if(recipientNick.equals(ircConfig.Name)) {
             plugin.getPluginLogger().warn("We got kicked out of a Channel " + channel + " by " + kickerNick + "(" + reason + ")");
             ircManager.removeBotJoinedChannel(channel);
-            ircManager.removeValuesFromNickJoinedChannels(channel);
+            ircManager.removeChannel(channel);
             joinChannel(channel);
+        } else {
+            ircManager.removeChannelFromNick(recipientNick, channel);
         }
     }
 
     public void onDisconnect() {
-        ircManager = new IRCManager();
+        ircManager = new IRCManager(plugin);
 
         // Be sure the Bot stays connected
         while (!isConnected()) {
             try {
+                plugin.getPluginLogger().info("Trying to reconnect to IRC");
                 reconnect();
                 Thread.sleep(1000);
             }
@@ -201,6 +216,10 @@ public class Bot extends PircBot implements Runnable {
             }
 
             ircManager.removeJoinedChannels(oldNick);
+            if(!ircManager.moveWhois(oldNick, newNick)) {
+                ircManager.addWhoIsResolver(newNick, new WhoisResolver());
+                sendRawLine("WHOIS " + newNick);
+            }
         }
     }
 
@@ -213,6 +232,7 @@ public class Bot extends PircBot implements Runnable {
         }
 
         ircManager.removeJoinedChannels(sourceNick);
+        ircManager.removeWhois(sourceNick);
     }
 
     protected void onPrivateMessage(String sender, String login, String hostname, String message) {
