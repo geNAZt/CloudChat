@@ -23,6 +23,10 @@ public class IRCManager {
         joinedChannels.add(channel);
     }
 
+    public void removeBotJoinedChannel(String channel) {
+        joinedChannels.remove(channel);
+    }
+
     public ArrayList<String> getJoinedChannels() {
         return joinedChannels;
     }
@@ -37,5 +41,10 @@ public class IRCManager {
 
     public void removeJoinedChannels(String nick) {
         nickJoinedChannels.removeAll(nick);
+    }
+
+    public void removeValuesFromNickJoinedChannels(String channel) {
+        for(String nick : nickJoinedChannels.keySet())
+            nickJoinedChannels.remove(nick, channel);
     }
 }

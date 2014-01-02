@@ -165,6 +165,31 @@ public class Bot extends PircBot implements Runnable {
         ircManager.addJoinedChannel(sender, channel);
     }
 
+    public void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
+        if(recipientNick.equals(ircConfig.Name)) {
+            plugin.getPluginLogger().warn("We got kicked out of a Channel " + channel + " by " + kickerNick + "(" + reason + ")");
+            ircManager.removeBotJoinedChannel(channel);
+            ircManager.removeValuesFromNickJoinedChannels(channel);
+            joinChannel(channel);
+        }
+    }
+
+    public void onDisconnect() {
+        ircManager = new IRCManager();
+
+        // Be sure the Bot stays connected
+        while (!isConnected()) {
+            try {
+                reconnect();
+                Thread.sleep(1000);
+            }
+
+            catch (Exception e) {
+                plugin.getPluginLogger().error("Could not reconnect IRC Bot", e);
+            }
+        }
+    }
+
     protected void onNickChange(String oldNick, String login, String hostname, String newNick) {
         if(ircConfig.Relay_Nickchange) {
             plugin.getPluginLogger().debug("IRC Nick changed from " + oldNick + " to " + newNick);
