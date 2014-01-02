@@ -25,7 +25,7 @@ public class PluginMessageTask implements Runnable {
             while(true) {
                 IPluginMessage pluginMessage = pluginMessageManager.getQueue().take();
                 if(pluginMessage.getPlayer() == null) continue;
-                StandardPacket message = pluginMessage.getPacket(plugin);
+                StandardPacket message = pluginMessage.getPacket();
 
                 if(plugin.getPluginLogger().getLogLevel().getLevelCode().equals(Level.DEBUG.getLevelCode())) {
                     plugin.getPluginLogger().debug("Sending PluginMessage on '" + channel + "': " + message.toString());

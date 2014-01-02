@@ -1,7 +1,6 @@
 package net.cubespace.lib.PluginMessage;
 
 import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
-import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -9,6 +8,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @date Last changed: 29.12.13 13:45
  */
 public interface IPluginMessage {
-    public StandardPacket getPacket(CubespacePlugin plugin);
+    public StandardPacket getPacket();
     public ProxiedPlayer getPlayer();
 }

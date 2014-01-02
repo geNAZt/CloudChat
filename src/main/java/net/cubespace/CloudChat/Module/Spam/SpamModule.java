@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.Spam.Listener.ChatMessageListener;
 import net.cubespace.CloudChat.Module.Spam.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.Spam.Listener.PlayerQuitListener;
+import net.cubespace.CloudChat.Module.Spam.Message.DispatchCmdMessage;
 import net.cubespace.CloudChat.Module.Spam.Task.SpamDetector;
 
 import java.util.concurrent.TimeUnit;
@@ -25,6 +26,8 @@ public class SpamModule {
         plugin.getAsyncEventBus().addListener(new PlayerQuitListener(this));
 
         plugin.getProxy().getScheduler().schedule(plugin, new SpamDetector(this, plugin), 1, 1, TimeUnit.SECONDS);
+
+        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerPacket(DispatchCmdMessage.class);
     }
 
     public SpamManager getSpamManager() {

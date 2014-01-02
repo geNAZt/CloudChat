@@ -1,7 +1,6 @@
 package net.cubespace.lib.PluginMessage;
 
 import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
-import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -18,7 +17,7 @@ public class PluginMessage implements IPluginMessage {
     }
 
     @Override
-    public StandardPacket getPacket(CubespacePlugin plugin) {
+    public StandardPacket getPacket() {
         return packet;
     }
 
