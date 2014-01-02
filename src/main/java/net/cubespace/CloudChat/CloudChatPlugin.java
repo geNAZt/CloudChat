@@ -17,6 +17,7 @@ import net.cubespace.CloudChat.Module.PM.PMModule;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
 import net.cubespace.CloudChat.Module.Spam.SpamModule;
 import net.cubespace.CloudChat.Module.Twitter.TwitterModule;
+import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
 
@@ -36,6 +37,9 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("database", new Database(this));
         getConfigManager().initConfig("spam", new Spam(this));
         getConfigManager().initConfig("twitter", new Twitter(this));
+
+        //Static init
+        AutoComplete.init(this);
 
         //Register Plugin Channels
         getProxy().registerChannel("CloudChat");

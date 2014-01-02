@@ -5,7 +5,6 @@ import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
-import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.HashMap;
@@ -24,7 +23,7 @@ public class NicknameParser {
         ProxiedPlayer player = null;
         for(Map.Entry<String, PlayerDatabase> playerDatabaseEntry : players.entrySet()) {
             if(MessageFormat.format(config.Complete_Player, null, playerDatabaseEntry.getValue(), true).equals(tabCompleteString)) {
-                player = BungeeCord.getInstance().getPlayer(playerDatabaseEntry.getKey());
+                player = plugin.getProxy().getPlayer(playerDatabaseEntry.getKey());
                 break;
             }
         }

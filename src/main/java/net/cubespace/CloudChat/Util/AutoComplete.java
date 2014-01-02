@@ -1,6 +1,6 @@
 package net.cubespace.CloudChat.Util;
 
-import net.md_5.bungee.BungeeCord;
+import net.cubespace.CloudChat.CloudChatPlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -8,8 +8,14 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @date Last changed: 29.12.13 00:25
  */
 public class AutoComplete {
+    private static CloudChatPlugin plugin;
+
+    public static void init(CloudChatPlugin plugin) {
+        AutoComplete.plugin = plugin;
+    }
+
     public static String completeUsername(String user) {
-        for(ProxiedPlayer player : BungeeCord.getInstance().getPlayers()) {
+        for(ProxiedPlayer player : plugin.getProxy().getPlayers()) {
             if(player.getName().startsWith(user)) {
                 return player.getName();
             }

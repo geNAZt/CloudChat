@@ -126,11 +126,6 @@
             <version>1.7-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-proxy</artifactId>
-            <version>1.7-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>net.craftminecraft.bungee</groupId>
             <artifactId>bungeeyaml</artifactId>
             <version>1.2</version>
