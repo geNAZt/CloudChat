@@ -8,6 +8,8 @@ import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerChangeAFKListen
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageListener;
+import net.cubespace.CloudChat.Module.ChatHandler.Listener.PluginMessageListener;
+import net.cubespace.CloudChat.Module.ChatHandler.Message.FactionChatMessage;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -28,5 +30,10 @@ public class ChatHandlerModule {
         plugin.getAsyncEventBus().addListener(new AsyncChatListener(plugin));
         plugin.getAsyncEventBus().addListener(new ChatMessageListener(plugin));
         plugin.getAsyncEventBus().addListener(new PlayerSendMessageListener());
+
+        //Register Packets and Listener
+        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerPacket(FactionChatMessage.class);
+
+        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerListener(new PluginMessageListener(plugin));
     }
 }

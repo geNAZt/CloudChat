@@ -59,7 +59,7 @@ public class SpamDetector implements Runnable {
                         case DISPATCH_CMD:
                             String cmd = spamCounterEntry.getKey().CommandToDispatch.replace("%player", playerSpam.getKey());
                             plugin.getPluginLogger().info("Emitting " + cmd + " for " + playerSpam.getKey() + " due to spamming");
-                            plugin.getPluginMessageManager("CloudChat").sendPluginMessage(new DispatchCmdMessage(plugin.getProxy().getPlayer(playerSpam.getKey()), cmd));
+                            plugin.getPluginMessageManager("CloudChat").sendPluginMessage(plugin.getProxy().getPlayer(playerSpam.getKey()), new DispatchCmdMessage(cmd));
                             break;
                     }
                 }

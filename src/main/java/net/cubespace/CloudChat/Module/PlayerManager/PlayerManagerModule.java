@@ -1,12 +1,16 @@
 package net.cubespace.CloudChat.Module.PlayerManager;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Module.PlayerManager.Listener.PluginMessageListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Command.Nick;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerChangeAFKListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerNickchangeListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.ServerConnectListener;
+import net.cubespace.CloudChat.Module.PlayerManager.Message.AFKMessage;
+import net.cubespace.CloudChat.Module.PlayerManager.Message.AffixMessage;
+import net.cubespace.CloudChat.Module.PlayerManager.Message.WorldMessage;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -28,5 +32,12 @@ public class PlayerManagerModule {
 
         //Register the Commands
         new Nick(plugin);
+
+        //Register the Packets and the Listeners
+        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerPacket(AffixMessage.class);
+        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerPacket(AFKMessage.class);
+        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerPacket(WorldMessage.class);
+
+        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerListener(new PluginMessageListener(plugin));
     }
 }

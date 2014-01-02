@@ -6,7 +6,7 @@
 
     <groupId>net.cubespace</groupId>
     <artifactId>CloudChat</artifactId>
-    <version>2.3.2</version>
+    <version>2.4.0</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -75,11 +75,35 @@
                                     <include>com.j256.ormlite:*</include>
                                     <include>javax.persistence:*</include>
                                     <include>org.twitter4j:*</include>
+                                    <include>com.iKeirNez:*</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.jibble.pircbot</pattern>
+                                    <shadedPattern>net.cubespace.vendor.org.jibble.pircbot</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.j256.ormlite</pattern>
+                                    <shadedPattern>net.cubespace.vendor.com.j256.ormlite</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>twitter4j</pattern>
+                                    <shadedPattern>net.cubespace.vendor.twitter4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.persistence</pattern>
+                                    <shadedPattern>net.cubespace.vendor.javax.persistence</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.iKeirNez</pattern>
+                                    <shadedPattern>net.cubespace.vendor.com.iKeirNez</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
+
             </plugin>
         </plugins>
     </build>
@@ -88,6 +112,10 @@
         <repository>
             <id>craftminecraft-dev</id>
             <url>http://repo.craftminecraft.net/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>prov-libs</id>
+            <url>http://nexus.cube-space.net/content/repositories/prov-libs/</url>
         </repository>
     </repositories>
 
@@ -105,6 +133,11 @@
             <version>1.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/BungeeYAML.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.iKeirNez</groupId>
+            <artifactId>PluginMessageApiPlus</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>pircbot</groupId>

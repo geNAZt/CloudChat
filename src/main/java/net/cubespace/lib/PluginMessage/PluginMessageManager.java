@@ -1,7 +1,10 @@
 package net.cubespace.lib.PluginMessage;
 
+import com.iKeirNez.PluginMessageApiPlus.PacketManager;
+import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
+import com.iKeirNez.PluginMessageApiPlus.implementations.BungeeCordPacketManager;
 import net.cubespace.lib.CubespacePlugin;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -10,24 +13,29 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @date Last changed: 29.12.13 13:29
  */
 public class PluginMessageManager {
+    private PacketManager packetManager;
     private CubespacePlugin plugin;
-    private ScheduledTask pluginMessageTask;
     private LinkedBlockingQueue<IPluginMessage> queue = new LinkedBlockingQueue<>();
 
     public PluginMessageManager(CubespacePlugin plugin, String channel) {
         this.plugin = plugin;
 
-        plugin.getPluginLogger().info("Creating new PluginMessageManager for channel " + channel);
+        packetManager = new BungeeCordPacketManager(plugin, channel);
 
-        pluginMessageTask = plugin.getProxy().getScheduler().runAsync(plugin, new PluginMessageTask(this, plugin, channel));
+        plugin.getPluginLogger().info("Creating new PluginMessageManager for channel " + channel);
+        plugin.getProxy().getScheduler().runAsync(plugin, new PluginMessageTask(this, plugin, channel));
     }
 
-    public synchronized void sendPluginMessage(IPluginMessage pluginMessage) {
-        plugin.getPluginLogger().debug("Got new PluginMessage: " + pluginMessage.toString());
-        queue.add(pluginMessage);
+    public synchronized void sendPluginMessage(ProxiedPlayer player, StandardPacket packet) {
+        plugin.getPluginLogger().debug("Got new PluginMessage for Player " + player.getName() + ": " + packet.toString());
+        queue.add(new PluginMessage(player, packet));
     }
 
     public LinkedBlockingQueue<IPluginMessage> getQueue() {
         return queue;
+    }
+
+    public synchronized PacketManager getPacketManager() {
+        return packetManager;
     }
 }

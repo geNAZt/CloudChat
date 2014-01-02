@@ -1,4 +1,4 @@
-package net.cubespace.CloudChat.Module.Spam.Message;
+package net.cubespace.CloudChat.Module.PlayerManager.Message;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketWriter;
 import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
@@ -8,32 +8,30 @@ import java.io.IOException;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 13:05
+ * @date Last changed: 02.01.14 04:07
  */
-public class DispatchCmdMessage extends StandardPacket {
-    private String command;
+public class AFKMessage extends StandardPacket {
+    private boolean afk;
 
-    public DispatchCmdMessage() {
+    public AFKMessage() {}
 
+    public AFKMessage(boolean afk) {
+        this.afk = afk;
     }
 
-    public DispatchCmdMessage(String command) {
-        this.command = command;
-    }
-
-    public String getCommand() {
-        return command;
+    public boolean isAfk() {
+        return afk;
     }
 
     @Override
     protected void handle(DataInputStream dataInputStream) throws IOException {
-        this.command = dataInputStream.readUTF();
+        this.afk = dataInputStream.readBoolean();
     }
 
     @Override
     protected PacketWriter write() throws IOException {
         PacketWriter packetWriter = new PacketWriter(this);
-        packetWriter.writeUTF(command);
+        packetWriter.writeBoolean(afk);
         return packetWriter;
     }
 }

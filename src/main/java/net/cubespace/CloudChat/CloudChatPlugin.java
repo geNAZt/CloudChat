@@ -57,7 +57,6 @@ public class CloudChatPlugin extends CubespacePlugin {
         getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerQuitListener(this));
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
-        getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
         getProxy().getPluginManager().registerListener(this, new ServerConnectListener(this));
     }
 }

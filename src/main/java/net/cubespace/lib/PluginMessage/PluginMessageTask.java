@@ -1,5 +1,7 @@
 package net.cubespace.lib.PluginMessage;
 
+import com.iKeirNez.PluginMessageApiPlus.PacketPlayer;
+import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
 
@@ -22,19 +24,14 @@ public class PluginMessageTask implements Runnable {
         try {
             while(true) {
                 IPluginMessage pluginMessage = pluginMessageManager.getQueue().take();
-                byte[] message = pluginMessage.send(plugin);
+                if(pluginMessage.getPlayer() == null) continue;
+                StandardPacket message = pluginMessage.getPacket(plugin);
 
                 if(plugin.getPluginLogger().getLogLevel().getLevelCode().equals(Level.DEBUG.getLevelCode())) {
-                    StringBuilder sb = new StringBuilder();
-                    for (byte theByte : message) {
-                        sb.append(Integer.toHexString(theByte));
-                        sb.append(" ");
-                    }
-
-                    plugin.getPluginLogger().debug("Sending PluginMessage on '" + channel + "': " + sb.toString());
+                    plugin.getPluginLogger().debug("Sending PluginMessage on '" + channel + "': " + message.toString());
                 }
 
-                pluginMessage.getPlayer().getServer().sendData(channel, message);
+                pluginMessageManager.getPacketManager().sendPacket(new PacketPlayer(pluginMessage.getPlayer()), message);
             }
         } catch(Exception e) {
             plugin.getPluginLogger().error("PluginMessageTask was interrupted", e);
