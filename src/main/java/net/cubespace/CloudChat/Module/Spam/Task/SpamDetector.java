@@ -3,7 +3,7 @@ package net.cubespace.CloudChat.Module.Spam.Task;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Sub.SpamEntry;
 import net.cubespace.CloudChat.Module.Mute.MuteManager;
-import net.cubespace.CloudChat.Module.Spam.Message.DispatchCmdMessage;
+import net.cubespace.PluginMessages.DispatchCmdMessage;
 import net.cubespace.CloudChat.Module.Spam.SpamCounter;
 import net.cubespace.CloudChat.Module.Spam.SpamModule;
 

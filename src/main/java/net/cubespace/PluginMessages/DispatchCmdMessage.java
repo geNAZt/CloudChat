@@ -1,4 +1,4 @@
-package net.cubespace.CloudChat.Module.Spam.Message;
+package net.cubespace.PluginMessages;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketWriter;
 import com.iKeirNez.PluginMessageApiPlus.StandardPacket;

@@ -1,4 +1,4 @@
-package net.cubespace.CloudChat.Module.PlayerManager.Message;
+package net.cubespace.PluginMessages;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketWriter;
 import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
@@ -6,10 +6,6 @@ import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-/**
- * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 02.01.14 04:07
- */
 public class WorldMessage extends StandardPacket {
     private String name;
     private String alias;

@@ -101,7 +101,7 @@ public class ChannelManager implements IManager {
         ChannelDatabase faction = new ChannelDatabase(plugin, channel);
         faction.Short = alias;
         faction.Name = channel;
-        faction.Format = "&8[&2%channel_short&8] (%faction)%prefix%nick%suffix&r: %message";
+        faction.Format = "&8[&2%channel_short&8] (%faction&8)&r%prefix%nick%suffix&r: %message";
         faction.Forced = false;
 
         try {

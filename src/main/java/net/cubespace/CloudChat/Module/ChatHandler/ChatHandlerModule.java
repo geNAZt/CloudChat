@@ -9,7 +9,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PluginMessageListener;
-import net.cubespace.CloudChat.Module.ChatHandler.Message.FactionChatMessage;
+import net.cubespace.PluginMessages.FactionChatMessage;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -32,8 +32,7 @@ public class ChatHandlerModule {
         plugin.getAsyncEventBus().addListener(new PlayerSendMessageListener());
 
         //Register Packets and Listener
-        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerPacket(FactionChatMessage.class);
-
-        plugin.getPluginMessageManager("CloudChat").getPacketManager().registerListener(new PluginMessageListener(plugin));
+        plugin.getPluginMessageManager("CloudChat").addPacketToRegister(FactionChatMessage.class);
+        plugin.getPluginMessageManager("CloudChat").addListenerToRegister(new PluginMessageListener(plugin));
     }
 }

@@ -120,11 +120,10 @@
     </repositories>
 
     <dependencies>
-
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-parent</artifactId>
-            <version>1.6.4</version>
+            <version>1.7.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/BungeeCord.jar</systemPath>
         </dependency>
@@ -138,7 +137,7 @@
         <dependency>
             <groupId>com.iKeirNez</groupId>
             <artifactId>PluginMessageApiPlus</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>pircbot</groupId>

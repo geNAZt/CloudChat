@@ -5,9 +5,9 @@ import com.iKeirNez.PluginMessageApiPlus.PacketListener;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerChangeAFKEvent;
-import net.cubespace.CloudChat.Module.PlayerManager.Message.AFKMessage;
-import net.cubespace.CloudChat.Module.PlayerManager.Message.AffixMessage;
-import net.cubespace.CloudChat.Module.PlayerManager.Message.WorldMessage;
+import net.cubespace.PluginMessages.AFKMessage;
+import net.cubespace.PluginMessages.AffixMessage;
+import net.cubespace.PluginMessages.WorldMessage;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

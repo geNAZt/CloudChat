@@ -6,7 +6,10 @@ import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Spam;
 import net.cubespace.CloudChat.Config.Twitter;
-import net.cubespace.CloudChat.Listener.*;
+import net.cubespace.CloudChat.Listener.ChatListener;
+import net.cubespace.CloudChat.Listener.PlayerJoinListener;
+import net.cubespace.CloudChat.Listener.PlayerQuitListener;
+import net.cubespace.CloudChat.Listener.ServerConnectListener;
 import net.cubespace.CloudChat.Module.Admin.AdminModule;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule;
 import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
@@ -14,6 +17,7 @@ import net.cubespace.CloudChat.Module.CloudChat.CloudChatModule;
 import net.cubespace.CloudChat.Module.ColorHandler.ColorHandlerModule;
 import net.cubespace.CloudChat.Module.FormatHandler.FormatHandlerModule;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
+import net.cubespace.CloudChat.Module.Logging.LoggingModule;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Module.PM.PMModule;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
@@ -44,9 +48,6 @@ public class CloudChatPlugin extends CubespacePlugin {
         //Static init
         AutoComplete.init(this);
 
-        //Register Plugin Channels
-        getProxy().registerChannel("CloudChat");
-
         //Load the Modules
         new PlayerManagerModule(this);
         new ChannelManagerModule(this);
@@ -54,12 +55,15 @@ public class CloudChatPlugin extends CubespacePlugin {
         new FormatHandlerModule(this);
         new ColorHandlerModule(this);
         new PMModule(this);
+        new LoggingModule(this);
         new IRCModule(this);
         new CloudChatModule(this);
         new MuteModule(this);
         new SpamModule(this);
         new TwitterModule(this);
         new AdminModule(this);
+
+        getPluginMessageManager("CloudChat").finish();
 
         //Register the Listeners
         getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
