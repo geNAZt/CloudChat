@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.PM;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.PM.Command.PM;
+import net.cubespace.CloudChat.Module.PM.Listener.PMListener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -13,5 +14,7 @@ public class PMModule {
 
         //Register Commands
         new PM(plugin);
+
+        plugin.getAsyncEventBus().addListener(new PMListener(plugin));
     }
 }

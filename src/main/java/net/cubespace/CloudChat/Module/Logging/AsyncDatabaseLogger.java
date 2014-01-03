@@ -3,10 +3,10 @@ package net.cubespace.CloudChat.Module.Logging;
 import com.j256.ormlite.dao.DaoManager;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.Logging.Entity.ChatMessage;
+import net.cubespace.CloudChat.Module.Logging.Entity.PrivateMessage;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Database.Database;
 import net.cubespace.lib.EventBus.Listener;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import java.sql.SQLException;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,8 +17,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class AsyncDatabaseLogger implements Listener {
     private Database database;
-    private ScheduledTask asyncWriter;
     private LinkedBlockingQueue<ChatMessage> chatMessages = new LinkedBlockingQueue<>(5000);
+    private LinkedBlockingQueue<PrivateMessage> privateMessages = new LinkedBlockingQueue<>(5000);
     private CubespacePlugin plugin;
     private long lastWarning = 0;
 
@@ -29,8 +29,9 @@ public class AsyncDatabaseLogger implements Listener {
         database = new Database(plugin, config.Url, config.Username, config.Password);
         try {
             database.registerDAO(DaoManager.createDao(database.getConnectionSource(), ChatMessage.class), ChatMessage.class);
+            database.registerDAO(DaoManager.createDao(database.getConnectionSource(), PrivateMessage.class), PrivateMessage.class);
 
-            asyncWriter = plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+            plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -38,6 +39,22 @@ public class AsyncDatabaseLogger implements Listener {
                             ChatMessage chatMessage = chatMessages.take();
                             database.getDAO(ChatMessage.class).create(chatMessage);
                             plugin.getPluginLogger().debug("Persisted Chat Message");
+                        }
+                    } catch(Exception e) {
+                        plugin.getPluginLogger().error("Error in AsyncDatabaseLogger", e);
+                        throw new RuntimeException();
+                    }
+                }
+            });
+
+            plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while(true) {
+                            PrivateMessage privateMessage = privateMessages.take();
+                            database.getDAO(PrivateMessage.class).create(privateMessage);
+                            plugin.getPluginLogger().debug("Persisted Private Message");
                         }
                     } catch(Exception e) {
                         plugin.getPluginLogger().error("Error in AsyncDatabaseLogger", e);
@@ -60,5 +77,16 @@ public class AsyncDatabaseLogger implements Listener {
         }
 
         chatMessages.add(chatMessage);
+    }
+
+    public void addPrivateMessage(PrivateMessage privateMessage) {
+        if(privateMessages.size() > 3000) {
+            if(System.currentTimeMillis() - lastWarning > 10000) {
+                plugin.getPluginLogger().warn("The AsyncDatabaseLogger has more than 3000 queued Private Messages. Please issue /cc:report and post the Reportfile to geNAZt");
+                lastWarning = System.currentTimeMillis();
+            }
+        }
+
+        privateMessages.add(privateMessage);
     }
 }

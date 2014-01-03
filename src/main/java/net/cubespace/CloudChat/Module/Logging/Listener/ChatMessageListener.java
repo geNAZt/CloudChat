@@ -33,6 +33,10 @@ public class ChatMessageListener implements Listener {
             chatMessage.setSource(ChatMessage.SourceType.IRC);
         }
 
+        if(event.getSender().getNick().equals("Twitter")) {
+            chatMessage.setSource(ChatMessage.SourceType.TWITTER);
+        }
+
         loggingModule.getAsyncDatabaseLogger().addChatMessage(chatMessage);
     }
 }

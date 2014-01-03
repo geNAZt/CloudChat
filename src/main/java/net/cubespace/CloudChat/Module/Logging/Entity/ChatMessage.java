@@ -10,7 +10,8 @@ import java.util.Date;
 public class ChatMessage {
     public enum SourceType {
         PLAYER,
-        IRC
+        IRC,
+        TWITTER
     }
 
     @DatabaseField(generatedId = true)

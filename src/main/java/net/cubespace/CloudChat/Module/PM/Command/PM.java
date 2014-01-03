@@ -6,6 +6,7 @@ import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.AutoComplete;
@@ -80,12 +81,8 @@ public class PM implements CLICommand {
         }
 
         String message = FontFormat.translateString(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
-        rec.sendMessage(FontFormat.translateString("&6" + sen.getName() +" &8 -> &6You&8:&7 " + message));
-        sen.sendMessage(FontFormat.translateString("&6You&8 -> &6"+ rec.getName() +"&8:&7 " + message));
-        plugin.getPluginLogger().info(sen.getName() + " -> " + rec.getName() + ": " + message);
-
-        playerManager.get(sen.getName()).Reply = rec.getName();
-        playerManager.get(rec.getName()).Reply = sen.getName();
+        PMEvent event = new PMEvent(sen.getName(), rec.getName(), message);
+        plugin.getAsyncEventBus().callEvent(event);
     }
 
     @Command(command = "reply", arguments = 1)
@@ -115,12 +112,8 @@ public class PM implements CLICommand {
             return;
         }
 
-        String message = FontFormat.translateString(StringUtils.join(args, " "));
-        rec.sendMessage(FontFormat.translateString("&6" + player.getName() +" &8 -> &6You&8:&7 " + message));
-        player.sendMessage(FontFormat.translateString("&6You&8 -> &6"+ rec.getName() +"&8:&7 " + message));
-        plugin.getPluginLogger().info(player.getName() + " -> " + rec.getName() + ": " + message);
-
-        playerManager.get(player.getName()).Reply = rec.getName();
-        playerManager.get(rec.getName()).Reply = player.getName();
+        String message = FontFormat.translateString(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
+        PMEvent event = new PMEvent(player.getName(), rec.getName(), message);
+        plugin.getAsyncEventBus().callEvent(event);
     }
 }

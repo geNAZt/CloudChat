@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Module.Mute.Command.Mute;
 import net.cubespace.CloudChat.Module.Mute.Listener.ChatMessageListener;
+import net.cubespace.CloudChat.Module.Mute.Listener.PMListener;
 import net.cubespace.CloudChat.Module.Mute.Listener.PlayerQuitListener;
 
 /**
@@ -30,6 +31,7 @@ public class MuteModule {
 
         plugin.getAsyncEventBus().addListener(new ChatMessageListener(this));
         plugin.getAsyncEventBus().addListener(new PlayerQuitListener(this));
+        plugin.getAsyncEventBus().addListener(new PMListener(this));
     }
 
     public MuteManager getMuteManager() {
