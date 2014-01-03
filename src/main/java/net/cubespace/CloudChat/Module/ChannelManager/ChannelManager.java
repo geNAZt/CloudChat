@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.ChannelManager;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.lib.Manager.IManager;
@@ -70,6 +71,45 @@ public class ChannelManager implements IManager {
                 plugin.getPluginLogger().error("Could not load Channel", e);
                 throw new RuntimeException();
             }
+        }
+
+        //Check if the Factions channels are there
+        Factions factionsConfig = plugin.getConfigManager().getConfig("factions");
+
+        if(!loadedChannels.containsKey(factionsConfig.FactionChannel)) {
+            createFactionChannel(factionsConfig.FactionChannel, "F:F");
+        }
+
+        if(!loadedChannels.containsKey(factionsConfig.AllyAndTruceChannel)) {
+            createFactionChannel(factionsConfig.AllyAndTruceChannel, "F:A|T");
+        }
+
+        if(!loadedChannels.containsKey(factionsConfig.AllyChannel)) {
+            createFactionChannel(factionsConfig.AllyChannel, "F:A");
+        }
+
+        if(!loadedChannels.containsKey(factionsConfig.TruceChannel)) {
+            createFactionChannel(factionsConfig.TruceChannel, "F:T");
+        }
+
+        if(!loadedChannels.containsKey(factionsConfig.EnemyChannel)) {
+            createFactionChannel(factionsConfig.EnemyChannel, "F:E");
+        }
+    }
+
+    private void createFactionChannel(String channel, String alias) {
+        ChannelDatabase faction = new ChannelDatabase(plugin, channel);
+        faction.Short = alias;
+        faction.Name = channel;
+        faction.Format = "&8[&2%channel_short&8] (%faction)%prefix%nick%suffix&r: %message";
+        faction.Forced = false;
+
+        try {
+            faction.save();
+            loadedChannels.put(channel, faction);
+        } catch (Exception e) {
+            plugin.getPluginLogger().error("Could not create Faction channel", e);
+            throw new RuntimeException();
         }
     }
 

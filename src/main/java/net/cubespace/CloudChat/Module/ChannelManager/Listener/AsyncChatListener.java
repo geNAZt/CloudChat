@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
@@ -31,14 +32,14 @@ public class AsyncChatListener {
 
     @EventHandler(priority = EventPriority.HIGHEST, canVeto = true)
     public boolean onAsynChat(AsyncChatEvent event) {
-        //Check if the Player has already conencted to a Server (this only is null when the Connection bungee -> spigot is slow)
+        //Check if the Player has already connected to a Server (this only is null when the Connection bungee -> spigot is slow)
         if(event.getSender().getServer() == null || event.getSender().getServer().getInfo() == null) {
             return false;
         }
 
         //Check if this Chat gets handled by CloudChat
         return (((Main) plugin.getConfigManager().getConfig("main")).DontHandleForServers.contains(event.getSender().getServer().getInfo().getName()) ||
-                ((Main) plugin.getConfigManager().getConfig("main")).FactionServers.contains(event.getSender().getServer().getInfo().getName()));
+                ((Factions) plugin.getConfigManager().getConfig("factions")).FactionServers.contains(event.getSender().getServer().getInfo().getName()));
     }
 
     @EventHandler(priority = EventPriority.HIGH, canVeto = true)

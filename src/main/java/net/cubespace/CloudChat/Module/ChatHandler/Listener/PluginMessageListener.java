@@ -3,11 +3,14 @@ package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
+import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Message.FactionChatMessage;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -30,13 +33,75 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onFactionChatMessage(FactionChatMessage factionChatMessage){
         ProxiedPlayer player = factionChatMessage.getSender().getBungeePlayer();
-
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
-        ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
+        Factions factions = plugin.getConfigManager().getConfig("factions");
 
-        Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, factionChatMessage.getMessage()));
+        if(factionChatMessage.getMode().equals("global")) {
+            ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, factionChatMessage.getMessage()));
 
-        plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+        }
+
+        if(factionChatMessage.getMode().equals("faction")) {
+            ChannelDatabase channelDatabase = channelManager.get(factions.FactionChannel);
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()), channelDatabase, playerDatabase);
+
+            for(String playerToSend : factionChatMessage.getPlayers()) {
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+            }
+
+            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+        }
+
+        if(factionChatMessage.getMode().equals("ally")) {
+            ChannelDatabase channelDatabase = channelManager.get(factions.AllyChannel);
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()), channelDatabase, playerDatabase);
+
+            for(String playerToSend : factionChatMessage.getPlayers()) {
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+            }
+
+            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+        }
+
+        if(factionChatMessage.getMode().equals("allyandtruce")) {
+            ChannelDatabase channelDatabase = channelManager.get(factions.AllyAndTruceChannel);
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()), channelDatabase, playerDatabase);
+
+            for(String playerToSend : factionChatMessage.getPlayers()) {
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+            }
+
+            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+        }
+
+        if(factionChatMessage.getMode().equals("truce")) {
+            ChannelDatabase channelDatabase = channelManager.get(factions.TruceChannel);
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()), channelDatabase, playerDatabase);
+
+            for(String playerToSend : factionChatMessage.getPlayers()) {
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+            }
+
+            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+        }
+
+        if(factionChatMessage.getMode().equals("enemy")) {
+            ChannelDatabase channelDatabase = channelManager.get(factions.EnemyChannel);
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()), channelDatabase, playerDatabase);
+
+            for(String playerToSend : factionChatMessage.getPlayers()) {
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+            }
+
+            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+        }
     }
 }
