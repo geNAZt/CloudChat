@@ -73,6 +73,11 @@ public class ChannelManager implements IManager {
             }
         }
 
+        //Check if the global Channel is there
+        if(!loadedChannels.containsKey(((Main) plugin.getConfigManager().getConfig("main")).Global)) {
+            generateBasicChannels();
+        }
+
         //Check if the Factions channels are there
         Factions factionsConfig = plugin.getConfigManager().getConfig("factions");
 
@@ -136,17 +141,17 @@ public class ChannelManager implements IManager {
         plugin.getPluginLogger().info("Creating Global channel.");
 
         //Only generate a Global Channel
-        ChannelDatabase global = new ChannelDatabase(plugin, "global");
+        ChannelDatabase global = new ChannelDatabase(plugin, ((Main) plugin.getConfigManager().getConfig("main")).Global);
         global.Short = "G";
-        global.Name = "global";
+        global.Name = ((Main) plugin.getConfigManager().getConfig("main")).Global;
         global.Format = "&8[&2%channel_short&8] %prefix%nick%suffix&r: %message";
         global.Forced = true;
 
         try {
             global.save();
-            loadedChannels.put("global", global);
+            loadedChannels.put(((Main) plugin.getConfigManager().getConfig("main")).Global, global);
         } catch (Exception e) {
-            plugin.getPluginLogger().error("Could not create Basic Channel Global", e);
+            plugin.getPluginLogger().error("Could not create Basic Channel " + ((Main) plugin.getConfigManager().getConfig("main")).Global, e);
             throw new RuntimeException();
         }
     }

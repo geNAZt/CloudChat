@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.PlayerManager.Database;
 
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Config;
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.Mail.Database.Mail;
 
 import java.io.File;
@@ -17,10 +18,11 @@ public class PlayerDatabase extends Config {
         CONFIG_HEADER = "User AsyncDatabaseLogger for " + userName;
 
         Nick = userName;
+        Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global;
     }
 
     public ArrayList<String> JoinedChannels = new ArrayList<String>();
-    public String Focus = "global";
+    public String Focus;
     public String Nick = "";
     public String Prefix = "";
     public String Suffix = "";

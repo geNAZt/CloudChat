@@ -15,6 +15,8 @@ public class Main extends Config {
 
     @Comment("The maximum of Channels a Player can join")
     public int MaxChannelsPerChatter = 3;
+    @Comment("Which channel is the global one")
+    public String Global = "global";
     @Comment("At which commands should CloudChat NOT bind ?")
     public ArrayList<String> DoNotBind = new ArrayList<>();
     @Comment("Should the Chat announce Player joins ?")

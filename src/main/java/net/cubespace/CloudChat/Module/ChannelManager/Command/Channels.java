@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
@@ -80,8 +81,8 @@ public class Channels implements CLICommand {
         sender.sendMessage("You have left Channel: " + channelDatabase.Name);
 
         if(playerManager.get(player.getName()).Focus.equals(channelDatabase.Name)) {
-            sender.sendMessage("You now focus Channel: global");
-            playerManager.get(player.getName()).Focus = "global";
+            sender.sendMessage("You now focus Channel: " + ((Main) plugin.getConfigManager().getConfig("main")).Global);
+            playerManager.get(player.getName()).Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global;
         }
     }
 
