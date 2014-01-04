@@ -7,14 +7,19 @@ import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.IRC.CommandManager;
+import net.cubespace.CloudChat.Module.IRC.Commands.Message;
+import net.cubespace.CloudChat.Module.IRC.Commands.Mute;
 import net.cubespace.CloudChat.Module.IRC.Commands.Players;
+import net.cubespace.CloudChat.Module.IRC.Commands.Unmute;
 import net.cubespace.CloudChat.Module.IRC.Format.IrcToMCFormat;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 import net.cubespace.CloudChat.Module.IRC.Format.NickchangeFormatter;
 import net.cubespace.CloudChat.Module.IRC.IRCManager;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
+import net.cubespace.CloudChat.Module.IRC.PMSession;
 import net.cubespace.CloudChat.Module.IRC.Permission.WhoisResolver;
+import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import org.jibble.pircbot.IrcException;
@@ -32,9 +37,11 @@ public class Bot extends PircBot implements Runnable {
     private IRC ircConfig;
     private ChannelManager channelManager;
     private ScheduledTask botTask;
+    private IRCModule ircModule;
 
     public Bot(IRCModule ircModule, CloudChatPlugin plugin) {
         this.plugin = plugin;
+        this.ircModule = ircModule;
         ircConfig = plugin.getConfigManager().getConfig("irc");
         channelManager = plugin.getManagerRegistry().getManager("channelManager");
 
@@ -43,8 +50,11 @@ public class Bot extends PircBot implements Runnable {
 
         cmdManager = new CommandManager();
         cmdManager.registerCommand("players", new Players(ircModule, plugin));
+        cmdManager.registerCommand("mute", new Mute(ircModule, plugin));
+        cmdManager.registerCommand("unmute", new Unmute(ircModule, plugin));
+        cmdManager.registerCommand("message", new Message(ircModule, plugin));
 
-        ircManager = new IRCManager(plugin);
+        ircManager = new IRCManager(plugin, ircModule);
 
         botTask = plugin.getProxy().getScheduler().runAsync(plugin, this);
     }
@@ -105,6 +115,10 @@ public class Bot extends PircBot implements Runnable {
             if(!ircManager.isResolving(user.getNick())) {
                 ircManager.addWhoIsResolver(user.getNick(), new WhoisResolver());
                 sendRawLine("WHOIS " + user.getNick());
+            }
+
+            if(!ircManager.isNickOnline(user.getNick())) {
+                ircManager.newPMSession(user.getNick());
             }
 
             ircManager.addJoinedChannel(user.getNick(), channel);
@@ -169,6 +183,10 @@ public class Bot extends PircBot implements Runnable {
             if(!sender.equals(ircConfig.Name)) {
                 plugin.getPluginLogger().debug("Adding user " + sender + " to the IRC User list for Channel " + channel);
                 relayMessage(sender, channel, ircConfig.Relay_JoinMessage, false);
+
+                if(!ircManager.isNickOnline(sender)) {
+                    ircManager.newPMSession(sender);
+                }
             } else {
                 plugin.getPluginLogger().info("Bot joined " + channel);
             }
@@ -185,11 +203,15 @@ public class Bot extends PircBot implements Runnable {
             joinChannel(channel);
         } else {
             ircManager.removeChannelFromNick(recipientNick, channel);
+
+            if(!ircManager.isNickOnline(recipientNick)) {
+                ircManager.removePMSession(recipientNick);
+            }
         }
     }
 
     public void onDisconnect() {
-        ircManager = new IRCManager(plugin);
+        ircManager = new IRCManager(plugin, ircModule);
 
         // Be sure the Bot stays connected
         while (!isConnected()) {
@@ -220,6 +242,9 @@ public class Bot extends PircBot implements Runnable {
                 ircManager.addWhoIsResolver(newNick, new WhoisResolver());
                 sendRawLine("WHOIS " + newNick);
             }
+
+            ircManager.removePMSession(oldNick);
+            ircManager.newPMSession(newNick);
         }
     }
 
@@ -233,6 +258,7 @@ public class Bot extends PircBot implements Runnable {
 
         ircManager.removeJoinedChannels(sourceNick);
         ircManager.removeWhois(sourceNick);
+        ircManager.removePMSession(sourceNick);
     }
 
     protected void onPrivateMessage(String sender, String login, String hostname, String message) {
@@ -241,9 +267,17 @@ public class Bot extends PircBot implements Runnable {
         IRCSender ircSender = new IRCSender();
         ircSender.setNick(sender);
         ircSender.setChannel(sender);
+        ircSender.setRawNick(sender);
 
         if(!cmdManager.dispatchCommand(ircSender, message)) {
-            sendMessage(sender, "Unknown Command");
+            //This can only be used as PM Channel
+            if(ircManager.hasPmSession(sender) && !ircManager.getPmSession(sender).getTo().equals("")) {
+                PMSession pmSession = ircManager.getPmSession(sender);
+                PMEvent pmEvent = new PMEvent(ircConfig.IngameName + " " + sender, pmSession.getTo(), message);
+                plugin.getAsyncEventBus().callEvent(pmEvent);
+            } else {
+                sendMessage(sender, "Unknown Command and no PM Session opened");
+            }
         }
     }
 
@@ -253,6 +287,7 @@ public class Bot extends PircBot implements Runnable {
         IRCSender ircSender = new IRCSender();
         ircSender.setNick(ircConfig.IngameName + " " + sender);
         ircSender.setChannel(channel);
+        ircSender.setRawNick(sender);
 
         if(!cmdManager.dispatchCommand(ircSender, message)) {
             plugin.getPluginLogger().debug("Message is not a Command");
@@ -273,5 +308,9 @@ public class Bot extends PircBot implements Runnable {
                 }
             }
         }
+    }
+
+    public IRCManager getIrcManager() {
+        return ircManager;
     }
 }

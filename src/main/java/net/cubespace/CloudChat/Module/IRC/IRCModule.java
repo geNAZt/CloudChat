@@ -5,9 +5,11 @@ import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.IRC.Bot.Bot;
 import net.cubespace.CloudChat.Module.IRC.Listener.ChatMessageListener;
+import net.cubespace.CloudChat.Module.IRC.Listener.PMListener;
 import net.cubespace.CloudChat.Module.IRC.Listener.PlayerChangeAFKListener;
 import net.cubespace.CloudChat.Module.IRC.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.IRC.Listener.PlayerQuitListener;
+import net.cubespace.CloudChat.Module.IRC.Permission.PermissionManager;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -26,6 +28,7 @@ public class IRCModule {
             plugin.getAsyncEventBus().addListener(new PlayerJoinListener(this, plugin));
             plugin.getAsyncEventBus().addListener(new PlayerQuitListener(this, plugin));
             plugin.getAsyncEventBus().addListener(new PlayerChangeAFKListener(this, plugin));
+            plugin.getAsyncEventBus().addListener(new PMListener(this, plugin));
 
             plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "irc:reconnect"));
             plugin.getCommandExecutor().add(new net.cubespace.CloudChat.Module.IRC.Command.IRC(this, plugin));
@@ -38,5 +41,9 @@ public class IRCModule {
 
     public void setIrcBot(Bot ircBot) {
         this.ircBot = ircBot;
+    }
+
+    public PermissionManager getPermissions() {
+        return ircBot.getIrcManager().getPermissionManager();
     }
 }

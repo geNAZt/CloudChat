@@ -25,6 +25,12 @@ public class Players implements Command {
 
     @Override
     public boolean execute(IRCSender sender, String[] args) {
+        //Check for Permissions
+        if(!ircModule.getPermissions().has(sender.getRawNick(), "command.players")) {
+            ircModule.getIrcBot().sendToChannel(sender.getRawNick() + ": You have not enough Permissions to execute this", sender.getChannel());
+            return true;
+        }
+
         IRC config = plugin.getConfigManager().getConfig("irc");
 
         ircModule.getIrcBot().sendToChannel("Current Players online (" + plugin.getProxy().getOnlineCount() + "): ", sender.getChannel());

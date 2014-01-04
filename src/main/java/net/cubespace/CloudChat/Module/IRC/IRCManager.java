@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.IRC;
 
 import com.google.common.collect.ArrayListMultimap;
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Module.IRC.Permission.PermissionManager;
 import net.cubespace.CloudChat.Module.IRC.Permission.WhoisResolver;
 
 import java.util.ArrayList;
@@ -22,9 +23,16 @@ public class IRCManager {
     private ArrayListMultimap<String, String> nickJoinedChannels = ArrayListMultimap.create();
     //Bot joined Channels
     private ArrayList<String> botJoinedChannels = new ArrayList<>();
+    //Permission Manager
+    private PermissionManager permissionManager;
+    //PM Sessions
+    private HashMap<String, PMSession> nickPMSessions = new HashMap<>();
+    private IRCModule ircModule;
 
-    public IRCManager(CloudChatPlugin plugin) {
+    public IRCManager(CloudChatPlugin plugin, IRCModule ircModule) {
         this.plugin = plugin;
+        this.permissionManager = new PermissionManager(plugin);
+        this.ircModule = ircModule;
     }
 
     /**
@@ -103,6 +111,7 @@ public class IRCManager {
         if(unresolvedWhois.get(split[1]).isResolved()) {
             WhoisResolver whoisResolver = unresolvedWhois.get(split[1]);
             plugin.getPluginLogger().info("Whois got resolved: " + split[1] + " -> " + whoisResolver.getAuth());
+            permissionManager.load(split[1], whoisResolver.getAuth());
             unresolvedWhois.remove(split[1]);
             resolvedWhois.put(split[1], whoisResolver);
         }
@@ -162,6 +171,16 @@ public class IRCManager {
     }
 
     /**
+     * Check if a Nick is reachable
+     *
+     * @param nick
+     * @return
+     */
+    public boolean isNickOnline(String nick) {
+        return nickJoinedChannels.containsKey(nick);
+    }
+
+    /**
      * Check if bot has joined the channel
      *
      * @param channel
@@ -196,5 +215,26 @@ public class IRCManager {
      */
     public void removeBotJoinedChannel(String channel) {
         botJoinedChannels.remove(channel);
+    }
+
+    public PMSession getPmSession(String nick) {
+        return nickPMSessions.get(nick);
+    }
+
+    public boolean hasPmSession(String nick) {
+        return nickPMSessions.containsKey(nick);
+    }
+
+    public void newPMSession(String nick) {
+        PMSession pmSession = new PMSession(ircModule, nick);
+        nickPMSessions.put(nick, pmSession);
+    }
+
+    public void removePMSession(String nick) {
+        nickPMSessions.remove(nick);
+    }
+
+    public PermissionManager getPermissionManager() {
+        return permissionManager;
     }
 }

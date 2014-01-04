@@ -3,13 +3,11 @@ package net.cubespace.CloudChat.Module.PM.Command;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
-import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
-import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
@@ -52,37 +50,12 @@ public class PM implements CLICommand {
             return;
         }
 
-        String player = args[0];
-        ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
         ProxiedPlayer sen = (ProxiedPlayer) sender;
-        if(rec == null) {
-            plugin.getPluginLogger().debug("Direct lookup returned null");
-
-            //Check for autocomplete
-            player = AutoComplete.completeUsername(player);
-            rec = plugin.getProxy().getPlayer(player);
-
-            if(rec == null) {
-                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                rec = NicknameParser.getPlayer(plugin, player);
-
-                if(rec == null) {
-                    plugin.getPluginLogger().debug("Nickname parsing returned null");
-                    sender.sendMessage(FontFormat.translateString("&7The player is not online"));
-                    return;
-                }
-            }
-        }
-
-        if (sen.equals(rec)) {
-            plugin.getPluginLogger().debug("Sender and Receiver are equal.");
-            sender.sendMessage(FontFormat.translateString("&7You cannot send a pm to yourself"));
-            return;
-        }
 
         String message = FontFormat.translateString(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
-        PMEvent event = new PMEvent(sen.getName(), rec.getName(), message);
+        PMEvent event = new PMEvent(sen.getName(), args[0], message);
         plugin.getAsyncEventBus().callEvent(event);
+
     }
 
     @Command(command = "reply", arguments = 1)
@@ -104,16 +77,8 @@ public class PM implements CLICommand {
             return;
         }
 
-        ProxiedPlayer rec = plugin.getProxy().getPlayer(playerDatabase.Reply);
-        if(rec == null) {
-            plugin.getPluginLogger().debug("The Reply Player is not online anymore");
-            sender.sendMessage(FontFormat.translateString("&7The player is not online"));
-            playerDatabase.Reply = "";
-            return;
-        }
-
-        String message = FontFormat.translateString(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
-        PMEvent event = new PMEvent(player.getName(), rec.getName(), message);
+        String message = FontFormat.translateString(StringUtils.join(args, " "));
+        PMEvent event = new PMEvent(player.getName(), playerDatabase.Reply, message);
         plugin.getAsyncEventBus().callEvent(event);
     }
 }

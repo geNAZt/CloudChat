@@ -8,7 +8,7 @@ import net.cubespace.lib.EventBus.Event;
  */
 public class PMEvent implements Event {
     private final String from;
-    private final String to;
+    private String to;
     private final String message;
 
     public PMEvent(String from, String to, String message) {
@@ -27,5 +27,9 @@ public class PMEvent implements Event {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }

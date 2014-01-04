@@ -20,7 +20,7 @@ public class PMListener implements Listener {
         this.loggingModule = module;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreVeto = true)
     public void onPM(PMEvent event) {
         PrivateMessage privateMessage = new PrivateMessage();
         privateMessage.setMessage(event.getMessage());
