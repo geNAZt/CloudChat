@@ -169,6 +169,11 @@ public class ChannelManager implements IManager {
      * @return
      */
     public boolean join(ProxiedPlayer player, ChannelDatabase channel) {
+        //The channel is not existent anymore (channels yml got deleted)
+        if(channel == null) {
+            return false;
+        }
+
         plugin.getPluginLogger().info(player.getName() + " tried to join Channel " + channel.Name);
 
         //Check if Player is in the playerJoinedChannels list
