@@ -40,6 +40,7 @@ public class Bot extends PircBot implements Runnable {
     private ScheduledTask botTask;
     private IRCModule ircModule;
     private LinkedBlockingQueue<String> whoisQueue = new LinkedBlockingQueue<>();
+    private boolean shutdown = false;
 
     public Bot(IRCModule ircModule, final CloudChatPlugin plugin) {
         this.plugin = plugin;
@@ -115,6 +116,8 @@ public class Bot extends PircBot implements Runnable {
      * Shuts the bot down
      */
     public void shutdown() {
+        shutdown = true;
+
         plugin.getPluginLogger().info("Shutting IRC Bot down");
         for(String channel : ircManager.getBotJoinedChannels()) {
             sendToChannel(ircConfig.LeaveMessage, channel);
@@ -237,7 +240,7 @@ public class Bot extends PircBot implements Runnable {
         ircManager = new IRCManager(plugin, ircModule);
 
         // Be sure the Bot stays connected
-        while (!isConnected()) {
+        while (!isConnected() && !shutdown) {
             try {
                 plugin.getPluginLogger().info("Trying to reconnect to IRC");
                 reconnect();
