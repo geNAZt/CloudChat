@@ -28,9 +28,13 @@ public class PluginMessageListener implements PacketListener {
     public void onAffixMessage(AffixMessage affixMessage){
         ProxiedPlayer player = affixMessage.getSender().getBungeePlayer();
 
+
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
-        playerDatabase.Prefix = affixMessage.getPrefix();
-        playerDatabase.Suffix = affixMessage.getSuffix();
+        if(affixMessage.getPrefix() != null)
+            playerDatabase.Prefix = affixMessage.getPrefix();
+
+        if(affixMessage.getSuffix() != null)
+            playerDatabase.Suffix = affixMessage.getSuffix();
 
         plugin.getPluginLogger().debug("Got new Affix Message for " + player.getName() + " - " + affixMessage.getPrefix() + "/" + affixMessage.getSuffix());
     }
