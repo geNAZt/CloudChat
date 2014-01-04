@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Event.PlayerJoinEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
@@ -33,5 +34,10 @@ public class PlayerJoinListener implements Listener {
         }
 
         channelManager.joinForcedChannels(event.getPlayer());
+
+        //Check for broken focus (its a leftover from the global channel changes)
+        if(!channelManager.exists(playerDatabase.Focus)) {
+            playerDatabase.Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global;
+        }
     }
 }

@@ -330,4 +330,14 @@ public class ChannelManager implements IManager {
     public Collection<ChannelDatabase> getChannels() {
         return loadedChannels.values();
     }
+
+    /**
+     * Check if a specific channel exists
+     *
+     * @param channel
+     * @return
+     */
+    public boolean exists(String channel) {
+        return loadedChannels.containsKey(channel);
+    }
 }
