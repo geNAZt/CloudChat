@@ -58,9 +58,9 @@ public class CloudChatPlugin extends CubespacePlugin {
         new ColorHandlerModule(this);
         new PMModule(this);
         new LoggingModule(this);
+        new MuteModule(this);
         new IRCModule(this);
         new CloudChatModule(this);
-        new MuteModule(this);
         new SpamModule(this);
         new TwitterModule(this);
         new AdminModule(this);
