@@ -29,6 +29,7 @@ import org.jibble.pircbot.User;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Bot extends PircBot implements Runnable {
     private CloudChatPlugin plugin;
@@ -38,8 +39,9 @@ public class Bot extends PircBot implements Runnable {
     private ChannelManager channelManager;
     private ScheduledTask botTask;
     private IRCModule ircModule;
+    private LinkedBlockingQueue<String> whoisQueue = new LinkedBlockingQueue<>();
 
-    public Bot(IRCModule ircModule, CloudChatPlugin plugin) {
+    public Bot(IRCModule ircModule, final CloudChatPlugin plugin) {
         this.plugin = plugin;
         this.ircModule = ircModule;
         ircConfig = plugin.getConfigManager().getConfig("irc");
@@ -57,6 +59,25 @@ public class Bot extends PircBot implements Runnable {
         ircManager = new IRCManager(plugin, ircModule);
 
         botTask = plugin.getProxy().getScheduler().runAsync(plugin, this);
+
+        plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        String nick = whoisQueue.take();
+
+                        if(ircManager.isNickOnline(nick)) {
+                            sendRawLine("WHOIS " + nick);
+                        }
+
+                        Thread.sleep(1000);
+                    }
+                } catch(InterruptedException e) {
+                    plugin.getPluginLogger().warn("Got interrupted in the Whois Checking Thread", e);
+                }
+            }
+        });
     }
 
     /**
@@ -114,7 +135,7 @@ public class Bot extends PircBot implements Runnable {
 
             if(!ircManager.isResolving(user.getNick())) {
                 ircManager.addWhoIsResolver(user.getNick(), new WhoisResolver());
-                sendRawLine("WHOIS " + user.getNick());
+                whoisQueue.add(user.getNick());
             }
 
             if(!ircManager.isNickOnline(user.getNick())) {
@@ -186,6 +207,7 @@ public class Bot extends PircBot implements Runnable {
 
                 if(!ircManager.isNickOnline(sender)) {
                     ircManager.newPMSession(sender);
+                    whoisQueue.add(sender);
                 }
             } else {
                 plugin.getPluginLogger().info("Bot joined " + channel);
@@ -206,6 +228,7 @@ public class Bot extends PircBot implements Runnable {
 
             if(!ircManager.isNickOnline(recipientNick)) {
                 ircManager.removePMSession(recipientNick);
+                ircManager.removeWhois(recipientNick);
             }
         }
     }
@@ -240,7 +263,7 @@ public class Bot extends PircBot implements Runnable {
             ircManager.removeJoinedChannels(oldNick);
             if(!ircManager.moveWhois(oldNick, newNick)) {
                 ircManager.addWhoIsResolver(newNick, new WhoisResolver());
-                sendRawLine("WHOIS " + newNick);
+                whoisQueue.add(newNick);
             }
 
             ircManager.removePMSession(oldNick);
