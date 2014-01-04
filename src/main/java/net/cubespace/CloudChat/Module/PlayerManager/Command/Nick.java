@@ -2,11 +2,12 @@ package net.cubespace.CloudChat.Module.PlayerManager.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Binder.Binder;
+import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerNickchangeEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
-import net.cubespace.CloudChat.Util.StringUtils;
+import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -43,8 +44,36 @@ public class Nick implements CLICommand {
             return;
         }
 
-        //Fire the correct Event to check if this is ok
-        PlayerDatabase playerDatabase = ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).get(sender.getName());
-        plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(sender, playerDatabase.Nick, StringUtils.join(args, " ")));
+        if(args.length > 1) {
+            if(!sender.hasPermission("cloudchat.command.nick.other")) {
+                sender.sendMessage("You can not rename other Players");
+                return;
+            }
+
+            ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
+            if(player == null) {
+                plugin.getPluginLogger().debug("Direct lookup returned null");
+                player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+
+                if(player == null) {
+                    plugin.getPluginLogger().debug("Autocomplete lookup returned null");
+                    player = NicknameParser.getPlayer(plugin, args[0]);
+
+                    if(player == null) {
+                        plugin.getPluginLogger().debug("Nickname Parser returned null");
+                        sender.sendMessage("You can't rename offline Players");
+                        return;
+                    }
+                }
+            }
+
+            //Fire the correct Event to check if this is ok
+            PlayerDatabase playerDatabase = ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).get(player.getName());
+            plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(player, playerDatabase.Nick, args[1]));
+        } else {
+            //Fire the correct Event to check if this is ok
+            PlayerDatabase playerDatabase = ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).get(sender.getName());
+            plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(sender, playerDatabase.Nick, args[0]));
+        }
     }
 }
