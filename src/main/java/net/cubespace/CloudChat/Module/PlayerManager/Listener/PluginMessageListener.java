@@ -39,9 +39,16 @@ public class PluginMessageListener implements PacketListener {
     public void onWorldMessage(WorldMessage worldMessage){
         ProxiedPlayer player = worldMessage.getSender().getBungeePlayer();
 
-        PlayerDatabase playerDatabase = playerManager.get(player.getName());
-        playerDatabase.World = worldMessage.getName();
-        playerDatabase.WorldAlias = worldMessage.getAlias();
+        if(worldMessage.getName() != null && worldMessage.getAlias() != null) {
+            //This should never happen !!!
+            if(!playerManager.isLoaded(player.getName())) {
+                playerManager.load(player.getName());
+            }
+
+            PlayerDatabase playerDatabase = playerManager.get(player.getName());
+            playerDatabase.World = worldMessage.getName();
+            playerDatabase.WorldAlias = worldMessage.getAlias();
+        }
 
         plugin.getPluginLogger().debug("Got new World Message for " + player.getName() + " - " + worldMessage.getName() + "/" + worldMessage.getAlias());
     }
