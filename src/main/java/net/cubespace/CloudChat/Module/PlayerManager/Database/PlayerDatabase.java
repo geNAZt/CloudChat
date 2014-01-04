@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.PlayerManager.Database;
 
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Config;
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Module.Mail.Database.Mail;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,4 +29,5 @@ public class PlayerDatabase extends Config {
     public String WorldAlias = "";
     public Boolean AFK = false;
     public String Server = "";
+    public ArrayList<Mail> Mails = new ArrayList<>();
 }

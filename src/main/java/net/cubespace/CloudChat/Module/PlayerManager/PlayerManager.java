@@ -7,6 +7,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.lib.Manager.IManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,7 +38,18 @@ public class PlayerManager implements IManager {
     }
 
     /**
+     * Check if a player is loaded
+     *
+     * @param player
+     * @return
+     */
+    public boolean isLoaded(String player) {
+        return loadedPlayers.containsKey(player);
+    }
+
+    /**
      * Get all loaded Players
+     *
      * @return
      */
     public HashMap<String, PlayerDatabase> getLoadedPlayers() {
@@ -52,25 +64,34 @@ public class PlayerManager implements IManager {
     public void remove(ProxiedPlayer player) {
         plugin.getPluginLogger().debug("Removing PlayerDatabase for " + player.getName());
 
-        if(loadedPlayers.containsKey(player.getName())) {
+        if (loadedPlayers.containsKey(player.getName())) {
             plugin.getPluginLogger().info("Saving PlayerDatabase for " + player.getName());
 
-            try {
-                loadedPlayers.get(player.getName()).Reply = "";
+            loadedPlayers.get(player.getName()).Reply = "";
 
-                //Get the Channels the Player is in
-                loadedPlayers.get(player.getName()).JoinedChannels = new ArrayList<>();
-                ChannelManager channelManager =  plugin.getManagerRegistry().getManager("channelManager");
-                for(ChannelDatabase channelDatabase : channelManager.getAllJoinedChannels(player)) {
-                    loadedPlayers.get(player.getName()).JoinedChannels.add(channelDatabase.Name);
-                }
-
-                loadedPlayers.get(player.getName()).save();
-                loadedPlayers.remove(player.getName());
-            } catch (Exception e) {
-                plugin.getPluginLogger().error("Could not save PlayerDatabase for " + player.getName(), e);
-                throw new RuntimeException();
+            //Get the Channels the Player is in
+            loadedPlayers.get(player.getName()).JoinedChannels = new ArrayList<>();
+            ChannelManager channelManager = plugin.getManagerRegistry().getManager("channelManager");
+            for (ChannelDatabase channelDatabase : channelManager.getAllJoinedChannels(player)) {
+                loadedPlayers.get(player.getName()).JoinedChannels.add(channelDatabase.Name);
             }
+
+            save(player.getName());
+        }
+    }
+
+    /**
+     * Save a PlayerDatabase and remove it from the Cache
+     *
+     * @param player
+     */
+    public void save(String player) {
+        try {
+            loadedPlayers.get(player).save();
+            loadedPlayers.remove(player);
+        } catch (Exception e) {
+            plugin.getPluginLogger().error("Could not save PlayerDatabase for " + player, e);
+            throw new RuntimeException();
         }
     }
 
@@ -81,7 +102,7 @@ public class PlayerManager implements IManager {
      */
     public void load(String player) {
         plugin.getPluginLogger().debug("Check for load of PlayerDatabase for " + player);
-        if(!loadedPlayers.containsKey(player)) {
+        if (!loadedPlayers.containsKey(player)) {
             plugin.getPluginLogger().info("Loading PlayerDatabase for " + player);
             PlayerDatabase playerDatabase = new PlayerDatabase(plugin, player);
 
@@ -93,5 +114,15 @@ public class PlayerManager implements IManager {
                 throw new RuntimeException();
             }
         }
+    }
+
+    /**
+     * Check if there is a PlayerDatabase for this player
+     *
+     * @param player
+     * @return
+     */
+    public boolean exists(String player) {
+        return (new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + player + ".yml")).exists();
     }
 }

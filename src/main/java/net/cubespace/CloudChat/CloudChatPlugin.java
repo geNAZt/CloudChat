@@ -19,6 +19,7 @@ import net.cubespace.CloudChat.Module.ColorHandler.ColorHandlerModule;
 import net.cubespace.CloudChat.Module.FormatHandler.FormatHandlerModule;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.Logging.LoggingModule;
+import net.cubespace.CloudChat.Module.Mail.MailModule;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Module.PM.PMModule;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
@@ -64,6 +65,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         new SpamModule(this);
         new TwitterModule(this);
         new AdminModule(this);
+        new MailModule(this);
 
         getPluginMessageManager("CloudChat").finish();
 
