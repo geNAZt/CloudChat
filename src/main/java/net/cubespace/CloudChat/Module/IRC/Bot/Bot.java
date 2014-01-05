@@ -28,6 +28,7 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -52,6 +53,11 @@ public class Bot extends PircBot implements Runnable {
 
         plugin.getPluginLogger().info("Setting Botname to " + ircConfig.Name);
         setName(ircConfig.Name);
+        try {
+            setEncoding("UTF8");
+        } catch (UnsupportedEncodingException e) {
+            plugin.getPluginLogger().warn("Could not set IRC Bot encoding");
+        }
 
         cmdManager = new CommandManager();
         cmdManager.registerCommand("players", new Players(ircModule, plugin));
