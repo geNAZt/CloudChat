@@ -74,5 +74,6 @@ public class Invite implements CLICommand {
         //Send out the Invitation to the User
         rec.sendMessage("You got an Invitation to the " + channelDatabase.Name + " Channel. Join with /join " + channelDatabase.Name + " " + channelDatabase.Password);
         rec.setPermission("cloudchat.channel." + channelDatabase.Name, true);
+        sender.sendMessage("You have sent an Invitation to " + rec.getName());
     }
 }

@@ -10,6 +10,7 @@ import net.cubespace.CloudChat.Module.IRC.CommandManager;
 import net.cubespace.CloudChat.Module.IRC.Commands.Message;
 import net.cubespace.CloudChat.Module.IRC.Commands.Mute;
 import net.cubespace.CloudChat.Module.IRC.Commands.Players;
+import net.cubespace.CloudChat.Module.IRC.Commands.Scmd;
 import net.cubespace.CloudChat.Module.IRC.Commands.Unmute;
 import net.cubespace.CloudChat.Module.IRC.Format.IrcToMCFormat;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class Bot extends PircBot implements Runnable {
     private CloudChatPlugin plugin;
@@ -56,6 +58,7 @@ public class Bot extends PircBot implements Runnable {
         cmdManager.registerCommand("mute", new Mute(ircModule, plugin));
         cmdManager.registerCommand("unmute", new Unmute(ircModule, plugin));
         cmdManager.registerCommand("message", new Message(ircModule, plugin));
+        cmdManager.registerCommand("scmd", new Scmd(ircModule, plugin));
 
         ircManager = new IRCManager(plugin, ircModule);
 
@@ -68,11 +71,13 @@ public class Bot extends PircBot implements Runnable {
                     while(true) {
                         String nick = whoisQueue.take();
 
+                        Thread.sleep(500);
+
                         if(ircManager.isNickOnline(nick)) {
                             sendRawLine("WHOIS " + nick);
                         }
 
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     }
                 } catch(InterruptedException e) {
                     plugin.getPluginLogger().warn("Got interrupted in the Whois Checking Thread", e);
@@ -136,13 +141,13 @@ public class Bot extends PircBot implements Runnable {
         for(User user : users) {
             plugin.getPluginLogger().debug("Adding user " + user.getNick() + " to the IRC User list for Channel " + channel);
 
-            if(!ircManager.isResolving(user.getNick())) {
-                ircManager.addWhoIsResolver(user.getNick(), new WhoisResolver());
-                whoisQueue.add(user.getNick());
-            }
-
             if(!ircManager.isNickOnline(user.getNick())) {
                 ircManager.newPMSession(user.getNick());
+
+                if(!ircManager.isResolving(user.getNick())) {
+                    ircManager.addWhoIsResolver(user.getNick(), new WhoisResolver());
+                    whoisQueue.add(user.getNick());
+                }
             }
 
             ircManager.addJoinedChannel(user.getNick(), channel);
@@ -210,7 +215,11 @@ public class Bot extends PircBot implements Runnable {
 
                 if(!ircManager.isNickOnline(sender)) {
                     ircManager.newPMSession(sender);
-                    whoisQueue.add(sender);
+
+                    if(!ircManager.isResolving(sender)) {
+                        ircManager.addWhoIsResolver(sender, new WhoisResolver());
+                        whoisQueue.add(sender);
+                    }
                 }
             } else {
                 plugin.getPluginLogger().info("Bot joined " + channel);
@@ -232,6 +241,7 @@ public class Bot extends PircBot implements Runnable {
             if(!ircManager.isNickOnline(recipientNick)) {
                 ircManager.removePMSession(recipientNick);
                 ircManager.removeWhois(recipientNick);
+                ircManager.removeScmdSessions(recipientNick);
             }
         }
     }
@@ -239,16 +249,37 @@ public class Bot extends PircBot implements Runnable {
     public void onDisconnect() {
         ircManager = new IRCManager(plugin, ircModule);
 
+        int tries = 0;
+
         // Be sure the Bot stays connected
         while (!isConnected() && !shutdown) {
             try {
                 plugin.getPluginLogger().info("Trying to reconnect to IRC");
-                reconnect();
-                Thread.sleep(1000);
+                tries++;
+
+                if(tries < 5) {
+                    reconnect();
+                } else {
+                    plugin.getPluginLogger().warn("Maximum of 5 Tries reached. Hard reset of the Bot");
+                    shutdown();
+
+                    plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            ircModule.setIrcBot(new Bot(ircModule, plugin));
+                        }
+                    }, 5, TimeUnit.SECONDS);
+
+                    return;
+                }
+            } catch (Exception e) {
+                plugin.getPluginLogger().error("Could not reconnect IRC Bot", e);
             }
 
-            catch (Exception e) {
-                plugin.getPluginLogger().error("Could not reconnect IRC Bot", e);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                plugin.getPluginLogger().error("Got interrupted while sleeping... Y U do dis to me :(", e);
             }
         }
     }
@@ -271,6 +302,10 @@ public class Bot extends PircBot implements Runnable {
 
             ircManager.removePMSession(oldNick);
             ircManager.newPMSession(newNick);
+
+            if(ircManager.hasScmdSessions(oldNick)) {
+                ircManager.moveScmdSessions(oldNick, newNick);
+            }
         }
     }
 
@@ -285,6 +320,7 @@ public class Bot extends PircBot implements Runnable {
         ircManager.removeJoinedChannels(sourceNick);
         ircManager.removeWhois(sourceNick);
         ircManager.removePMSession(sourceNick);
+        ircManager.removeScmdSessions(sourceNick);
     }
 
     protected void onPrivateMessage(String sender, String login, String hostname, String message) {

@@ -9,7 +9,10 @@ import net.cubespace.CloudChat.Module.IRC.Listener.PMListener;
 import net.cubespace.CloudChat.Module.IRC.Listener.PlayerChangeAFKListener;
 import net.cubespace.CloudChat.Module.IRC.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.IRC.Listener.PlayerQuitListener;
+import net.cubespace.CloudChat.Module.IRC.Listener.PluginMessageListener;
 import net.cubespace.CloudChat.Module.IRC.Permission.PermissionManager;
+import net.cubespace.PluginMessages.DispatchScmdMessage;
+import net.cubespace.PluginMessages.RespondScmdMessage;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -32,6 +35,11 @@ public class IRCModule {
 
             plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "irc:reconnect"));
             plugin.getCommandExecutor().add(new net.cubespace.CloudChat.Module.IRC.Command.IRC(this, plugin));
+
+            plugin.getPluginMessageManager("CloudChat").addPacketToRegister(DispatchScmdMessage.class);
+            plugin.getPluginMessageManager("CloudChat").addPacketToRegister(RespondScmdMessage.class);
+
+            plugin.getPluginMessageManager("CloudChat").addListenerToRegister(new PluginMessageListener(this, plugin));
         }
     }
 

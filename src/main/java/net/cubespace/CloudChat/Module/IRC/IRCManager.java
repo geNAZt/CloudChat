@@ -8,6 +8,7 @@ import net.cubespace.CloudChat.Module.IRC.Permission.WhoisResolver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -27,12 +28,27 @@ public class IRCManager {
     private PermissionManager permissionManager;
     //PM Sessions
     private HashMap<String, PMSession> nickPMSessions = new HashMap<>();
+    //Scmd Sessions
+    private ArrayList<ScmdSession> scmdSessions = new ArrayList<>();
+
     private IRCModule ircModule;
+
 
     public IRCManager(CloudChatPlugin plugin, IRCModule ircModule) {
         this.plugin = plugin;
         this.permissionManager = new PermissionManager(plugin);
         this.ircModule = ircModule;
+
+        plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+            @Override
+            public void run() {
+                for(ScmdSession scmdSession : new ArrayList<>(scmdSessions)) {
+                    if(System.currentTimeMillis() - scmdSession.getLastResponse() > 15 * 60 * 1000) {
+                        scmdSessions.remove(scmdSession);
+                    }
+                }
+            }
+        }, 30, 30, TimeUnit.SECONDS);
     }
 
     /**
@@ -234,7 +250,65 @@ public class IRCManager {
         nickPMSessions.remove(nick);
     }
 
+    public ArrayList<ScmdSession> getScmdSessions(String nick) {
+        ArrayList<ScmdSession> foundSessions = new ArrayList<>();
+        for(ScmdSession scmdSession : scmdSessions) {
+            if(scmdSession.getNickname().equals(nick)) {
+                foundSessions.add(scmdSession);
+            }
+        }
+
+        return foundSessions;
+    }
+
+    public ScmdSession getScmdSession(Integer scmdId) {
+        for(ScmdSession scmdSession : scmdSessions) {
+            if(scmdSession.getId().equals(scmdId)) {
+                return scmdSession;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean hasScmdSessions(String nick) {
+        for(ScmdSession scmdSession : scmdSessions) {
+            if(scmdSession.getNickname().equals(nick)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Integer newScmdSession(String nick, String channel, String command) {
+        ScmdSession scmdSession = new ScmdSession(nick, channel, ((Long)System.currentTimeMillis()).intValue(), command);
+        scmdSessions.add(scmdSession);
+
+        return scmdSession.getId();
+    }
+
+    public void removeScmdSessions(String nick) {
+        for(ScmdSession scmdSession : new ArrayList<>(scmdSessions)) {
+            if(scmdSession.getNickname().equals(nick)) {
+                scmdSessions.remove(scmdSession);
+            }
+        }
+    }
+
     public PermissionManager getPermissionManager() {
         return permissionManager;
+    }
+
+    public void moveScmdSessions(String oldNick, String newNick) {
+        for(ScmdSession scmdSession : new ArrayList<>(scmdSessions)) {
+            if(scmdSession.getNickname().equals(oldNick)) {
+                scmdSession.setNickname(newNick);
+
+                if(scmdSession.getChannel().equals(oldNick)) {
+                    scmdSession.setChannel(newNick);
+                }
+            }
+        }
     }
 }

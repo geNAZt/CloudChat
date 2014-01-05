@@ -4,19 +4,16 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
-import net.cubespace.CloudChat.Module.Mute.MuteManager;
 import net.cubespace.CloudChat.Util.AutoComplete;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Message implements Command {
     private CloudChatPlugin plugin;
     private IRCModule ircModule;
-    private MuteManager muteManager;
 
     public Message(IRCModule ircModule, CloudChatPlugin pl) {
         plugin = pl;
         this.ircModule = ircModule;
-        this.muteManager = plugin.getManagerRegistry().getManager("muteManager");
     }
 
     @Override
