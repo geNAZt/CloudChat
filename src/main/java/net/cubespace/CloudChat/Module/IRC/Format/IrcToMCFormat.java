@@ -96,12 +96,16 @@ public enum IrcToMCFormat {
                     }
 
                     if(translate.containsKey(color)) {
+                        if(color.startsWith("0")) {
+                            color = color.substring(1);
+                        }
+
                         sb.append(translate.get(color));
                     }
 
                     break;
 
-                case 4:
+                case 2:
                     sb.append("&l");
                     break;
 
@@ -113,11 +117,11 @@ public enum IrcToMCFormat {
                     sb.append("&m");
                     break;
 
-                case 9:
+                case 22:
+                case 29:
                     sb.append("&o");
                     break;
 
-                case 21:
                 case 31:
                     sb.append("&n");
 
