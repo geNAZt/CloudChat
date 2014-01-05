@@ -61,9 +61,10 @@ public class Scmd implements Command {
 
         //Create a new SCMD Session
         String scommand = StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " ");
+        plugin.getPluginLogger().info("Issuing SCMD '" + scommand + "' on " + args[0] + " for " + sender.getNick());
         Integer sessionId = ircModule.getIrcBot().getIrcManager().newScmdSession(sender.getRawNick(), sender.getChannel(), scommand);
 
-        DispatchScmdMessage dispatchScmdMessage = new DispatchScmdMessage(command, sessionId);
+        DispatchScmdMessage dispatchScmdMessage = new DispatchScmdMessage(scommand, sessionId);
         plugin.getPluginMessageManager("CloudChat").sendPluginMessage(serverInfo.getPlayers().iterator().next(), dispatchScmdMessage);
 
         ircModule.getIrcBot().sendToChannel("Command has been issued", sender.getChannel());
