@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class Main extends Config {
+
+
     public Main(CloudChatPlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "config.yml");
         CONFIG_HEADER = "CloudChat by geNAZt";
@@ -35,4 +37,8 @@ public class Main extends Config {
     public ArrayList<String> DontHandleForServers = new ArrayList<>();
     @Comment("Tablist Message for Player completion")
     public String Complete_Player = "%prefix%nick%suffix&r";
+    @Comment("Message format for a Player when issuing /list channel")
+    public String Command_ListChannel_Player = "%prefix%nick%suffix&r";
+    @Comment("Message format for a Player when issuing /list")
+    public String Command_List_Player = "%prefix%nick%suffix&r";
 }

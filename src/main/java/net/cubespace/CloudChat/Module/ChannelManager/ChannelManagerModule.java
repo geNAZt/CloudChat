@@ -32,6 +32,7 @@ public class ChannelManagerModule {
         plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "createchannel"));
         plugin.getProxy().getPluginManager().registerCommand(plugin, new PlayerBinder(plugin, "invite"));
         plugin.getProxy().getPluginManager().registerCommand(plugin, new JoinedChannelBinder(plugin, "focus"));
+        plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "list"));
 
         plugin.getCommandExecutor().add(new Channels(plugin));
         plugin.getCommandExecutor().add(new CreateChannel(plugin));
