@@ -201,7 +201,7 @@ public class Bot extends PircBot implements Runnable {
     protected void onAction(String sender, String login, String hostname, String target, String action) {
         if(ircConfig.Relay_Action) {
             plugin.getPluginLogger().debug("Relaying a Action from IRC: " + sender + " " + action);
-            relayMessage(sender, target, ircConfig.Relay_ActionPrefix + sender + " " + action, false);
+            relayMessage(sender, target, ircConfig.Relay_ActionPrefix + sender + " " + IrcToMCFormat.translateString(action), false);
         }
     }
 
