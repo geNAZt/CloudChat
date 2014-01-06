@@ -10,15 +10,13 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class ChannelBinder extends Binder implements TabExecutor {
-    private ChannelManager channelManager;
-
     public ChannelBinder(CloudChatPlugin plugin, String name, String... aliases) {
         super(plugin, name, aliases);
     }
 
     @Override
     public Iterable<String> onTabComplete(final CommandSender commandSender, String[] args) {
-        channelManager = plugin.getManagerRegistry().getManager("channelManager");
+        ChannelManager channelManager = plugin.getManagerRegistry().getManager("channelManager");
 
         final String lastArg = ( args.length > 0 ) ? args[args.length - 1] : "";
 

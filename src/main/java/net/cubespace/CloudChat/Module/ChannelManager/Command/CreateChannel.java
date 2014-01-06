@@ -2,8 +2,11 @@ package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -11,7 +14,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 22.12.13 12:12
  */
 public class CreateChannel implements CLICommand {
     private CloudChatPlugin plugin;
@@ -24,13 +26,17 @@ public class CreateChannel implements CLICommand {
 
     @Command(command = "createchannel", arguments = 2)
     public void createChannelCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         String name = args[0];
         String password = args[1];
 
         //Check if name collides
         for(ChannelDatabase channel : channelManager.getChannels()) {
             if(channel.Name.equalsIgnoreCase(name)) {
-                sender.sendMessage("This Channel already exists");
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Create_AlreadyExists)).send(sender);
+
                 return;
             }
         }
@@ -43,14 +49,15 @@ public class CreateChannel implements CLICommand {
         channelDatabase.Name = name;
         channelDatabase.Password = password;
         channelDatabase.Forced = false;
-        channelDatabase.Format = "&8[&2%channel_short&8] %prefix%nick%suffix&r: %message";
+        channelDatabase.Format = "&8[&2%channel_short&8] %prefix%nick{click:playerMenu}%suffix&r: %message";
         channelDatabase.Short = alias;
         channelDatabase.CanInvite.add(sender.getName());
 
         try {
             channelDatabase.save();
         } catch (InvalidConfigurationException e) {
-            sender.sendMessage("There was an error in the creation of your Channel. Please report this to a Admin");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Create_ErrorInSave)).send(sender);
             plugin.getPluginLogger().warn("Error creating new Channel", e);
             return;
         }
@@ -58,9 +65,11 @@ public class CreateChannel implements CLICommand {
         //Join the Channel
         channelManager.reload();
 
+        sender.setPermission("cloudchat.channel." + channelDatabase.Name, true);
         if(sender instanceof ProxiedPlayer)
             channelManager.join((ProxiedPlayer) sender, channelDatabase);
 
-        sender.sendMessage("Channel " + name + " was created. Password is " + password);
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Create_CreatedChannel.replace("%channel", channelDatabase.Name).replace("%password", channelDatabase.Password))).send(sender);
     }
 }

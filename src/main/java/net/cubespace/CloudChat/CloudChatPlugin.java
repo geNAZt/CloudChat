@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Config.IRCPermissions;
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Config.Spam;
 import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Listener.ChatListener;
@@ -47,6 +48,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("twitter", new Twitter(this));
         getConfigManager().initConfig("factions", new Factions(this));
         getConfigManager().initConfig("ircPermissions", new IRCPermissions(this));
+        getConfigManager().initConfig("messages", new Messages(this));
 
         //Static init
         AutoComplete.init(this);

@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import net.cubespace.CloudChat.CloudChatPlugin;
-import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
@@ -22,7 +22,7 @@ public class PlayerBinder extends Binder implements TabExecutor {
     @Override
     public Iterable<String> onTabComplete(CommandSender commandSender, String[] args) {
         playerManager = plugin.getManagerRegistry().getManager("playerManager");
-        final Main config = plugin .getConfigManager().getConfig("main");
+        final Messages config = plugin.getConfigManager().getConfig("messages");
 
         final String lastArg = ( args.length > 0 ) ? args[args.length - 1] : "";
 

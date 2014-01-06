@@ -2,11 +2,16 @@ package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.AutoComplete;
+import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
+import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -14,7 +19,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 22.12.13 12:12
  */
 public class Invite implements CLICommand {
     private CloudChatPlugin plugin;
@@ -29,6 +33,8 @@ public class Invite implements CLICommand {
 
     @Command(command = "invite", arguments = 1)
     public void invite(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         String player = args[0];
         ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
         if(rec == null) {
@@ -38,7 +44,9 @@ public class Invite implements CLICommand {
                 rec = NicknameParser.getPlayer(plugin, player);
 
                 if(rec == null) {
-                    sender.sendMessage("You can't invite offline Players");
+                    MessageBuilder messageBuilder = new MessageBuilder();
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_OfflinePlayer)).send(sender);
+
                     return;
                 }
             }
@@ -50,7 +58,9 @@ public class Invite implements CLICommand {
             channel = args[1];
         } else {
             if(!(sender instanceof ProxiedPlayer)) {
-                sender.sendMessage("If you are not ingame you must give a channel as second Argument");
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_SecondArgumentError)).send(sender);
+
                 return;
             }
 
@@ -62,18 +72,31 @@ public class Invite implements CLICommand {
         //Get the Channel
         ChannelDatabase channelDatabase = channelManager.get(channel);
         if(channelDatabase == null) {
-            sender.sendMessage("This Channel doesn't exist");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_ChannelDoesNotExist)).send(sender);
+
             return;
         }
 
         if(!channelDatabase.CanInvite.contains(sender.getName())) {
-            sender.sendMessage("You can't send invitations for this Channel");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_CantInvite)).send(sender);
+
             return;
         }
 
         //Send out the Invitation to the User
-        rec.sendMessage("You got an Invitation to the " + channelDatabase.Name + " Channel. Join with /join " + channelDatabase.Name + " " + channelDatabase.Password);
+        ClickEvent clickEvent = new ClickEvent();
+        clickEvent.setAction(ClickAction.RUN_COMMAND);
+        clickEvent.setValue("/join " + channelDatabase.Name + " " + channelDatabase.Password);
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.addEvent("joinChannel", clickEvent);
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_SendInvitation.replace("%channel", channelDatabase.Name).replace("%password", channelDatabase.Password))).send(sender);
+
         rec.setPermission("cloudchat.channel." + channelDatabase.Name, true);
-        sender.sendMessage("You have sent an Invitation to " + rec.getName());
+
+        MessageBuilder messageBuilder2 = new MessageBuilder();
+        messageBuilder2.setText(FontFormat.translateString(messages.Command_Channel_Invite_Notification.replace("%name", rec.getName()))).send(sender);
     }
 }

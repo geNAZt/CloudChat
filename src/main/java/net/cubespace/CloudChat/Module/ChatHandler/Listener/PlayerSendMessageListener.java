@@ -7,13 +7,12 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 17:32
  */
 public class PlayerSendMessageListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerSendMessage(PlayerSendMessageEvent event) {
         if(event.getPlayer() == null) return;
 
-        event.getPlayer().sendMessage(event.getMessage());
+        event.getMessage().send(event.getPlayer());
     }
 }

@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.ChatHandler.Event;
 
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.ISender;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.EventBus.Event;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -12,10 +13,10 @@ import java.lang.ref.WeakReference;
  */
 public class PlayerSendMessageEvent implements Event {
     private final WeakReference<ProxiedPlayer> player;
-    private final String message;
+    private final MessageBuilder message;
     private final ISender sender;
 
-    public PlayerSendMessageEvent(ProxiedPlayer player, String message, ISender sender) {
+    public PlayerSendMessageEvent(ProxiedPlayer player, MessageBuilder message, ISender sender) {
         this.player = new WeakReference<>(player);
         this.message = message;
         this.sender = sender;
@@ -25,7 +26,7 @@ public class PlayerSendMessageEvent implements Event {
         return player.get();
     }
 
-    public String getMessage() {
+    public MessageBuilder getMessage() {
         return message;
     }
 

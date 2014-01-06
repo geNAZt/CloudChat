@@ -1,6 +1,9 @@
 package net.cubespace.CloudChat.Command.Binder;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -20,7 +23,8 @@ public class Binder extends Command {
         if(commandSender.hasPermission("cloudchat.command.*") || commandSender.hasPermission("cloudchat.command." + commandName.replace(":", "."))) {
             plugin.getCommandExecutor().onCommand(commandSender, commandName, strings);
         } else {
-            commandSender.sendMessage("You don't have the Permission to use this Command");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(((Messages) plugin.getConfigManager().getConfig("messages")).NoPermission)).send(commandSender);
         }
     }
 }

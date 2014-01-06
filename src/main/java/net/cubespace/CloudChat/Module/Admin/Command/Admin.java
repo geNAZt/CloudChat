@@ -1,6 +1,9 @@
 package net.cubespace.CloudChat.Module.Admin.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.cubespace.lib.Logger.Level;
@@ -27,7 +30,9 @@ public class Admin implements CLICommand {
             String file = "CloudChat-" + System.currentTimeMillis();
             plugin.getReportManager().openSession(file);
             plugin.getPluginLogger().setLogLevel(Level.DEBUG);
-            sender.sendMessage("Reporting has been enabled and the Report will be saved to " + file + ". Type /cc:report off to stop or it will automaticly stop after 10 Minutes");
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(((Messages) plugin.getConfigManager().getConfig("messages")).Command_CC_Report_On.replace("%file", file))).send(sender);
 
             cancelTask = plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
                 @Override
@@ -41,7 +46,8 @@ public class Admin implements CLICommand {
             plugin.getReportManager().closeSession();
             plugin.getPluginLogger().setLogLevel(Level.INFO);
 
-            sender.sendMessage("Reporting is now off");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(((Messages) plugin.getConfigManager().getConfig("messages")).Command_CC_Report_Off)).send(sender);
         }
     }
 }

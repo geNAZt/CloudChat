@@ -2,7 +2,7 @@ package net.cubespace.CloudChat.Module.IRC.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRC;
-import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Event.PlayerQuitEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -10,6 +10,7 @@ import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -40,10 +41,13 @@ public class PlayerQuitListener implements Listener {
 
         for(ChannelDatabase channel : channelManager.getAllJoinedChannels(event.getPlayer())) {
             for(Map.Entry<String, String> ircChannel : config.Channels.entries()) {
-                String message = MessageFormat.format(((Main) plugin.getConfigManager().getConfig("main")).Announce_PlayerQuitMessage, channel, playerDatabase);
+                String message = MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerQuit, channel, playerDatabase);
+
+                LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
+                legacyMessageBuilder.setText(message);
 
                 if(ircChannel.getKey().equals(channel.Name)) {
-                    ircModule.getIrcBot().sendToChannel(message, ircChannel.getValue());
+                    ircModule.getIrcBot().sendToChannel(legacyMessageBuilder.getString(), ircChannel.getValue());
                     break;
                 }
             }

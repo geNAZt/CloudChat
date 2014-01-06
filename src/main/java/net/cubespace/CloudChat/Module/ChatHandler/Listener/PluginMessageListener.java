@@ -13,6 +13,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -51,8 +52,10 @@ public class PluginMessageListener implements PacketListener {
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
             }
 
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
@@ -63,8 +66,10 @@ public class PluginMessageListener implements PacketListener {
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
             }
 
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
@@ -75,8 +80,10 @@ public class PluginMessageListener implements PacketListener {
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
             }
 
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
@@ -87,8 +94,10 @@ public class PluginMessageListener implements PacketListener {
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
             }
 
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
@@ -99,8 +108,10 @@ public class PluginMessageListener implements PacketListener {
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), message, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
             }
 
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
