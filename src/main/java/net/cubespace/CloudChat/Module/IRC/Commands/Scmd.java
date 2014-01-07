@@ -1,6 +1,8 @@
 package net.cubespace.CloudChat.Module.IRC.Commands;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
 import net.cubespace.CloudChat.Util.StringUtils;
@@ -20,14 +22,16 @@ public class Scmd implements Command {
 
     @Override
     public boolean execute(IRCSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         //Check for Permissions
         if(!ircModule.getPermissions().has(sender.getRawNick(), "command.scmd")) {
-            ircModule.getIrcBot().sendToChannel(sender.getRawNick() + ": You have not enough Permissions to execute this", sender.getChannel());
+            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_NotEnoughPermission.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
         if(args.length < 2) {
-            ircModule.getIrcBot().sendToChannel(sender.getRawNick() + ": Not enough Arguments for this", sender.getChannel());
+            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_NotEnoughArguments.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
@@ -36,12 +40,12 @@ public class Scmd implements Command {
         String command = args[1];
 
         if(!ircModule.getPermissions().has(sender.getRawNick(), "command.scmd.server." + server)) {
-            ircModule.getIrcBot().sendToChannel(sender.getRawNick() + ": You dont't have Permission to execute this on that Server", sender.getChannel());
+            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_NotEnoughPermissionForServer.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
         if(!ircModule.getPermissions().has(sender.getRawNick(), "command.scmd.command." + command)) {
-            ircModule.getIrcBot().sendToChannel(sender.getRawNick() + ": You dont't have Permission to execute that Scmd Command", sender.getChannel());
+            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_NotEnoughPermissionForCommand.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
@@ -49,13 +53,13 @@ public class Scmd implements Command {
         ServerInfo serverInfo = plugin.getProxy().getServerInfo(server);
 
         if(serverInfo == null) {
-            ircModule.getIrcBot().sendToChannel(sender.getRawNick() + ": The Server you have given is not valid", sender.getChannel());
+            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_InvalidServer.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
 
         if(serverInfo.getPlayers().size() == 0) {
-            ircModule.getIrcBot().sendToChannel(sender.getRawNick() + ": Can't send the Command. It needs to be at least one Player online on the Server", sender.getChannel());
+            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_ServerIsEmpty.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
@@ -67,7 +71,7 @@ public class Scmd implements Command {
         DispatchScmdMessage dispatchScmdMessage = new DispatchScmdMessage(scommand, sessionId);
         plugin.getPluginMessageManager("CloudChat").sendPluginMessage(serverInfo.getPlayers().iterator().next(), dispatchScmdMessage);
 
-        ircModule.getIrcBot().sendToChannel("Command has been issued", sender.getChannel());
+        ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_CommandIssued.replace("%nick", sender.getRawNick())), sender.getChannel());
         return true;
     }
 }

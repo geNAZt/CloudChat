@@ -80,4 +80,56 @@ public class Messages extends Config {
     public String IRC_Command_Players_NotEnoughPermission = "&c%nick: You have not enough Permissions to execute this";
     public String IRC_Command_Players_Header = "&6Current Players online (%count): ";
     public String IRC_Command_Players_Player = "%prefix%nick%suffix&r";
+
+    public String IRC_Command_Scmd_NotEnoughPermission = "&c%nick: You have not enough Permissions to execute this";
+    public String IRC_Command_Scmd_NotEnoughArguments = "&c%nick: Not enough Arguments to execute this";
+    public String IRC_Command_Scmd_NotEnoughPermissionForServer = "&c%nick: You dont't have Permission to execute this on that Server";
+    public String IRC_Command_Scmd_NotEnoughPermissionForCommand = "&c%nick: You dont't have Permission to execute that Scmd Command";
+    public String IRC_Command_Scmd_InvalidServer = "&c%nick: You dont't have Permission to execute that Scmd Command";
+    public String IRC_Command_Scmd_ServerIsEmpty = "&c%nick: Can't send the Command. It needs to be at least one Player online on the Server";
+    public String IRC_Command_Scmd_CommandIssued = "&6Command has been issued";
+
+    public String IRC_Command_Unmute_NotEnoughPermission = "&c%nick: You have not enough Permissions to execute this";
+    public String IRC_Command_Unmute_NotEnoughArguments = "&c%nick: Not enough Arguments to execute this";
+    public String IRC_Command_Unmute_OfflinePlayer = "&c%nick: You can't unmute offline Players";
+    public String IRC_Command_Unmute_Success = "&6%nick: You have unmuted %muted";
+
+    public String IRC_PmSessionChangedTo = "!!! %from you are now talking with %to !!!";
+
+    public String Command_Mail_Send_NotPlayer = "&cOnly Players can send mails";
+    public String Command_Mail_Send_UnknownPlayer = "&cThis Player is not known. Can not send a Mail to it";
+    public String Command_Mail_Send_Success = "&6Mail was sent";
+
+    public String Command_Mail_Read_NotPlayer = "&cOnly Players can read mails";
+    public String Command_Mail_Read_Header = "&6=== &aMails&6 ===";
+
+    public String Command_Mail_Clear_NotPlayer = "&cOnly Players can clear mails";
+    public String Command_Mail_Clear_Success = "&6Mails where cleared";
+
+    public String Command_Mute_NotPlayer = "&cOnly Players can mute";
+    public String Command_Mute_OfflinePlayer = "&cYou can't mute offline Players";
+    public String Command_Mute_Success = "&6You muted %player";
+
+    public String Command_Unmute_NotPlayer = "&cOnly Players can unmute";
+    public String Command_Unmute_OfflinePlayer = "&cYou can't unmute offline Players";
+    public String Command_Unmute_Success = "&6You unmuted %player";
+
+    public String Command_CC_Mute_OfflinePlayer = "&cYou can't mute offline Players";
+    public String Command_CC_Mute_Success = "&6You muted %player";
+
+    public String Command_CC_Unmute_OfflinePlayer = "&cYou can't unmute offline Players";
+    public String Command_CC_Unmute_Success = "&6You unmuted %player";
+
+    public String Command_Nick_NotPlayer = "&cOnly Players can change nicknames";
+    public String Command_Nick_NoPermissionToChangeOther = "&cYou are not allowed to change Nicknames of other Players";
+    public String Command_Nick_OfflinePlayer = "&cYou can not change Nicknames from offline Players";
+    public String Command_Nick_ChangedNick = "&6Your nickname was changed to &a%nick";
+
+    public String Command_Msg_NotPlayer = "&cOnly Players can send Messages";
+
+    public String Command_Reply_NotPlayer = "&cOnly Players can reply on Messages";
+    public String Command_Reply_NoConversation = "&cYou don't have a Conversation to reply to";
+
+    public String Message_Sender = "&6You&8 -> &6%receiver&8:&7 %message";
+    public String Message_Receiver = "&6%sender&8 -> &6You&8:&7 %message";
 }

@@ -4,11 +4,13 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -16,9 +18,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Arrays;
 
-/**
- * Created by Fabian on 30.11.13.
- */
 public class PM implements CLICommand {
     private CloudChatPlugin plugin;
     private PlayerManager playerManager;
@@ -42,11 +41,16 @@ public class PM implements CLICommand {
 
     @Command(command = "msg", arguments = 2)
     public void msgCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         plugin.getPluginLogger().debug("Got a new PM");
 
         if(!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But sender was not a Player");
-            sender.sendMessage("You only can PM as a Player");
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Msg_NotPlayer)).send(sender);
+
             return;
         }
 
@@ -55,16 +59,20 @@ public class PM implements CLICommand {
         String message = FontFormat.translateString(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
         PMEvent event = new PMEvent(sen.getName(), args[0], message);
         plugin.getAsyncEventBus().callEvent(event);
-
     }
 
     @Command(command = "reply", arguments = 1)
     public void replyCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         plugin.getPluginLogger().debug("Got a PM Reply");
 
         if(!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But it was not send from a Player");
-            sender.sendMessage("You only can PM as a Player");
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Reply_NotPlayer)).send(sender);
+
             return;
         }
 
@@ -73,7 +81,10 @@ public class PM implements CLICommand {
 
         if(playerDatabase.Reply.equals("")) {
             plugin.getPluginLogger().debug("Can't be replied because the Player has no conversation up");
-            sender.sendMessage(FontFormat.translateString("&7You can't reply because you have no PM conversation"));
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Reply_NoConversation)).send(sender);
+
             return;
         }
 

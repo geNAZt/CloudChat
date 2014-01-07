@@ -1,8 +1,11 @@
 package net.cubespace.CloudChat.Module.PlayerManager.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerNickchangeEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -22,8 +25,12 @@ public class PlayerNickchangeListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onNickchangeEvent(PlayerNickchangeEvent event) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         plugin.getPluginLogger().info(event.getSender().getName() + " changed its nick to " + event.getNewNick());
         playerManager.get(event.getSender().getName()).Nick = event.getNewNick();
-        event.getSender().sendMessage("Your nick was changed to: " + event.getNewNick());
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_ChangedNick.replace("%nick", event.getNewNick()))).send(event.getSender());
     }
 }

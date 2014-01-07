@@ -1,9 +1,13 @@
 package net.cubespace.CloudChat.Module.Mail.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
+import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -19,16 +23,21 @@ import java.util.Date;
  */
 public class Mail implements CLICommand {
     private PlayerManager playerManager;
+    private CloudChatPlugin plugin;
 
     public Mail(CloudChatPlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
+        this.plugin = plugin;
     }
 
     @Command(command = "mail send", arguments = 2)
     public void mailSendCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         //Check if the Mail comes from the Console
         if(!(sender instanceof ProxiedPlayer)) {
-            sender.sendMessage("Only Players can send mails");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Send_NotPlayer)).send(sender);
             return;
         }
 
@@ -39,7 +48,8 @@ public class Mail implements CLICommand {
             save = true;
 
             if(!playerManager.exists(args[0])) {
-                sender.sendMessage("This Player is not known. Can not send a Mail to it");
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Send_UnknownPlayer)).send(sender);
                 return;
             }
 
@@ -50,7 +60,10 @@ public class Mail implements CLICommand {
         net.cubespace.CloudChat.Module.Mail.Database.Mail mail = new net.cubespace.CloudChat.Module.Mail.Database.Mail();
         mail.date = new Date();
         mail.sender = sender.getName();
-        mail.message = StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " ");
+
+        LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
+        legacyMessageBuilder.setText(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
+        mail.message = legacyMessageBuilder.getString();
 
         playerDatabase.Mails.add(mail);
 
@@ -58,14 +71,18 @@ public class Mail implements CLICommand {
             playerManager.save(args[0]);
         }
 
-        sender.sendMessage("Mail was sent");
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Send_Success)).send(sender);
     }
 
     @Command(command = "mail read", arguments = 0)
     public void mailReadCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         //Check if the Mail comes from the Console
         if(!(sender instanceof ProxiedPlayer)) {
-            sender.sendMessage("Only Players can read mails");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Read_NotPlayer)).send(sender);
             return;
         }
 
@@ -73,17 +90,22 @@ public class Mail implements CLICommand {
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
 
         //Get all mails
-        player.sendMessage("=== Mails ===");
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Read_Header)).send(sender);
         for(net.cubespace.CloudChat.Module.Mail.Database.Mail mail : playerDatabase.Mails) {
-            player.sendMessage(mail.sender + ": " + mail.message);
+            MessageBuilder messageBuilder2 = new MessageBuilder();
+            messageBuilder2.setText(FontFormat.translateString(mail.sender + ": " + mail.message)).send(sender);
         }
     }
 
     @Command(command = "mail clear", arguments = 0)
     public void mailClearCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         //Check if the Mail comes from the Console
         if(!(sender instanceof ProxiedPlayer)) {
-            sender.sendMessage("Only Players can clear mails");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Clear_NotPlayer)).send(sender);
             return;
         }
 
@@ -91,6 +113,8 @@ public class Mail implements CLICommand {
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         playerDatabase.Mails = new ArrayList<>();
 
-        player.sendMessage("All Mails have been cleared");
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Clear_Success)).send(sender);
+
     }
 }

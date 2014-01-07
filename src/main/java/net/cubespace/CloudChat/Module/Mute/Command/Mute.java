@@ -2,8 +2,11 @@ package net.cubespace.CloudChat.Module.Mute.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
+import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Util.AutoComplete;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
 import net.md_5.bungee.api.CommandSender;
@@ -24,11 +27,15 @@ public class Mute implements CLICommand {
 
     @Command(command = "mute", arguments = 1)
     public void muteCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         plugin.getPluginLogger().debug("Got a mute Request");
 
         if(!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But the sender is not a Player");
-            sender.sendMessage("You only can mute as Player");
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_NotPlayer)).send(sender);
             return;
         }
 
@@ -43,24 +50,35 @@ public class Mute implements CLICommand {
 
                 if(player == null) {
                     plugin.getPluginLogger().debug("Nickname Parser returned null");
-                    sender.sendMessage("You can't mute offline Players");
+
+                    MessageBuilder messageBuilder = new MessageBuilder();
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_OfflinePlayer)).send(sender);
+
                     return;
                 }
             }
         }
 
         muteModule.getMuteManager().addPlayerMute(sender.getName(), player.getName());
-        sender.sendMessage("You muted " + player.getName());
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_Success.replace("%player", player.getName()))).send(sender);
+
         plugin.getPluginLogger().info(sender.getName() + " muted " + player.getName());
     }
 
     @Command(command = "unmute", arguments = 1)
     public void unMuteCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         plugin.getPluginLogger().debug("Got a unmute Request");
 
         if(!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But the sender is not a Player");
-            sender.sendMessage("You only can mute as Player");
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_NotPlayer)).send(sender);
+
             return;
         }
 
@@ -75,19 +93,26 @@ public class Mute implements CLICommand {
 
                 if(player == null) {
                     plugin.getPluginLogger().debug("Nickname Parser returned null");
-                    sender.sendMessage("You can't unmute offline Players");
+
+                    MessageBuilder messageBuilder = new MessageBuilder();
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_OfflinePlayer)).send(sender);
+
                     return;
                 }
             }
         }
 
         muteModule.getMuteManager().removePlayerMute(sender.getName(), player.getName());
-        sender.sendMessage("You unmuted " + player.getName());
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_Success)).send(sender);
+
         plugin.getPluginLogger().info(sender.getName() + " unmuted " + player.getName());
     }
 
     @Command(command = "cc:mute", arguments = 1)
     public void ccMuteCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         plugin.getPluginLogger().debug("Got a global mute Request");
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
@@ -101,19 +126,23 @@ public class Mute implements CLICommand {
 
                 if(player == null) {
                     plugin.getPluginLogger().debug("Nickname Parser returned null");
-                    sender.sendMessage("You can't mute offline Players");
+                    MessageBuilder messageBuilder = new MessageBuilder();
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_OfflinePlayer)).send(sender);
                     return;
                 }
             }
         }
 
         muteModule.getMuteManager().addGlobalMute(player.getName());
-        sender.sendMessage("You muted " + player.getName());
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_Success)).send(sender);
         plugin.getPluginLogger().info(sender.getName() + " globally muted " + player.getName());
     }
 
     @Command(command = "cc:unmute", arguments = 1)
     public void ccUnMuteCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         plugin.getPluginLogger().debug("Got a global unmute Request");
 
         ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
@@ -127,14 +156,17 @@ public class Mute implements CLICommand {
 
                 if(player == null) {
                     plugin.getPluginLogger().debug("Nickname Parser returned null");
-                    sender.sendMessage("You can't unmute offline Players");
+                    MessageBuilder messageBuilder = new MessageBuilder();
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_OfflinePlayer)).send(sender);
                     return;
                 }
             }
         }
 
         muteModule.getMuteManager().removeGlobalMute(player.getName());
-        sender.sendMessage("You unmuted " + player.getName());
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_Success)).send(sender);
+
         plugin.getPluginLogger().info(sender.getName() + " globally unmuted " + player.getName());
     }
 }

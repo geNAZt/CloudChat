@@ -2,10 +2,13 @@ package net.cubespace.CloudChat.Module.PM.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.AutoComplete;
+import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -26,11 +29,21 @@ public class PMListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPM(PMEvent event) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         ProxiedPlayer sen = plugin.getProxy().getPlayer(event.getFrom());
         ProxiedPlayer rec = plugin.getProxy().getPlayer(event.getTo());
 
-        rec.sendMessage(FontFormat.translateString("&6" + sen.getName() + " &8 -> &6You&8:&7 " + event.getMessage()));
-        sen.sendMessage(FontFormat.translateString("&6You&8 -> &6"+ rec.getName() +"&8:&7 " + event.getMessage()));
+        LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
+        legacyMessageBuilder.setText(event.getMessage());
+        String message = legacyMessageBuilder.getString();
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Message_Receiver.replace("%sender", sen.getName()).replace("%message", message))).send(rec);
+
+        MessageBuilder messageBuilder2 = new MessageBuilder();
+        messageBuilder2.setText(FontFormat.translateString(messages.Message_Sender.replace("%receiver", rec.getName()).replace("%message", message))).send(sen);
+
         plugin.getPluginLogger().info(sen.getName() + " -> " + rec.getName() + ": " + event.getMessage());
 
         playerManager.get(sen.getName()).Reply = rec.getName();

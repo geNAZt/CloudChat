@@ -20,10 +20,12 @@ import net.cubespace.PluginMessages.RespondScmdMessage;
  */
 public class IRCModule {
     private Bot ircBot;
+    private CloudChatPlugin plugin;
 
     public IRCModule(CloudChatPlugin plugin) {
         if(((IRC) plugin.getConfigManager().getConfig("irc")).Enabled) {
             plugin.getPluginLogger().info("Starting IRC Module...");
+            this.plugin = plugin;
 
             ircBot = new Bot(this, plugin);
 
@@ -53,5 +55,9 @@ public class IRCModule {
 
     public PermissionManager getPermissions() {
         return ircBot.getIrcManager().getPermissionManager();
+    }
+
+    public CloudChatPlugin getPlugin() {
+        return plugin;
     }
 }
