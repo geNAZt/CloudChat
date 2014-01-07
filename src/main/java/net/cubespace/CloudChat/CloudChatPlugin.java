@@ -9,9 +9,8 @@ import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Config.Spam;
 import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Listener.ChatListener;
-import net.cubespace.CloudChat.Listener.PlayerJoinListener;
+import net.cubespace.CloudChat.Listener.PermissionLoadedListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
-import net.cubespace.CloudChat.Listener.ServerConnectListener;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule;
 import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
 import net.cubespace.CloudChat.Module.CloudChat.CloudChatModule;
@@ -36,10 +35,11 @@ import net.cubespace.lib.Logger.Level;
 public class CloudChatPlugin extends CubespacePlugin {
     @Override
     public void onEnable() {
-        super.onEnable();
-
         //Setup the Logging Level
         getPluginLogger().setLogLevel(Level.INFO);
+
+        //Load the Permission
+        getPermissionManager().setup("cloudchat.");
 
         //Load the Configs
         getConfigManager().initConfig("main", new Main(this));
@@ -72,9 +72,10 @@ public class CloudChatPlugin extends CubespacePlugin {
         getPluginMessageManager("CloudChat").finish();
 
         //Register the Listeners
-        getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
+        getAsyncEventBus().addListener(new PermissionLoadedListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerQuitListener(this));
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
-        getProxy().getPluginManager().registerListener(this, new ServerConnectListener(this));
+
+        super.onEnable();
     }
 }

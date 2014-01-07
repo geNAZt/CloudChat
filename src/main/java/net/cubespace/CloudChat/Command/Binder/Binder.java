@@ -20,7 +20,7 @@ public class Binder extends Command {
 
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
-        if(commandSender.hasPermission("cloudchat.command.*") || commandSender.hasPermission("cloudchat.command." + commandName.replace(":", "."))) {
+        if(plugin.getPermissionManager().has(commandSender, "cloudchat.command.*") || plugin.getPermissionManager().has(commandSender, "cloudchat.command." + commandName.replace(":", "."))) {
             plugin.getCommandExecutor().onCommand(commandSender, commandName, strings);
         } else {
             MessageBuilder messageBuilder = new MessageBuilder();

@@ -20,7 +20,7 @@ public class AsyncChatListener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onAsynChat(AsyncChatEvent event) {
         //Format the Message
-        if(!event.getSender().hasPermission("cloudchat.use.color") && !event.getSender().hasPermission("cloudchat.use.color.message")) {
+        if(!plugin.getPermissionManager().has(event.getSender(), "cloudchat.use.color") && !plugin.getPermissionManager().has(event.getSender(), "cloudchat.use.color.message")) {
             event.setMessage(FontFormat.stripColor(event.getMessage()));
             plugin.getPluginLogger().debug("Stripped Colors away");
         }

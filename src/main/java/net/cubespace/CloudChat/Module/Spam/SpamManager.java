@@ -29,7 +29,7 @@ public class SpamManager {
         HashMap<SpamEntry, SpamCounter> spamCounterHashMap = new HashMap<>();
 
         for(SpamEntry spamEntry : spamEntries) {
-            if(!player.hasPermission(spamEntry.ExcludePermission)) {
+            if(!plugin.getPermissionManager().has(player, spamEntry.ExcludePermission)) {
                 plugin.getPluginLogger().debug("Player does not have " + spamEntry.ExcludePermission + " adding Spam Rule Entry");
                 spamCounterHashMap.put(spamEntry, new SpamCounter());
             }

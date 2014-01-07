@@ -45,7 +45,7 @@ public class ChannelManager implements IManager {
         File databaseDirectory = new File(plugin.getDataFolder(), "database" + File.separator + "channels" + File.separator);
         if(!databaseDirectory.exists()) {
             if(!databaseDirectory.mkdirs()) {
-                plugin.getPluginLogger().error("Could not create the AsyncDatabaseLogger Directory");
+                plugin.getPluginLogger().error("Could not create the Database Directory");
                 throw new RuntimeException();
             }
         }
@@ -194,7 +194,7 @@ public class ChannelManager implements IManager {
         }
 
         //Check if the Player has the Permission to join
-        if(!player.hasPermission("cloudchat.channel." + channel.Name)) {
+        if(!plugin.getPermissionManager().has(player, "cloudchat.channel." + channel.Name)) {
             player.sendMessage("You cant join this Channel. You don't have enough Permissions");
             plugin.getPluginLogger().info(player.getName() + " got rejected due to missing Permission of joining Channel " + channel.Name);
             return false;
@@ -230,7 +230,7 @@ public class ChannelManager implements IManager {
         for(Map.Entry<String, ChannelDatabase> channelDatabaseEntry : loadedChannels.entrySet()) {
             if(channelDatabaseEntry.getValue().Forced) {
                 join(player, channelDatabaseEntry.getValue());
-            } else if(channelDatabaseEntry.getValue().ForceIntoWhenPermission && player.hasPermission("cloudchat.channel." + channelDatabaseEntry.getValue().Name)) {
+            } else if(channelDatabaseEntry.getValue().ForceIntoWhenPermission && plugin.getPermissionManager().has(player, "cloudchat.channel." + channelDatabaseEntry.getValue().Name)) {
                 join(player, channelDatabaseEntry.getValue());
             }
         }

@@ -23,7 +23,7 @@ public class ChannelBinder extends Binder implements TabExecutor {
         return Iterables.transform(Iterables.filter(channelManager.getChannels(), new Predicate<ChannelDatabase>() {
             @Override
             public boolean apply(ChannelDatabase database) {
-                return commandSender.hasPermission("cloudchat.channel." + database.Name) && (database.Name.startsWith(lastArg) || database.Short.startsWith(lastArg));
+                return plugin.getPermissionManager().has(commandSender, "cloudchat.channel." + database.Name) && (database.Name.toLowerCase().startsWith(lastArg.toLowerCase()) || database.Short.toLowerCase().startsWith(lastArg.toLowerCase()));
             }
         }), new Function<ChannelDatabase, String>() {
             @Override

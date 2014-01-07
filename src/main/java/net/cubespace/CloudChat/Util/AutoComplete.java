@@ -16,7 +16,7 @@ public class AutoComplete {
 
     public static String completeUsername(String user) {
         for(ProxiedPlayer player : plugin.getProxy().getPlayers()) {
-            if(player.getName().startsWith(user)) {
+            if(player.getName().toLowerCase().startsWith(user.toLowerCase())) {
                 return player.getName();
             }
         }

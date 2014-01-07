@@ -5,6 +5,7 @@ import net.cubespace.lib.Configuration.ConfigManager;
 import net.cubespace.lib.EventBus.AsyncEventBus;
 import net.cubespace.lib.Logger.Logger;
 import net.cubespace.lib.Manager.ManagerRegistry;
+import net.cubespace.lib.Permission.PermissionManager;
 import net.cubespace.lib.PluginMessage.PluginMessageManager;
 import net.cubespace.lib.Report.ReportManager;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -26,9 +27,10 @@ public class CubespacePlugin extends Plugin {
     private HashMap<String, PluginMessageManager> pluginMessageManagerHashMap = new HashMap<>();
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private PermissionManager permissionManager;
 
     public void onEnable() {
-
+        getPluginMessageManager("CubespaceLibrary").finish();
     }
 
     /**
@@ -117,6 +119,14 @@ public class CubespacePlugin extends Plugin {
         }
 
         return pluginMessageManagerHashMap.get(channel);
+    }
+
+    public PermissionManager getPermissionManager() {
+        if(permissionManager == null) {
+            permissionManager = new PermissionManager(this);
+        }
+
+        return permissionManager;
     }
 
     /**

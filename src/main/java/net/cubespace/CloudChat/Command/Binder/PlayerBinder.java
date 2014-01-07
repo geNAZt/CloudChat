@@ -30,7 +30,7 @@ public class PlayerBinder extends Binder implements TabExecutor {
             @Override
             public boolean apply(ProxiedPlayer player) {
                 PlayerDatabase playerDatabase = playerManager.get(player.getName());
-                return playerDatabase != null && playerDatabase.Nick.contains(lastArg);
+                return playerDatabase != null && playerDatabase.Nick.toLowerCase().contains(lastArg.toLowerCase());
             }
         }), new Function<ProxiedPlayer, String>() {
             @Override

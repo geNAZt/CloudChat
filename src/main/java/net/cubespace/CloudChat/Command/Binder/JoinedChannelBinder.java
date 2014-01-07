@@ -28,7 +28,7 @@ public class JoinedChannelBinder extends Binder implements TabExecutor {
         return Iterables.transform(Iterables.filter(playerManager.get(player.getName()).JoinedChannels, new Predicate<String>() {
             @Override
             public boolean apply(String channel) {
-                return channel.startsWith(lastArg);
+                return channel.toLowerCase().startsWith(lastArg.toLowerCase());
             }
         }), new Function<String, String>() {
             @Override
