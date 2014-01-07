@@ -107,7 +107,17 @@ public class ComponentBuilderBuilder implements IMessageBuilder {
                             if(!end) {
                                 whitespaces.append(builder.charAt(ia));
                             } else {
-                                whitespacee.append(builder.charAt(ia));
+                                boolean append = true;
+                                for(int ia2 = ia; ia2 < builder.length(); ia2++) {
+                                    if((byte) builder.charAt(ia2) != 32) {
+                                        append = false;
+                                    }
+                                }
+
+                                if(append)
+                                    whitespacee.append(builder.charAt(ia));
+                                else
+                                    strBui.append(builder.charAt(ia));
                             }
                         } else {
                             strBui.append(builder.charAt(ia));
@@ -126,7 +136,6 @@ public class ComponentBuilderBuilder implements IMessageBuilder {
                     component = new TextComponent(oldb);
                     oldb.setText(strBui.toString());
                     oldb.setClickEvent(clickEvent);
-                    oldb.setUnderlined(true);
                     builder = new StringBuilder();
                     components.add(oldb);
 

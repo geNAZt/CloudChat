@@ -1,4 +1,4 @@
-package net.cubespace.CloudChat.Module.Admin.Command;
+package net.cubespace.CloudChat.Module.CloudChat.Command;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;

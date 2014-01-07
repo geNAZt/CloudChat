@@ -12,7 +12,6 @@ import net.cubespace.CloudChat.Listener.ChatListener;
 import net.cubespace.CloudChat.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Listener.ServerConnectListener;
-import net.cubespace.CloudChat.Module.Admin.AdminModule;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule;
 import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
 import net.cubespace.CloudChat.Module.CloudChat.CloudChatModule;
@@ -37,6 +36,8 @@ import net.cubespace.lib.Logger.Level;
 public class CloudChatPlugin extends CubespacePlugin {
     @Override
     public void onEnable() {
+        super.onEnable();
+
         //Setup the Logging Level
         getPluginLogger().setLogLevel(Level.INFO);
 
@@ -66,7 +67,6 @@ public class CloudChatPlugin extends CubespacePlugin {
         new CloudChatModule(this);
         new SpamModule(this);
         new TwitterModule(this);
-        new AdminModule(this);
         new MailModule(this);
 
         getPluginMessageManager("CloudChat").finish();

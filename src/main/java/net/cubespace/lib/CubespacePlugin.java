@@ -27,6 +27,10 @@ public class CubespacePlugin extends Plugin {
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
+    public void onEnable() {
+
+    }
+
     /**
      * Get the ReportManager for this Plugin
      *

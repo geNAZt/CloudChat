@@ -26,11 +26,11 @@ public class ChatMessageListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChatMessage(ChatMessageEvent event) {
-        for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
-            ClickEvent clickEvent = new ClickEvent();
-            clickEvent.setAction(ClickAction.RUN_COMMAND);
-            clickEvent.setValue("/cc:playermenu " + event.getSender().getNick());
+        ClickEvent clickEvent = new ClickEvent();
+        clickEvent.setAction(ClickAction.RUN_COMMAND);
+        clickEvent.setValue("/cc:playermenu " + event.getSender().getNick());
 
+        for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.addEvent("playerMenu", clickEvent);
             messageBuilder.setText(event.getMessage());

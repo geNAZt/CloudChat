@@ -52,6 +52,8 @@ public class PMListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, canVeto = true)
     public boolean onPM2(PMEvent event) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
         String player = event.getTo();
 
         ProxiedPlayer sender = plugin.getProxy().getPlayer(event.getFrom());
@@ -73,7 +75,8 @@ public class PMListener implements Listener {
 
                 if(rec == null) {
                     plugin.getPluginLogger().debug("Nickname parsing returned null");
-                    sender.sendMessage(FontFormat.translateString("&7The player is not online"));
+                    MessageBuilder messageBuilder2 = new MessageBuilder();
+                    messageBuilder2.setText(FontFormat.translateString(messages.Message_OfflinePlayer)).send(sender);
                     return true;
                 }
             }
@@ -81,7 +84,8 @@ public class PMListener implements Listener {
 
         if (sender.equals(rec)) {
             plugin.getPluginLogger().debug("Sender and Receiver are equal.");
-            sender.sendMessage(FontFormat.translateString("&7You cannot send a pm to yourself"));
+            MessageBuilder messageBuilder2 = new MessageBuilder();
+            messageBuilder2.setText(FontFormat.translateString(messages.Message_Self)).send(sender);
             return true;
         }
 

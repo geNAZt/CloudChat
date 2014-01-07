@@ -95,7 +95,7 @@ public class Mute implements CLICommand {
                     plugin.getPluginLogger().debug("Nickname Parser returned null");
 
                     MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_OfflinePlayer)).send(sender);
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
 
                     return;
                 }
@@ -127,7 +127,7 @@ public class Mute implements CLICommand {
                 if(player == null) {
                     plugin.getPluginLogger().debug("Nickname Parser returned null");
                     MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_OfflinePlayer)).send(sender);
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
                     return;
                 }
             }
@@ -157,7 +157,7 @@ public class Mute implements CLICommand {
                 if(player == null) {
                     plugin.getPluginLogger().debug("Nickname Parser returned null");
                     MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_OfflinePlayer)).send(sender);
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
                     return;
                 }
             }

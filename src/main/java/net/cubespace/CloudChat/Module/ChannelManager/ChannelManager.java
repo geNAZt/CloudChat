@@ -106,7 +106,7 @@ public class ChannelManager implements IManager {
         ChannelDatabase faction = new ChannelDatabase(plugin, channel);
         faction.Short = alias;
         faction.Name = channel;
-        faction.Format = "&8[&2%channel_short&8] (%faction&8)&r%prefix%nick%suffix&r: %message";
+        faction.Format = "&8[&2%channel_short&8] (%faction&8)&r%prefix%nick{click:playerMenu}%suffix&r: %message";
         faction.Forced = false;
 
         try {
@@ -144,7 +144,7 @@ public class ChannelManager implements IManager {
         ChannelDatabase global = new ChannelDatabase(plugin, ((Main) plugin.getConfigManager().getConfig("main")).Global);
         global.Short = "G";
         global.Name = ((Main) plugin.getConfigManager().getConfig("main")).Global;
-        global.Format = "&8[&2%channel_short&8] %prefix%nick%suffix&r: %message";
+        global.Format = "&8[&2%channel_short&8] %prefix%nick{click:playerMenu}%suffix&r: %message";
         global.Forced = true;
 
         try {

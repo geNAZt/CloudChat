@@ -132,4 +132,11 @@ public class Messages extends Config {
 
     public String Message_Sender = "&6You&8 -> &6%receiver&8:&7 %message";
     public String Message_Receiver = "&6%sender&8 -> &6You&8:&7 %message";
+    public String Message_OfflinePlayer = "&cYou can't message to offline Players";
+    public String Message_Self = "&cYou can't message with yourself";
+
+    public String Playermenu_Prefix = "%prefix%nick%suffix&8:&r ";
+    public String Playermenu_Unmute = "&a&nUnmute{click:unMute}&r | ";
+    public String Playermenu_Mute = "&c&nMute{click:mute}&r | ";
+    public String Playermenu_Message = "&6&nMessage{click:message}";
 }
