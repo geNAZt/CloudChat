@@ -68,6 +68,6 @@ public class AsyncChatListener {
             return true;
         }
 
-        return false;
+        return ((Main) plugin.getConfigManager().getConfig("main")).PrivateMode;
     }
 }
