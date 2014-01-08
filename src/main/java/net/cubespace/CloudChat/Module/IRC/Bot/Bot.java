@@ -337,6 +337,12 @@ public class Bot extends PircBot implements Runnable {
         ircSender.setChannel(sender);
         ircSender.setRawNick(sender);
 
+        //Check if Whois is resolved
+        if(!ircManager.isResolving(sender)) {
+            ircManager.addWhoIsResolver(sender, new WhoisResolver());
+            whoisQueue.add(sender);
+        }
+
         if(!cmdManager.dispatchCommand(ircSender, message)) {
             //This can only be used as PM Channel
             if(ircManager.hasPmSession(sender) && !ircManager.getPmSession(sender).getTo().equals("")) {
