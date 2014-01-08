@@ -34,7 +34,12 @@ public class AsyncChatListener {
     public boolean onAsynChat(AsyncChatEvent event) {
         //Check if the Player has already connected to a Server (this only is null when the Connection bungee -> spigot is slow)
         if(event.getSender().getServer() == null || event.getSender().getServer().getInfo() == null) {
-            return false;
+            return true;
+        }
+
+        //Check if player is loaded (can not be due to delay config)
+        if(!playerManager.isLoaded(event.getSender().getName())) {
+            return true;
         }
 
         //Check if this Chat gets handled by CloudChat
