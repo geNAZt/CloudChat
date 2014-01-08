@@ -2,11 +2,13 @@ package net.cubespace.CloudChat.Module.IRC.Listener;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRC;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.PMSession;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -32,6 +34,8 @@ public class PMListener implements Listener {
         IRC config = plugin.getConfigManager().getConfig("irc");
 
         if(FontFormat.stripColor(event.getFrom()).contains(FontFormat.stripColor(config.IngameName))) {
+            Messages messages = plugin.getConfigManager().getConfig("messages");
+
             //Check if there is a " " in the name
             String ircNick;
             if(event.getFrom().contains(" ")) {
@@ -57,7 +61,10 @@ public class PMListener implements Listener {
             }
 
             playerManager.get(sen.getName()).Reply = FontFormat.stripColor(config.IngameName) + " " + ircNick;
-            sen.sendMessage(FontFormat.translateString("&6"+ config.IngameName + " " + ircNick + "&8 -> &6You&8:&7 " + event.getMessage().replace(ircNick + " ", "")));
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(messages.Message_Receiver.replace("%sender", config.IngameName + " " + ircNick).replace("%message", event.getMessage().replace(ircNick + " ", "")));
+            messageBuilder.send(sen);
+
             plugin.getPluginLogger().info(event.getFrom() + " -> " + event.getTo() + ": " + event.getMessage().replace(ircNick + " ", ""));
 
             return true;
@@ -71,6 +78,8 @@ public class PMListener implements Listener {
         IRC config = plugin.getConfigManager().getConfig("irc");
 
         if(FontFormat.stripColor(event.getTo()).contains(FontFormat.stripColor(config.IngameName))) {
+            Messages messages = plugin.getConfigManager().getConfig("messages");
+
             //Check if there is a " " in the name
             String ircNick;
             if(event.getTo().contains(" ")) {
@@ -84,7 +93,10 @@ public class PMListener implements Listener {
 
             //Check if sender can do this
             if(!sen.hasPermission("cloudchat.pm.irc")) {
-                sen.sendMessage("You can not send PMs to IRC");
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(messages.Message_NoIrcNick);
+                messageBuilder.send(sen);
+
                 return true;
             }
 
@@ -101,12 +113,17 @@ public class PMListener implements Listener {
                 playerManager.get(sen.getName()).Reply = FontFormat.stripColor(config.IngameName) + " " + ircNick;
 
                 ircModule.getIrcBot().sendToChannel(event.getFrom() + ": " + event.getMessage().replace(ircNick + " ", ""), ircNick);
-                sen.sendMessage(FontFormat.translateString("&6You&8 -> &6"+ config.IngameName + " " + ircNick + "&8:&7 " + event.getMessage().replace(ircNick + " ", "")));
+
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(messages.Message_Sender.replace("%receiver", config.IngameName + " " + ircNick).replace("%message", event.getMessage().replace(ircNick + " ", "")));
+                messageBuilder.send(sen);
+
                 plugin.getPluginLogger().info(event.getFrom() + " -> " + event.getTo() + ": " + event.getMessage().replace(ircNick + " ", ""));
             } else {
-                sen.sendMessage(FontFormat.translateString(FontFormat.translateString("&7The IRC Nick is not online")));
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(messages.Message_IrcNickNotOnline);
+                messageBuilder.send(sen);
             }
-
 
             return true;
         }

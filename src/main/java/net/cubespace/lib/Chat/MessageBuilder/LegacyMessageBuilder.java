@@ -25,10 +25,10 @@ public class LegacyMessageBuilder implements IMessageBuilder {
 
     @Override
     public void send(CommandSender sender) {
-        sender.sendMessage(message.replace("\\{click:([^}]*)\\}", ""));
+        sender.sendMessage(message.replaceAll("\\{click:([^}]*)\\}", ""));
     }
 
     public String getString() {
-        return message.replace("\\{click:([^}]*)\\}", "");
+        return message.replaceAll("\\{click:([^}]*)\\}", "");
     }
 }

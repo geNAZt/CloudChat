@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
+import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 
@@ -26,8 +27,11 @@ public class ChatMessageListener {
     public void onChatMessage(ChatMessageEvent event) {
         if(event.getSender().getNick().equals("IRC")) return;
 
+        LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
+        legacyMessageBuilder.setText(event.getMessage());
+        String message = legacyMessageBuilder.getString();
         for(String channel : config.Channels.get(event.getSender().getChannel().Name)) {
-            ircModule.getIrcBot().sendToChannel(event.getMessage(), channel);
+            ircModule.getIrcBot().sendToChannel(message, channel);
         }
     }
 }

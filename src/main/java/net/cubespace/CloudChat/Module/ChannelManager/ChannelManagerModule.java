@@ -9,6 +9,7 @@ import net.cubespace.CloudChat.Module.ChannelManager.Command.Channels;
 import net.cubespace.CloudChat.Module.ChannelManager.Command.CreateChannel;
 import net.cubespace.CloudChat.Module.ChannelManager.Command.Invite;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.AsyncChatListener;
+import net.cubespace.CloudChat.Module.ChannelManager.Listener.PermissionChangedListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PlayerQuitListener;
 
@@ -25,6 +26,7 @@ public class ChannelManagerModule {
         plugin.getAsyncEventBus().addListener(new PlayerJoinListener(plugin));
         plugin.getAsyncEventBus().addListener(new PlayerQuitListener(plugin));
         plugin.getAsyncEventBus().addListener(new AsyncChatListener(plugin));
+        plugin.getAsyncEventBus().addListener(new PermissionChangedListener(plugin));
 
         //Register Commands
         plugin.getProxy().getPluginManager().registerCommand(plugin, new ChannelBinder(plugin, "join"));

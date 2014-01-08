@@ -32,7 +32,6 @@ public class PermissionLoadedListener implements Listener {
 
                 if (player == null) return;
                 plugin.getAsyncEventBus().callEvent(new PlayerJoinEvent(player));
-                plugin.getAsyncEventBus().callEvent(new ServerConnectEvent(player, player.getServer().getInfo()));
             }
         }, 1 + (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);
     }
