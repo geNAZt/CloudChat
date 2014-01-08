@@ -29,13 +29,14 @@ public class AsyncChatListener {
     public void onAsynChat(AsyncChatEvent event) {
         //Format the Message
         ChannelDatabase channelDatabase = channelManager.get(playerManager.get(event.getSender().getName()).Focus);
-        String message = channelDatabase.Format.replace("%message", event.getMessage());
-        Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
 
         //Secure the message against click events
         LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
-        legacyMessageBuilder.setText(message);
+        legacyMessageBuilder.setText(event.getMessage());
 
-        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, legacyMessageBuilder.getString()));
+        String message = channelDatabase.Format.replace("%message", legacyMessageBuilder.getString());
+        Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
+
+        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
     }
 }
