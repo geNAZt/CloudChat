@@ -7,6 +7,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerChangeAFKEvent;
 import net.cubespace.PluginMessages.AFKMessage;
 import net.cubespace.PluginMessages.AffixMessage;
+import net.cubespace.PluginMessages.PermissionRequest;
 import net.cubespace.PluginMessages.WorldMessage;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -44,14 +45,12 @@ public class PluginMessageListener implements PacketListener {
         ProxiedPlayer player = worldMessage.getSender().getBungeePlayer();
 
         if(worldMessage.getName() != null && worldMessage.getAlias() != null) {
-            //This should never happen !!!
-            if(!playerManager.isLoaded(player.getName())) {
-                playerManager.load(player.getName());
-            }
-
             PlayerDatabase playerDatabase = playerManager.get(player.getName());
             playerDatabase.World = worldMessage.getName();
             playerDatabase.WorldAlias = worldMessage.getAlias();
+
+            //Get new Permissions
+            plugin.getPluginMessageManager("CubespaceLibrary").sendPluginMessage(player, new PermissionRequest(plugin.getPermissionManager().getPrefix()));
         }
 
         plugin.getPluginLogger().debug("Got new World Message for " + player.getName() + " - " + worldMessage.getName() + "/" + worldMessage.getAlias());

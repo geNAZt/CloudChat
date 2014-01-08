@@ -8,6 +8,7 @@ import net.cubespace.CloudChat.Module.IRC.Permission.WhoisResolver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,7 +37,7 @@ public class IRCManager {
 
     public IRCManager(CloudChatPlugin plugin, IRCModule ircModule) {
         this.plugin = plugin;
-        this.permissionManager = new PermissionManager(plugin);
+        this.permissionManager = new PermissionManager(this, plugin);
         this.ircModule = ircModule;
 
         plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
@@ -83,11 +84,15 @@ public class IRCManager {
         //There is a unresolved Whois => Remove it and ask the Server for a new One
         if(whoisResolver == null) {
             unresolvedWhois.remove(oldNick);
+            permissionManager.remove(oldNick);
             return false;
         }
 
         resolvedWhois.remove(oldNick);
         resolvedWhois.put(newNick, whoisResolver);
+
+        permissionManager.move(oldNick, newNick);
+
         return true;
     }
 
@@ -104,6 +109,8 @@ public class IRCManager {
         if(unresolvedWhois.containsKey(sourceNick)) {
             unresolvedWhois.remove(sourceNick);
         }
+
+        permissionManager.remove(sourceNick);
     }
 
     /**
@@ -310,5 +317,15 @@ public class IRCManager {
                 }
             }
         }
+    }
+
+    public String getNickForAuth(String auth) {
+        for(Map.Entry<String, WhoisResolver> resolverEntry : resolvedWhois.entrySet()) {
+            if(resolverEntry.getValue().getAuth().equals(auth)) {
+                return resolverEntry.getKey();
+            }
+        }
+
+        return null;
     }
 }

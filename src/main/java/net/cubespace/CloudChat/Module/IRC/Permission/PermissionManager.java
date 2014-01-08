@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRCPermissions;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionGroup;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionUser;
+import net.cubespace.CloudChat.Module.IRC.IRCManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,12 +24,14 @@ public class PermissionManager {
     }
 
     private CloudChatPlugin plugin;
+    private IRCManager ircManager;
 
     //Loaded Auth permissions
     private HashMap<String, ArrayList<String>> loadedPermisisons = new HashMap<>();
 
-    public PermissionManager(CloudChatPlugin plugin) {
+    public PermissionManager(IRCManager ircManager, CloudChatPlugin plugin) {
         this.plugin = plugin;
+        this.ircManager = ircManager;
     }
 
     private ArrayList<String> calcEffectivePermissions(String auth) {
@@ -152,6 +155,24 @@ public class PermissionManager {
     public void load(String nickname, String auth) {
         ArrayList<String> permissions = calcEffectivePermissions(auth);
         loadedPermisisons.put(nickname, permissions);
+    }
+
+    public void move(String oldNick, String newNick) {
+        ArrayList<String> permissions = loadedPermisisons.get(oldNick);
+        loadedPermisisons.remove(oldNick);
+        loadedPermisisons.put(newNick, permissions);
+    }
+
+    public void reload(String auth) {
+        String nickname = ircManager.getNickForAuth(auth);
+
+        if(nickname != null) {
+            load(nickname, auth);
+        }
+    }
+
+    public void remove(String nickname) {
+        loadedPermisisons.remove(nickname);
     }
 
     public boolean has(String nickname, String permission) {
