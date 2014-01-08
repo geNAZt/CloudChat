@@ -1,8 +1,12 @@
-package net.cubespace.lib.Permission.Listener;
+package net.cubespace.CloudChat.Listener;
 
+import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Event.PlayerJoinEvent;
+import net.cubespace.CloudChat.Event.ServerConnectEvent;
 import net.cubespace.PluginMessages.PermissionRequest;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Permission.PermissionManager;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -14,27 +18,21 @@ import java.util.concurrent.TimeUnit;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  * @date Last changed: 26.11.13 23:38
  */
-public class PlayerJoinListener implements Listener {
+public class ServerConnectedListener implements Listener {
     private final CubespacePlugin plugin;
-    private final PermissionManager permissionManager;
 
-    public PlayerJoinListener(CubespacePlugin plugin, PermissionManager permissionManager) {
+    public ServerConnectedListener(CubespacePlugin plugin) {
         this.plugin = plugin;
-        this.permissionManager = permissionManager;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onServerConnected(final ServerConnectedEvent event) {
-        if(permissionManager.get(event.getPlayer().getName()) != null) return;
-
-        permissionManager.create(event.getPlayer().getName());
-
-        //Better wait some time since the player need to be in the Playable State
         plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
             @Override
             public void run() {
-                plugin.getPluginMessageManager("CubespaceLibrary").sendPluginMessage(event.getPlayer(), new PermissionRequest(permissionManager.getPrefix()));
+                if (event.getPlayer() == null) return;
+                plugin.getAsyncEventBus().callEvent(new ServerConnectEvent(event.getPlayer(), event.getPlayer().getServer().getInfo()));
             }
-        }, 50, TimeUnit.MILLISECONDS);
+        }, 50 + (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);
     }
 }

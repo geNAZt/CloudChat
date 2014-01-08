@@ -11,6 +11,7 @@ import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Listener.ChatListener;
 import net.cubespace.CloudChat.Listener.PermissionLoadedListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
+import net.cubespace.CloudChat.Listener.ServerConnectedListener;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule;
 import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
 import net.cubespace.CloudChat.Module.CloudChat.CloudChatModule;
@@ -75,6 +76,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getAsyncEventBus().addListener(new PermissionLoadedListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerQuitListener(this));
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
+        getProxy().getPluginManager().registerListener(this, new ServerConnectedListener(this));
 
         super.onEnable();
     }
