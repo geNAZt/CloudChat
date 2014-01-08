@@ -65,7 +65,7 @@ public class ChannelManager implements IManager {
 
             try {
                 channelDatabase.init();
-                loadedChannels.put(channelDatabase.Name, channelDatabase);
+                loadedChannels.put(channelDatabase.Name.toLowerCase(), channelDatabase);
                 plugin.getPluginLogger().info("Loaded Channel " + channelDatabase.Name);
             } catch (Exception e) {
                 plugin.getPluginLogger().error("Could not load Channel", e);
@@ -128,7 +128,7 @@ public class ChannelManager implements IManager {
         HashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new HashMap<>();
         for(Map.Entry<ChannelDatabase, ArrayList<ProxiedPlayer>> playersInChannel : this.playerInChannel.entrySet()) {
             for(String channelName : loadedChannels.keySet()) {
-                if(playersInChannel.getKey().Name.equals(channelName)) {
+                if(playersInChannel.getKey().Name.toLowerCase().equals(channelName)) {
                     playerInChannel.put(loadedChannels.get(channelName), playersInChannel.getValue());
                 }
             }
@@ -142,14 +142,14 @@ public class ChannelManager implements IManager {
 
         //Only generate a Global Channel
         ChannelDatabase global = new ChannelDatabase(plugin, ((Main) plugin.getConfigManager().getConfig("main")).Global);
-        global.Short = "G";
+        global.Short = ((Main) plugin.getConfigManager().getConfig("main")).Global.substring(0,1);
         global.Name = ((Main) plugin.getConfigManager().getConfig("main")).Global;
         global.Format = "&8[&2%channel_short&8] %prefix%nick{click:playerMenu}%suffix&r: %message";
         global.Forced = true;
 
         try {
             global.save();
-            loadedChannels.put(((Main) plugin.getConfigManager().getConfig("main")).Global, global);
+            loadedChannels.put(((Main) plugin.getConfigManager().getConfig("main")).Global.toLowerCase(), global);
         } catch (Exception e) {
             plugin.getPluginLogger().error("Could not create Basic Channel " + ((Main) plugin.getConfigManager().getConfig("main")).Global, e);
             throw new RuntimeException();
@@ -163,7 +163,7 @@ public class ChannelManager implements IManager {
      * @return
      */
     public ChannelDatabase get(String channel) {
-        return loadedChannels.get(channel);
+        return loadedChannels.get(channel.toLowerCase());
     }
 
     /**
@@ -194,7 +194,7 @@ public class ChannelManager implements IManager {
         }
 
         //Check if the Player has the Permission to join
-        if(!plugin.getPermissionManager().has(player, "cloudchat.channel." + channel.Name)) {
+        if(!plugin.getPermissionManager().has(player, "cloudchat.channel." + channel.Name.toLowerCase())) {
             player.sendMessage("You cant join this Channel. You don't have enough Permissions");
             plugin.getPluginLogger().info(player.getName() + " got rejected due to missing Permission of joining Channel " + channel.Name);
             return false;
@@ -230,7 +230,7 @@ public class ChannelManager implements IManager {
         for(Map.Entry<String, ChannelDatabase> channelDatabaseEntry : loadedChannels.entrySet()) {
             if(channelDatabaseEntry.getValue().Forced) {
                 join(player, channelDatabaseEntry.getValue());
-            } else if(channelDatabaseEntry.getValue().ForceIntoWhenPermission && plugin.getPermissionManager().has(player, "cloudchat.channel." + channelDatabaseEntry.getValue().Name)) {
+            } else if(channelDatabaseEntry.getValue().ForceIntoWhenPermission && plugin.getPermissionManager().has(player, "cloudchat.channel." + channelDatabaseEntry.getValue().Name.toLowerCase())) {
                 join(player, channelDatabaseEntry.getValue());
             }
         }
@@ -338,6 +338,6 @@ public class ChannelManager implements IManager {
      * @return
      */
     public boolean exists(String channel) {
-        return loadedChannels.containsKey(channel);
+        return loadedChannels.containsKey(channel.toLowerCase());
     }
 }
