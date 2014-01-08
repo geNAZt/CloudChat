@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 public class PermissionStorage {
     private ArrayList<String> permissions = new ArrayList<>();
+    private boolean resolved = false;
 
     public void add(String permission) {
         permissions.add(permission);
@@ -19,5 +20,13 @@ public class PermissionStorage {
 
     public boolean has(String permission) {
         return permissions.contains(permission);
+    }
+
+    public void resolved() {
+        this.resolved = true;
+    }
+
+    public boolean isResolved() {
+        return resolved;
     }
 }

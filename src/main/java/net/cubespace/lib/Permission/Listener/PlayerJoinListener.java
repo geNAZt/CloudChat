@@ -25,9 +25,9 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onServerConnected(final ServerConnectedEvent event) {
-        if(permissionManager.get(event.getPlayer().getName()) != null) return;
-
-        permissionManager.create(event.getPlayer().getName());
+        if(permissionManager.get(event.getPlayer().getName()) == null) {
+            permissionManager.create(event.getPlayer().getName());
+        }
 
         //Better wait some time since the player need to be in the Playable State
         plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {

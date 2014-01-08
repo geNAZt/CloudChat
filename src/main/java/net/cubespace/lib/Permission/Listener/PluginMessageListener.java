@@ -4,6 +4,7 @@ import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
 import net.cubespace.PluginMessages.PermissionResponse;
 import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Permission.Event.PermissionChangedEvent;
 import net.cubespace.lib.Permission.Event.PermissionLoadedEvent;
 import net.cubespace.lib.Permission.PermissionManager;
 
@@ -35,7 +36,12 @@ public class PluginMessageListener implements PacketListener {
 
         if(permissionResponse.getMode() == 2) {
             //Ready
-            plugin.getAsyncEventBus().callEvent(new PermissionLoadedEvent(permissionResponse.getSender().getName()));
+            if(!permissionManager.get(permissionResponse.getSender().getName()).isResolved())
+                plugin.getAsyncEventBus().callEvent(new PermissionLoadedEvent(permissionResponse.getSender().getName()));
+            else
+                plugin.getAsyncEventBus().callEvent(new PermissionChangedEvent(permissionResponse.getSender().getName()));
+
+            permissionManager.get(permissionResponse.getSender().getName()).resolved();
         }
     }
 }
