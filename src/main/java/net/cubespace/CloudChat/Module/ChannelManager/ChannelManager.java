@@ -20,7 +20,7 @@ import java.util.Map;
 public class ChannelManager implements IManager {
     private CloudChatPlugin plugin;
 
-    private final HashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> playerJoinedChannels = new HashMap<>();
+    private HashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> playerJoinedChannels = new HashMap<>();
     private HashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new HashMap<>();
 
     private HashMap<String, ChannelDatabase> loadedChannels = new HashMap<>();
@@ -126,7 +126,7 @@ public class ChannelManager implements IManager {
         load();
 
         HashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new HashMap<>();
-        for(Map.Entry<ChannelDatabase, ArrayList<ProxiedPlayer>> playersInChannel : this.playerInChannel.entrySet()) {
+        for(Map.Entry<ChannelDatabase, ArrayList<ProxiedPlayer>> playersInChannel : new HashMap<>(this.playerInChannel).entrySet()) {
             for(String channelName : loadedChannels.keySet()) {
                 if(playersInChannel.getKey().Name.toLowerCase().equals(channelName)) {
                     playerInChannel.put(loadedChannels.get(channelName), playersInChannel.getValue());
@@ -135,6 +135,21 @@ public class ChannelManager implements IManager {
         }
 
         this.playerInChannel = playerInChannel;
+
+        HashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> joinedChannels = new HashMap<>();
+        for(Map.Entry<ProxiedPlayer, ArrayList<ChannelDatabase>> playersJoinedChannels : new HashMap<>(this.playerJoinedChannels).entrySet()) {
+            joinedChannels.put(playersJoinedChannels.getKey(), new ArrayList<ChannelDatabase>());
+
+            for(String channelName : loadedChannels.keySet()) {
+                for(ChannelDatabase channelDatabase : playersJoinedChannels.getValue()) {
+                    if(channelDatabase.Name.toLowerCase().equals(channelName)) {
+                        joinedChannels.get(playersJoinedChannels.getKey()).add(loadedChannels.get(channelName));
+                    }
+                }
+            }
+        }
+
+        this.playerJoinedChannels = joinedChannels;
     }
 
     private void generateBasicChannels() {

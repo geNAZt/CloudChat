@@ -12,11 +12,9 @@ import net.cubespace.lib.EventBus.Listener;
  * @date Last changed: 28.12.13 12:21
  */
 public class PlayerQuitListener implements Listener {
-    private CloudChatPlugin plugin;
     private PlayerManager playerManager;
 
     public PlayerQuitListener(CloudChatPlugin plugin) {
-        this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
