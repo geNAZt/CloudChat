@@ -26,6 +26,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
 import net.cubespace.CloudChat.Module.Spam.SpamModule;
 import net.cubespace.CloudChat.Module.Twitter.TwitterModule;
 import net.cubespace.CloudChat.Util.AutoComplete;
+import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
 
