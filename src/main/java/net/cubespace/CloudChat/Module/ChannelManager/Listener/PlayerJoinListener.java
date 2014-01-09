@@ -36,8 +36,8 @@ public class PlayerJoinListener implements Listener {
         channelManager.joinForcedChannels(event.getPlayer());
 
         //Check for broken focus (its a leftover from the global channel changes)
-        if(!channelManager.exists(playerDatabase.Focus)) {
-            playerDatabase.Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global;
+        if(!channelManager.exists(playerDatabase.Focus.toLowerCase())) {
+            playerDatabase.Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global.toLowerCase();
         }
     }
 }

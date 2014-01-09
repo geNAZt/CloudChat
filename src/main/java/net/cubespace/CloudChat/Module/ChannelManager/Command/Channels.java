@@ -142,7 +142,7 @@ public class Channels implements CLICommand {
             return;
         }
 
-        playerManager.get(player.getName()).Focus = channelDatabase.Name;
+        playerManager.get(player.getName()).Focus = channelDatabase.Name.toLowerCase();
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", channelDatabase.Name))).send(sender);
     }

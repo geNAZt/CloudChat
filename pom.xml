@@ -6,7 +6,7 @@
 
     <groupId>net.cubespace</groupId>
     <artifactId>CloudChat</artifactId>
-    <version>3.2.4</version>
+    <version>3.3.0</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -76,6 +76,7 @@
                                     <include>javax.persistence:*</include>
                                     <include>org.twitter4j:*</include>
                                     <include>com.iKeirNez:*</include>
+                                    <include>redis.clients:*</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -94,6 +95,10 @@
                                 <relocation>
                                     <pattern>javax.persistence</pattern>
                                     <shadedPattern>net.cubespace.vendor.javax.persistence</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.iKeirNez</pattern>
+                                    <shadedPattern>net.cubespace.vendor.com.iKeirNez</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.iKeirNez</pattern>

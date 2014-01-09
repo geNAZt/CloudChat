@@ -45,7 +45,7 @@ public class CreateChannel implements CLICommand {
         String alias = name.substring(0 , 1).toUpperCase();
 
         //Save the new Channel
-        ChannelDatabase channelDatabase = new ChannelDatabase(plugin, name);
+        ChannelDatabase channelDatabase = new ChannelDatabase(plugin, name.toLowerCase());
         channelDatabase.Name = name;
         channelDatabase.Password = password;
         channelDatabase.Forced = false;
