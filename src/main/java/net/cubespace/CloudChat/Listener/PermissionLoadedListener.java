@@ -3,7 +3,6 @@ package net.cubespace.CloudChat.Listener;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Event.PlayerJoinEvent;
-import net.cubespace.CloudChat.Event.ServerConnectEvent;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -21,6 +20,7 @@ public class PermissionLoadedListener implements Listener {
 
     public PermissionLoadedListener(CloudChatPlugin plugin) {
         this.plugin = plugin;
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

@@ -10,6 +10,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PluginMessageListener;
 import net.cubespace.PluginMessages.FactionChatMessage;
+import net.cubespace.PluginMessages.SendChatMessage;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -33,6 +34,7 @@ public class ChatHandlerModule {
 
         //Register Packets and Listener
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(FactionChatMessage.class);
+        plugin.getPluginMessageManager("CloudChat").addPacketToRegister(SendChatMessage.class);
         plugin.getPluginMessageManager("CloudChat").addListenerToRegister(new PluginMessageListener(plugin));
     }
 }

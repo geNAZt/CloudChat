@@ -31,5 +31,6 @@ public class PlayerDatabase extends Config {
     public String WorldAlias = "";
     public Boolean AFK = false;
     public String Server = "";
+    public Boolean Ignore = false;
     public ArrayList<Mail> Mails = new ArrayList<>();
 }
