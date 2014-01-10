@@ -47,12 +47,18 @@ public class Players implements Command {
                     break;
                 }
 
-                sb.append(", ");
+                if(sb.length() > 350) {
+                    ircModule.getIrcBot().sendToChannel(sb.toString(), sender.getChannel());
+                    sb = new StringBuilder();
+                } else {
+                    sb.append(", ");
+                }
                 count++;
             }
         }
 
-        ircModule.getIrcBot().sendToChannel(sb.toString(), sender.getChannel());
+        if(sb.length() > 0)
+            ircModule.getIrcBot().sendToChannel(sb.toString(), sender.getChannel());
 
         return true;
     }
