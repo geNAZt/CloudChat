@@ -42,9 +42,9 @@ public class ReportManager {
      * Close the Report Session and give back the written File
      */
     public void closeSession() {
-        ReportSession reportSession;
-        if((reportSession = getOpenSession()) != null) {
-            reportSession.close();
+        if(this.reportSession != null) {
+            this.reportSession.close();
+            this.reportSession = null;
         }
     }
 }
