@@ -33,5 +33,6 @@ public class PlayerDatabase extends Config {
     public String Server = "";
     public Boolean Ignore = false;
     public Boolean Output = true;
+    public Boolean Muted = false;
     public ArrayList<Mail> Mails = new ArrayList<>();
 }

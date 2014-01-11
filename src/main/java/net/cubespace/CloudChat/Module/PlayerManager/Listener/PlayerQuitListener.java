@@ -18,7 +18,7 @@ public class PlayerQuitListener implements Listener {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         //Unload Player
         playerManager.remove(event.getPlayer());
