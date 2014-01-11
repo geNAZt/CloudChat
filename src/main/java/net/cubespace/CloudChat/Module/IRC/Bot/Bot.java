@@ -175,6 +175,10 @@ public class Bot extends PircBot implements Runnable {
      * @param channel
      */
     public synchronized void sendToChannel(String message, String channel) {
+        if(channel.contains(" ")) {
+            channel = channel.split(" ")[0];
+        }
+
         plugin.getPluginLogger().debug("Got Minecraft Message sending it to " + channel + ": " + message);
         sendMessage(channel, MCToIrcFormat.translateString(message));
     }
