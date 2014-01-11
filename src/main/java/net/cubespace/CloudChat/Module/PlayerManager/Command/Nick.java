@@ -53,7 +53,7 @@ public class Nick implements CLICommand {
         }
 
         if(args.length > 1) {
-            if(!sender.hasPermission("cloudchat.command.nick.other")) {
+            if(!plugin.getPermissionManager().has(sender, "cloudchat.command.nick.other")) {
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_NoPermissionToChangeOther)).send(sender);
                 return;
