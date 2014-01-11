@@ -35,9 +35,9 @@ public class Playermenu implements CLICommand {
 
         String message = messages.Playermenu_Prefix;
 
-        if(sender.hasPermission("cloudchat.command.mute") && !muted) {
+        if(plugin.getPermissionManager().has(sender, "cloudchat.command.mute") && !muted) {
             message += messages.Playermenu_Mute;
-        } else if(sender.hasPermission("cloudchat.command.unmute") && muted) {
+        } else if(plugin.getPermissionManager().has(sender, "cloudchat.command.unmute") && muted) {
             message += messages.Playermenu_Unmute;
         }
 
