@@ -375,7 +375,7 @@ public class Bot extends PircBot implements Runnable {
         if(!cmdManager.dispatchCommand(ircSender, message)) {
             plugin.getPluginLogger().debug("Message is not a Command");
             for(Map.Entry<String, String> channelEntry : ircConfig.Channels.entries()) {
-                if(channelEntry.getValue().equals(channel)) {
+                if(channelEntry.getValue().contains(channel)) {
                     ChannelDatabase channelDatabase = channelManager.get(channelEntry.getKey());
                     PlayerDatabase ircDatabase = new PlayerDatabase(plugin, "IRC");
                     ircDatabase.Nick = ircConfig.IngameName + " " + sender;
