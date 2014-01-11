@@ -8,6 +8,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerChangeAFKEvent;
 import net.cubespace.PluginMessages.AFKMessage;
 import net.cubespace.PluginMessages.AffixMessage;
 import net.cubespace.PluginMessages.IgnoreMessage;
+import net.cubespace.PluginMessages.OutputMessage;
 import net.cubespace.PluginMessages.PermissionRequest;
 import net.cubespace.PluginMessages.WorldMessage;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
@@ -79,5 +80,12 @@ public class PluginMessageListener implements PacketListener {
         ProxiedPlayer player = ignoreMessage.getSender().getBungeePlayer();
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         playerDatabase.Ignore = ignoreMessage.getIgnore();
+    }
+
+    @PacketHandler
+    public void onOutputMessage(OutputMessage outputMessage) {
+        ProxiedPlayer player = outputMessage.getSender().getBungeePlayer();
+        PlayerDatabase playerDatabase = playerManager.get(player.getName());
+        playerDatabase.Output = outputMessage.isOutput();
     }
 }

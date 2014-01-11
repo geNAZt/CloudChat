@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class PlayerDatabase extends Config {
     public PlayerDatabase(CloudChatPlugin plugin, String userName) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + userName + ".yml");
-        CONFIG_HEADER = "User AsyncDatabaseLogger for " + userName;
+        CONFIG_HEADER = "User Database for " + userName;
 
         Nick = userName;
         Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global;
@@ -32,5 +32,6 @@ public class PlayerDatabase extends Config {
     public Boolean AFK = false;
     public String Server = "";
     public Boolean Ignore = false;
+    public Boolean Output = true;
     public ArrayList<Mail> Mails = new ArrayList<>();
 }

@@ -17,8 +17,11 @@ import net.cubespace.PluginMessages.SendChatMessage;
  * @date Last changed: 28.12.13 12:22
  */
 public class ChatHandlerModule {
+    private ChatBuffer chatBuffer;
+
     public ChatHandlerModule(CloudChatPlugin plugin) {
         Main config = plugin.getConfigManager().getConfig("main");
+        chatBuffer = new ChatBuffer();
 
         //Register the Listener
         if(config.Announce_PlayerJoin)
@@ -30,11 +33,15 @@ public class ChatHandlerModule {
         plugin.getAsyncEventBus().addListener(new PlayerChangeAFKListener(plugin));
         plugin.getAsyncEventBus().addListener(new AsyncChatListener(plugin));
         plugin.getAsyncEventBus().addListener(new ChatMessageListener(plugin));
-        plugin.getAsyncEventBus().addListener(new PlayerSendMessageListener());
+        plugin.getAsyncEventBus().addListener(new PlayerSendMessageListener(this, plugin));
 
         //Register Packets and Listener
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(FactionChatMessage.class);
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(SendChatMessage.class);
         plugin.getPluginMessageManager("CloudChat").addListenerToRegister(new PluginMessageListener(plugin));
+    }
+
+    public ChatBuffer getChatBuffer() {
+        return chatBuffer;
     }
 }
