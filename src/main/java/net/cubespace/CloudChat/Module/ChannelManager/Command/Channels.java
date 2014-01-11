@@ -95,7 +95,7 @@ public class Channels implements CLICommand {
             return;
         }
 
-        if((channelDatabase.ForceIntoWhenPermission || channelDatabase.Forced) && !(sender.hasPermission("cloudchat.channel." + channelDatabase.Name + ".canleave") || sender.hasPermission("cloudchat.canleaveforced"))) {
+        if((channelDatabase.ForceIntoWhenPermission || channelDatabase.Forced) && !(plugin.getPermissionManager().has(player, "cloudchat.channel." + channelDatabase.Name + ".canleave") || plugin.getPermissionManager().has(player, "cloudchat.canleaveforced"))) {
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Leave_ForcedChannel)).send(sender);
 

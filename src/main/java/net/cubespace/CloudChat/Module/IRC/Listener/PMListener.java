@@ -92,7 +92,7 @@ public class PMListener implements Listener {
             ProxiedPlayer sen = plugin.getProxy().getPlayer(event.getFrom());
 
             //Check if sender can do this
-            if(!sen.hasPermission("cloudchat.pm.irc")) {
+            if(!plugin.getPermissionManager().has(sen, "cloudchat.pm.irc")) {
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(messages.Message_NoIrcNick);
                 messageBuilder.send(sen);
