@@ -116,9 +116,18 @@ public class Bot extends PircBot implements Runnable {
         for(String channel : ircConfig.Channels.values()) {
             if(!ircManager.botHasJoined(channel)) {
                 plugin.getPluginLogger().debug("Attempt to join Channel " + channel);
-                joinChannel(channel);
-                sendToChannel(ircConfig.JoinMessage, channel);
-                ircManager.botJoinedChannel(channel);
+
+                if(channel.contains(" ")) {
+                    String[] split = channel.split(" ");
+                    channel = split[0];
+                    joinChannel(channel, split[1]);
+                    sendToChannel(ircConfig.JoinMessage, channel);
+                    ircManager.botJoinedChannel(channel);
+                } else {
+                    joinChannel(channel);
+                    sendToChannel(ircConfig.JoinMessage, channel);
+                    ircManager.botJoinedChannel(channel);
+                }
             }
         }
     }
