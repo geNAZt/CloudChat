@@ -39,7 +39,7 @@ public class PluginMessageListener implements PacketListener {
             playerDatabase.Suffix = affixMessage.getSuffix();
 
         //Get new Permissions
-        plugin.getPluginMessageManager("CubespaceLibrary").sendPluginMessage(player, new PermissionRequest(plugin.getPermissionManager().getPrefix()));
+        //plugin.getPluginMessageManager("CubespaceLibrary").sendPluginMessage(player, new PermissionRequest(plugin.getPermissionManager().getPrefix()));
         plugin.getPluginLogger().debug("Got new Affix Message for " + player.getName() + " - " + affixMessage.getPrefix() + "/" + affixMessage.getSuffix());
     }
 
