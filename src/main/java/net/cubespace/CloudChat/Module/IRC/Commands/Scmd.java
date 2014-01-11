@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.IRC.Commands;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.IRC.CloudChatCommandSender;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
@@ -50,26 +51,29 @@ public class Scmd implements Command {
         }
 
         //Check if there is a Player online on the wanted Server
-        ServerInfo serverInfo = plugin.getProxy().getServerInfo(server);
+        if(!server.equals("bungee")) {
+            ServerInfo serverInfo = plugin.getProxy().getServerInfo(server);
+            if(serverInfo == null) {
+                ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_InvalidServer.replace("%nick", sender.getRawNick())), sender.getChannel());
+                return true;
+            }
 
-        if(serverInfo == null) {
-            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_InvalidServer.replace("%nick", sender.getRawNick())), sender.getChannel());
-            return true;
+
+            if(serverInfo.getPlayers().size() == 0) {
+                ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_ServerIsEmpty.replace("%nick", sender.getRawNick())), sender.getChannel());
+                return true;
+            }
+
+            //Create a new SCMD Session
+            String scommand = StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " ");
+            plugin.getPluginLogger().info("Issuing SCMD '" + scommand + "' on " + args[0] + " for " + sender.getNick());
+            Integer sessionId = ircModule.getIrcBot().getIrcManager().newScmdSession(sender.getRawNick(), sender.getChannel(), scommand);
+
+            DispatchScmdMessage dispatchScmdMessage = new DispatchScmdMessage(scommand, sessionId);
+            plugin.getPluginMessageManager("CloudChat").sendPluginMessage(serverInfo.getPlayers().iterator().next(), dispatchScmdMessage);
+        } else {
+            plugin.getProxy().getPluginManager().dispatchCommand(new CloudChatCommandSender(ircModule, sender), args[1]);
         }
-
-
-        if(serverInfo.getPlayers().size() == 0) {
-            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_ServerIsEmpty.replace("%nick", sender.getRawNick())), sender.getChannel());
-            return true;
-        }
-
-        //Create a new SCMD Session
-        String scommand = StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " ");
-        plugin.getPluginLogger().info("Issuing SCMD '" + scommand + "' on " + args[0] + " for " + sender.getNick());
-        Integer sessionId = ircModule.getIrcBot().getIrcManager().newScmdSession(sender.getRawNick(), sender.getChannel(), scommand);
-
-        DispatchScmdMessage dispatchScmdMessage = new DispatchScmdMessage(scommand, sessionId);
-        plugin.getPluginMessageManager("CloudChat").sendPluginMessage(serverInfo.getPlayers().iterator().next(), dispatchScmdMessage);
 
         ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_CommandIssued.replace("%nick", sender.getRawNick())), sender.getChannel());
         return true;
