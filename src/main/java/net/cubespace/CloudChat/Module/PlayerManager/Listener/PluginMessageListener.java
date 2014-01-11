@@ -31,7 +31,6 @@ public class PluginMessageListener implements PacketListener {
     public void onAffixMessage(AffixMessage affixMessage){
         ProxiedPlayer player = affixMessage.getSender().getBungeePlayer();
 
-
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         if(affixMessage.getPrefix() != null)
             playerDatabase.Prefix = affixMessage.getPrefix();
@@ -39,6 +38,8 @@ public class PluginMessageListener implements PacketListener {
         if(affixMessage.getSuffix() != null)
             playerDatabase.Suffix = affixMessage.getSuffix();
 
+        //Get new Permissions
+        plugin.getPluginMessageManager("CubespaceLibrary").sendPluginMessage(player, new PermissionRequest(plugin.getPermissionManager().getPrefix()));
         plugin.getPluginLogger().debug("Got new Affix Message for " + player.getName() + " - " + affixMessage.getPrefix() + "/" + affixMessage.getSuffix());
     }
 
