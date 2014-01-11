@@ -72,7 +72,9 @@ public class Scmd implements Command {
             DispatchScmdMessage dispatchScmdMessage = new DispatchScmdMessage(scommand, sessionId);
             plugin.getPluginMessageManager("CloudChat").sendPluginMessage(serverInfo.getPlayers().iterator().next(), dispatchScmdMessage);
         } else {
-            plugin.getProxy().getPluginManager().dispatchCommand(new CloudChatCommandSender(ircModule, sender), args[1]);
+            String scommand = StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " ");
+            plugin.getPluginLogger().info("Issuing SCMD '" + scommand + "' on " + args[0] + " for " + sender.getNick());
+            plugin.getProxy().getPluginManager().dispatchCommand(new CloudChatCommandSender(ircModule, sender), scommand);
         }
 
         ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Scmd_CommandIssued.replace("%nick", sender.getRawNick())), sender.getChannel());
