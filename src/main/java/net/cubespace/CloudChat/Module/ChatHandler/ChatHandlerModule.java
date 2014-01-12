@@ -1,6 +1,8 @@
 package net.cubespace.CloudChat.Module.ChatHandler;
 
+import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Module.ChatHandler.Command.Broadcast;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.ChatMessageListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerChangeAFKListener;
@@ -15,7 +17,6 @@ import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:22
  */
 public class ChatHandlerModule extends Module {
     private ChatBuffer chatBuffer;
@@ -32,6 +33,13 @@ public class ChatHandlerModule extends Module {
     @Override
     public void onEnable() {
         Main config = plugin.getConfigManager().getConfig("main");
+
+        //Register Command
+        if(!config.DoNotBind.contains("broadcast")) {
+            plugin.getBindManager().bind("broadcast", Binder.class);
+        }
+
+        plugin.getCommandExecutor().add(this, new Broadcast(plugin));
 
         //Register the Listener
         if(config.Announce_PlayerJoin)
@@ -53,6 +61,12 @@ public class ChatHandlerModule extends Module {
 
     @Override
     public void onDisable() {
+        if(plugin.getBindManager().isBound("broadcast")) {
+            plugin.getBindManager().unbind("broadcast");
+        }
+
+        plugin.getCommandExecutor().remove(this);
+
         //Remove all Listeners
         plugin.getAsyncEventBus().removeListener(this);
 

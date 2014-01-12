@@ -143,4 +143,6 @@ public class Messages extends Config {
 
     public String Command_Realname_OfflinePlayer = "&cYou can not get the real Name of offline Players";
     public String Command_Realname_Success = "&6The Realname of %nick is &a%realname";
+
+    public String Command_BroadCast_Message = "&c[&aBroadcast&c]&r %message";
 }
