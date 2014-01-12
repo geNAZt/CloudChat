@@ -141,4 +141,7 @@ public class Messages extends Config {
     public String Playermenu_Unmute = "&a&nUnmute{click:unMute}&r | ";
     public String Playermenu_Mute = "&c&nMute{click:mute}&r | ";
     public String Playermenu_Message = "&6&nMessage{click:message}";
+
+    public String Command_Realname_OfflinePlayer = "&cYou can not get the real Name of offline Players";
+    public String Command_Realname_Success = "&6The Realname of %nick is &a%realname";
 }
