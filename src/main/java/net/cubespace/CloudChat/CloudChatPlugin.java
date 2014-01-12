@@ -77,8 +77,8 @@ public class CloudChatPlugin extends CubespacePlugin {
         this.getProxy().getScheduler().schedule(this, new Runnable() {
             @Override
             public void run() {
-                getPluginMessageManager("CloudChat").finish();
                 getModuleManager().enable();
+                getPluginMessageManager("CloudChat").finish();
             }
         }, 500, TimeUnit.MILLISECONDS);
 
