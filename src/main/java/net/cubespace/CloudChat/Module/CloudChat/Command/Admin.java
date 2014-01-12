@@ -1,11 +1,11 @@
 package net.cubespace.CloudChat.Module.CloudChat.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
@@ -17,10 +17,10 @@ import java.util.concurrent.TimeUnit;
  * @date Last changed: 02.01.14 07:02
  */
 public class Admin implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private ScheduledTask cancelTask;
 
-    public Admin(CloudChatPlugin plugin) {
+    public Admin(CubespacePlugin plugin) {
         this.plugin = plugin;
     }
 

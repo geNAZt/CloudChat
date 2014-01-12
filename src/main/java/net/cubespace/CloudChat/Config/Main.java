@@ -1,14 +1,14 @@
 package net.cubespace.CloudChat.Config;
 
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.lib.Configuration.Config;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class Main extends Config {
-    public Main(CloudChatPlugin plugin) {
+    public Main(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "config.yml");
         CONFIG_HEADER = "CloudChat by geNAZt";
     }

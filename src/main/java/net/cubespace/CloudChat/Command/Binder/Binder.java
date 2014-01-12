@@ -1,17 +1,17 @@
 package net.cubespace.CloudChat.Command.Binder;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 
 public class Binder extends Command {
     protected String commandName;
-    protected CloudChatPlugin plugin;
+    protected CubespacePlugin plugin;
 
-    public Binder(CloudChatPlugin plugin, String name, String... aliases) {
+    public Binder(CubespacePlugin plugin, String name, String... aliases) {
         super(name, null, aliases);
 
         this.plugin = plugin;

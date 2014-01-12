@@ -1,17 +1,17 @@
 package net.cubespace.CloudChat.Config;
 
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionGroup;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionUser;
 import net.cubespace.lib.Configuration.Config;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class IRCPermissions extends Config {
-    public IRCPermissions(CloudChatPlugin plugin) {
+    public IRCPermissions(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "ircPermissions.yml");
 
         ArrayList<String> permissionDefault = new ArrayList<>();

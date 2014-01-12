@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.IRC.Permission.PermissionManager;
 import net.cubespace.CloudChat.Module.IRC.Permission.WhoisResolver;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @date Last changed: 13.12.13 21:22
  */
 public class IRCManager {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     //Unresolved Whois
     private HashMap<String, WhoisResolver> unresolvedWhois = new HashMap<>();
     //Resolved Whois
@@ -35,7 +36,7 @@ public class IRCManager {
     private IRCModule ircModule;
 
 
-    public IRCManager(CloudChatPlugin plugin, IRCModule ircModule) {
+    public IRCManager(CubespacePlugin plugin, IRCModule ircModule) {
         this.plugin = plugin;
         this.permissionManager = new PermissionManager(this, plugin);
         this.ircModule = ircModule;

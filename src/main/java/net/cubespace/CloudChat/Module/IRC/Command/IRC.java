@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.IRC.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.IRC.Bot.Bot;
@@ -8,15 +7,16 @@ import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 
 import java.util.concurrent.TimeUnit;
 
 public class IRC implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private IRCModule ircModule;
 
-    public IRC(IRCModule ircModule, CloudChatPlugin plugin) {
+    public IRC(IRCModule ircModule, CubespacePlugin plugin) {
         this.plugin = plugin;
         this.ircModule = ircModule;
     }

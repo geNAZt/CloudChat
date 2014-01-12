@@ -1,10 +1,10 @@
 package net.cubespace.CloudChat.Module.IRC.Permission;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRCPermissions;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionGroup;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionUser;
 import net.cubespace.CloudChat.Module.IRC.IRCManager;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,13 +23,13 @@ public class PermissionManager {
         }
     }
 
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private IRCManager ircManager;
 
     //Loaded Auth permissions
     private HashMap<String, ArrayList<String>> loadedPermisisons = new HashMap<>();
 
-    public PermissionManager(IRCManager ircManager, CloudChatPlugin plugin) {
+    public PermissionManager(IRCManager ircManager, CubespacePlugin plugin) {
         this.plugin = plugin;
         this.ircManager = ircManager;
     }

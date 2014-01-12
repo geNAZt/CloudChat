@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.IRC.Commands;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
@@ -8,16 +7,17 @@ import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Collection;
 
 public class Players implements Command {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private IRCModule ircModule;
     private PlayerManager playerManager;
 
-    public Players(IRCModule ircModule, CloudChatPlugin pl) {
+    public Players(IRCModule ircModule, CubespacePlugin pl) {
         plugin = pl;
         this.ircModule = ircModule;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

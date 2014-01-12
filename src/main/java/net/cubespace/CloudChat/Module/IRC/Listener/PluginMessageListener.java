@@ -2,10 +2,10 @@ package net.cubespace.CloudChat.Module.IRC.Listener;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.ScmdSession;
 import net.cubespace.PluginMessages.RespondScmdMessage;
+import net.cubespace.lib.CubespacePlugin;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -13,9 +13,9 @@ import net.cubespace.PluginMessages.RespondScmdMessage;
  */
 public class PluginMessageListener implements PacketListener {
     private IRCModule ircModule;
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
-    public PluginMessageListener(IRCModule ircModule, CloudChatPlugin plugin) {
+    public PluginMessageListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.ircModule = ircModule;
         this.plugin = plugin;
     }

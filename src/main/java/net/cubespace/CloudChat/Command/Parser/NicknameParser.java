@@ -1,10 +1,10 @@
 package net.cubespace.CloudChat.Command.Parser;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
  * @date Last changed: 30.12.13 22:38
  */
 public class NicknameParser {
-    public static ProxiedPlayer getPlayer(CloudChatPlugin plugin, String tabCompleteString) {
+    public static ProxiedPlayer getPlayer(CubespacePlugin plugin, String tabCompleteString) {
         PlayerManager playerManager = plugin.getManagerRegistry().getManager("playerManager");
         Messages messages = plugin.getConfigManager().getConfig("messages");
 

@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.Mute.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
@@ -9,6 +8,7 @@ import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -17,10 +17,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @date Last changed: 28.12.13 22:32
  */
 public class Mute implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private MuteModule muteModule;
 
-    public Mute(MuteModule muteModule, CloudChatPlugin plugin) {
+    public Mute(MuteModule muteModule, CubespacePlugin plugin) {
         this.plugin = plugin;
         this.muteModule = muteModule;
     }

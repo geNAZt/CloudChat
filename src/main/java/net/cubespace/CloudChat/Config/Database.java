@@ -1,13 +1,13 @@
 package net.cubespace.CloudChat.Config;
 
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.lib.Configuration.Config;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 
 public class Database extends Config {
-    public Database(CloudChatPlugin plugin) {
+    public Database(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "database.yml");
         CONFIG_HEADER = "Config for AsyncDatabaseLogger Logging";
     }

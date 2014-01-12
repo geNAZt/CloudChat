@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.Twitter.Task;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -8,6 +7,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.Twitter.TwitterModule;
+import net.cubespace.lib.CubespacePlugin;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.TwitterException;
@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class TwitterCheckTweetTask implements Runnable {
     private TwitterModule twitterModule;
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private ChannelManager channelManager;
 
-    public TwitterCheckTweetTask(TwitterModule twitterModule, CloudChatPlugin plugin) {
+    public TwitterCheckTweetTask(TwitterModule twitterModule, CubespacePlugin plugin) {
         this.twitterModule = twitterModule;
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");

@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.CloudChat.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.Mute.MuteManager;
@@ -10,6 +9,7 @@ import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 
 /**
@@ -17,11 +17,11 @@ import net.md_5.bungee.api.CommandSender;
  * @date Last changed: 07.01.14 20:30
  */
 public class Playermenu implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private MuteManager muteManager;
     private PlayerManager playerManager;
 
-    public Playermenu(CloudChatPlugin plugin) {
+    public Playermenu(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.muteManager = plugin.getManagerRegistry().getManager("muteManager");
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

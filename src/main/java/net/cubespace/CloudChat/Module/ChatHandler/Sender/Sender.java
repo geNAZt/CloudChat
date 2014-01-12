@@ -5,7 +5,6 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 16:02
  */
 public class Sender implements ISender {
     private String nick;

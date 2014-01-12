@@ -1,9 +1,6 @@
 package net.cubespace.CloudChat.Module.PlayerManager.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
-import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
-import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
@@ -13,6 +10,7 @@ import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -21,19 +19,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @date Last changed: 29.11.13 13:13
  */
 public class Nick implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
-    public Nick(CloudChatPlugin plugin) {
-        //Check if this Command is enabled
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("nick")) {
-            this.plugin = plugin;
-
-            //Register the correct Binder
-            plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "nick"));
-
-            //Register this as a Command Handler
-            plugin.getCommandExecutor().add(this);
-        }
+    public Nick(CubespacePlugin plugin) {
+        this.plugin = plugin;
     }
 
     @Command(command="nick", arguments = 1)

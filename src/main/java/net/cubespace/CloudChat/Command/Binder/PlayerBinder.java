@@ -3,11 +3,11 @@ package net.cubespace.CloudChat.Command.Binder;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.TabExecutor;
@@ -15,7 +15,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 public class PlayerBinder extends Binder implements TabExecutor {
     private PlayerManager playerManager;
 
-    public PlayerBinder(CloudChatPlugin plugin, String name, String... aliases) {
+    public PlayerBinder(CubespacePlugin plugin, String name, String... aliases) {
         super(plugin, name, aliases);
     }
 

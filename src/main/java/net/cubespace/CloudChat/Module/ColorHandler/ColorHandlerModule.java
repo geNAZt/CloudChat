@@ -1,16 +1,31 @@
 package net.cubespace.CloudChat.Module.ColorHandler;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ColorHandler.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ColorHandler.Listener.PlayerNickchangeListener;
+import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:47
  */
-public class ColorHandlerModule {
-    public ColorHandlerModule(CloudChatPlugin plugin) {
-        plugin.getAsyncEventBus().addListener(new AsyncChatListener(plugin));
-        plugin.getAsyncEventBus().addListener(new PlayerNickchangeListener(plugin));
+public class ColorHandlerModule extends Module {
+    public ColorHandlerModule(CubespacePlugin plugin) {
+        super(plugin);
+    }
+
+    @Override
+    public void onLoad() {
+
+    }
+
+    @Override
+    public void onEnable() {
+        plugin.getAsyncEventBus().addListener(this, new AsyncChatListener(plugin));
+        plugin.getAsyncEventBus().addListener(this, new PlayerNickchangeListener(plugin));
+    }
+
+    @Override
+    public void onDisable() {
+        plugin.getAsyncEventBus().removeListener(this);
     }
 }

@@ -2,13 +2,14 @@ package net.cubespace.lib.Command;
 
 import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Module.Module;
 import net.md_5.bungee.api.CommandSender;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Command executor.
@@ -26,7 +27,7 @@ public class CommandExecutor {
      *
      * @param cliCommand the cli command
      */
-    public void add(CLICommand cliCommand) {
+    public void add(Module module, CLICommand cliCommand) {
         plugin.getPluginLogger().info("Registered new Command " + cliCommand.toString());
 
         for (Method method : cliCommand.getClass().getDeclaredMethods()) {
@@ -44,6 +45,7 @@ public class CommandExecutor {
                         command.setAnnotation(aCmd);
                         command.setCommand(method);
                         command.setInstance(cliCommand);
+                        command.setModule(module);
 
                         commandMap.put(aCmd.command(), command);
                         plugin.getPluginLogger().debug("Added command " + aCmd.command() + " for the method " + method.getName());
@@ -51,6 +53,14 @@ public class CommandExecutor {
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    public void remove(Module module) {
+        for(Map.Entry<String, CommandStruct> commands : new HashMap<>(commandMap).entrySet()) {
+            if(commands.getValue().getModule().equals(module)) {
+                commandMap.remove(commands.getKey());
             }
         }
     }

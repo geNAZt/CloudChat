@@ -1,8 +1,8 @@
 package net.cubespace.CloudChat.Module.FormatHandler.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -12,9 +12,9 @@ import net.cubespace.lib.EventBus.Listener;
  * @date Last changed: 28.12.13 17:35
  */
 public class ChatMessageListener implements Listener {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
-    public ChatMessageListener(CloudChatPlugin plugin) {
+    public ChatMessageListener(CubespacePlugin plugin) {
         this.plugin = plugin;
     }
 

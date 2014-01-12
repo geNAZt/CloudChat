@@ -1,8 +1,9 @@
 package net.cubespace.CloudChat.Module.Spam;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Spam;
 import net.cubespace.CloudChat.Config.Sub.SpamEntry;
+import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Manager.IManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -12,13 +13,12 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 01:08
  */
-public class SpamManager {
-    private CloudChatPlugin plugin;
+public class SpamManager implements IManager {
+    private CubespacePlugin plugin;
     private HashMap<String, HashMap<SpamEntry, SpamCounter>> playerSpamCounter = new HashMap<>();
 
-    public SpamManager(CloudChatPlugin plugin) {
+    public SpamManager(CubespacePlugin plugin) {
         this.plugin = plugin;
     }
 

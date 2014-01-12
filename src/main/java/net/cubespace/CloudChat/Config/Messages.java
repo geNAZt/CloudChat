@@ -1,16 +1,15 @@
 package net.cubespace.CloudChat.Config;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.lib.Configuration.Config;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 06.01.14 03:06
  */
 public class Messages extends Config {
-    public Messages(CloudChatPlugin plugin) {
+    public Messages(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "messages.yml");
     }
 

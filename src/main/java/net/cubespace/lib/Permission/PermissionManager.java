@@ -22,9 +22,9 @@ public class PermissionManager {
     public PermissionManager(CubespacePlugin plugin) {
         this.plugin = plugin;
 
-        plugin.getPluginMessageManager("CubespaceLibrary").addPacketToRegister(PermissionRequest.class);
-        plugin.getPluginMessageManager("CubespaceLibrary").addPacketToRegister(PermissionResponse.class);
-        plugin.getPluginMessageManager("CubespaceLibrary").addListenerToRegister(new PluginMessageListener(this, plugin));
+        plugin.getPluginMessageManager("CubespaceLibrary").addPacketToRegister(null, PermissionRequest.class);
+        plugin.getPluginMessageManager("CubespaceLibrary").addPacketToRegister(null, PermissionResponse.class);
+        plugin.getPluginMessageManager("CubespaceLibrary").addListenerToRegister(null, new PluginMessageListener(this, plugin));
 
         plugin.getProxy().getPluginManager().registerListener(plugin, new PlayerJoinListener(plugin, this));
         plugin.getProxy().getPluginManager().registerListener(plugin, new PlayerQuitListener(plugin, this));

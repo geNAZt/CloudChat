@@ -5,9 +5,12 @@ import com.iKeirNez.PluginMessageApiPlus.PacketManager;
 import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
 import com.iKeirNez.PluginMessageApiPlus.implementations.BungeeCordPacketManager;
 import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Module.Module;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -18,8 +21,8 @@ public class PluginMessageManager {
     private PacketManager packetManager;
     private CubespacePlugin plugin;
     private LinkedBlockingQueue<IPluginMessage> queue = new LinkedBlockingQueue<>();
-    private ArrayList<Class> packetsToRegister = new ArrayList<>();
-    private ArrayList<PacketListener> listenerToRegister = new ArrayList<>();
+    private HashMap<Module, ArrayList<Class<? extends StandardPacket>>> packetsToRegister = new HashMap<>();
+    private HashMap<Module, ArrayList<PacketListener>> listenerToRegister = new HashMap<>();
 
     public PluginMessageManager(CubespacePlugin plugin, String channel) {
         this.plugin = plugin;
@@ -43,24 +46,69 @@ public class PluginMessageManager {
         return packetManager;
     }
 
-    public void addPacketToRegister(Class clazz) {
-        packetsToRegister.add(clazz);
+    public void addPacketToRegister(Module module, Class<? extends StandardPacket> clazz) {
+        if(!packetsToRegister.containsKey(module)) {
+            packetsToRegister.put(module, new ArrayList<Class<? extends StandardPacket>>());
+        }
+
+        packetsToRegister.get(module).add(clazz);
     }
 
-    public void addListenerToRegister(PacketListener listener) {
-        listenerToRegister.add(listener);
+    public void addListenerToRegister(Module module, PacketListener listener) {
+        if(!listenerToRegister.containsKey(module)) {
+            listenerToRegister.put(module, new ArrayList<PacketListener>());
+        }
+
+        listenerToRegister.get(module).add(listener);
+    }
+
+    public void removeListener(PacketListener packetListener) {
+        for(Map.Entry<Module, ArrayList<PacketListener>> listeners : new HashMap<>(listenerToRegister).entrySet()) {
+            listenerToRegister.get(listeners.getKey()).remove(packetListener);
+        }
+
+        getPacketManager().unregisterListener(packetListener);
+    }
+
+    public void removeListener(Module module) {
+        if(!listenerToRegister.containsKey(module)) return;
+
+        for(PacketListener packetListener : listenerToRegister.get(module)) {
+            getPacketManager().unregisterListener(packetListener);
+        }
+
+        listenerToRegister.remove(module);
+    }
+
+    public void removePacket(Class<? extends StandardPacket> clazz) {
+        for(Map.Entry<Module, ArrayList<Class<? extends StandardPacket>>> packets : new HashMap<>(packetsToRegister).entrySet()) {
+            packetsToRegister.get(packets.getKey()).remove(clazz);
+        }
+
+        getPacketManager().unregisterPacket(clazz);
+    }
+
+    public void removePacket(Module module) {
+        if(!packetsToRegister.containsKey(module)) return;
+
+        for(Class<? extends StandardPacket> packet : packetsToRegister.get(module)) {
+            getPacketManager().unregisterPacket(packet);
+        }
+
+        packetsToRegister.remove(module);
     }
 
     public void finish() {
-        for(Class clazz : packetsToRegister) {
-            getPacketManager().registerPacket(clazz);
+        for(ArrayList<Class<? extends StandardPacket>> classes : packetsToRegister.values()) {
+            for(Class<? extends StandardPacket> clazz : classes) {
+                getPacketManager().registerPacket(clazz);
+            }
         }
 
-        for(PacketListener listener : listenerToRegister) {
-            getPacketManager().registerListener(listener);
+        for(ArrayList<PacketListener> listeners : listenerToRegister.values()) {
+            for(PacketListener listener : listeners) {
+                getPacketManager().registerListener(listener);
+            }
         }
-
-        packetsToRegister = null;
-        listenerToRegister = null;
     }
 }

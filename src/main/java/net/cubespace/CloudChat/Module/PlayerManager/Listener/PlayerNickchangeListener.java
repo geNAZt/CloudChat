@@ -1,24 +1,23 @@
 package net.cubespace.CloudChat.Module.PlayerManager.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerNickchangeEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:39
  */
 public class PlayerNickchangeListener implements Listener {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private PlayerManager playerManager;
 
-    public PlayerNickchangeListener(CloudChatPlugin plugin) {
+    public PlayerNickchangeListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }

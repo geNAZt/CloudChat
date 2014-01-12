@@ -1,9 +1,9 @@
 package net.cubespace.CloudChat.Module.PlayerManager;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Manager.IManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -16,11 +16,11 @@ import java.util.HashMap;
  * @date Last changed: 28.12.13 12:50
  */
 public class PlayerManager implements IManager {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
     private HashMap<String, PlayerDatabase> loadedPlayers = new HashMap<>();
 
-    public PlayerManager(CloudChatPlugin plugin) {
+    public PlayerManager(CubespacePlugin plugin) {
         this.plugin = plugin;
         plugin.getPluginLogger().debug("Created new PlayerManager");
     }

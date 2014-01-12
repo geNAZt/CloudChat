@@ -2,7 +2,7 @@ package net.cubespace.CloudChat.Module.ChannelManager.Database;
 
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Config;
-import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @date Last changed: 26.11.13 19:48
  */
 public class ChannelDatabase extends Config {
-    public ChannelDatabase(CloudChatPlugin plugin, String channel) {
+    public ChannelDatabase(CubespacePlugin plugin, String channel) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "database" + File.separator + "channels" + File.separator + channel + ".yml");
         CONFIG_HEADER = "Channel AsyncDatabaseLogger for " + channel;
     }

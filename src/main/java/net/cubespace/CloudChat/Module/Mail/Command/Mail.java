@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.Mail.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
@@ -10,6 +9,7 @@ import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -23,9 +23,9 @@ import java.util.Date;
  */
 public class Mail implements CLICommand {
     private PlayerManager playerManager;
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
-    public Mail(CloudChatPlugin plugin) {
+    public Mail(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.plugin = plugin;
     }

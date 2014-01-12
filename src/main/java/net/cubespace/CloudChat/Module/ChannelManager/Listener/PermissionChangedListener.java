@@ -1,10 +1,10 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.Permission.Event.PermissionChangedEvent;
@@ -17,11 +17,11 @@ import java.util.ArrayList;
  * @date Last changed: 28.12.13 12:22
  */
 public class PermissionChangedListener {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private ChannelManager channelManager;
     private PlayerManager playerManager;
 
-    public PermissionChangedListener(CloudChatPlugin plugin) {
+    public PermissionChangedListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

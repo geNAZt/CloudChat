@@ -1,5 +1,7 @@
 package net.cubespace.lib.EventBus;
 
+import net.cubespace.lib.Module.Module;
+
 import java.lang.reflect.Method;
 
 /**
@@ -11,6 +13,12 @@ public class HandlerInfo {
     private final Object subscriber;
     private final EventHandler annotation;
     private final Class event;
+    private Module module = null;
+
+    public HandlerInfo(Class event, Method method, Object subscriber, EventHandler annotation, Module module) {
+        this(event, method, subscriber, annotation);
+        this.module = module;
+    }
 
     public HandlerInfo(Class event, Method method, Object subscriber, EventHandler annotation) {
         this.event = event;
@@ -33,5 +41,9 @@ public class HandlerInfo {
 
     public Class getEvent() {
         return event;
+    }
+
+    public Module getModule() {
+        return module;
     }
 }

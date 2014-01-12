@@ -2,6 +2,7 @@ package net.cubespace.lib.EventBus;
 
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
+import net.cubespace.lib.Module.Module;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import java.lang.reflect.Method;
@@ -37,10 +38,8 @@ public class AsyncEventBus {
     }
 
     private final HashMap<Class, ArrayList<HandlerInfo>> handlers = new HashMap<>();
-    private final BlockingQueue<Event> queue = new LinkedBlockingQueue<>();
-    private final BlockingQueue<HandlerInfo> killQueue = new LinkedBlockingQueue<>(5000);
+    private final BlockingQueue<Event> queue = new LinkedBlockingQueue<>(5000);
 
-    private ScheduledTask killQueueTask;
     private ScheduledTask eventQueueTask;
 
     private int handledEvents = 0;
@@ -54,27 +53,6 @@ public class AsyncEventBus {
         this.plugin = plugin;
 
         plugin.getPluginLogger().info("Creating new AsyncEventBus");
-
-        //Start the killQueueTask
-        killQueueTask = plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while(true) {
-                        HandlerInfo info = killQueue.take();
-                        if (info.getSubscriber() == null) {
-                            plugin.getPluginLogger().debug("Removing " + info.getMethod().getDeclaringClass().getName() + "." + info.getMethod().getName() + " from the Handler List");
-                            synchronized (handlers) {
-                                handlers.get(info.getEvent()).remove(info);
-                            }
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    plugin.getPluginLogger().warn("AsyncEventBus killTask got interrupted", e);
-                    throw new RuntimeException(e);
-                }
-            }
-        });
 
         //Start the eventQueueTask
         eventQueueTask = plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
@@ -201,7 +179,7 @@ public class AsyncEventBus {
         return event;
     }
 
-    public void addListener(Object subscriber) {
+    public void addListener(Module module, Object subscriber) {
         plugin.getPluginLogger().debug("Attempt to add a new Listener " + subscriber.getClass().getName());
 
         Method[] methods = subscriber.getClass().getDeclaredMethods();
@@ -239,16 +217,6 @@ public class AsyncEventBus {
             synchronized (handlers) {
                 for(Map.Entry<Class, ArrayList<HandlerInfo>> handlerInfos : handlers.entrySet()) {
                     for(HandlerInfo handlerInfo : handlerInfos.getValue()) {
-                        if (handlerInfo.getSubscriber() == null) {
-                            try {
-                                killQueue.put(handlerInfo);
-                            } catch (InterruptedException e) {
-                                plugin.getPluginLogger().warn("Could not add a HandlerInfo to the killQueue", e);
-                            }
-
-                            continue;
-                        }
-
                         if(handlerInfo.getMethod().equals(method) && handlerInfo.getEvent().equals(parameters[0])) {
                             skipping = true;
                             break;
@@ -267,7 +235,7 @@ public class AsyncEventBus {
             }
 
             // add the subscriber to the list
-            HandlerInfo info = new HandlerInfo(parameters[0], method, subscriber, eh);
+            HandlerInfo info = new HandlerInfo(parameters[0], method, subscriber, eh, module);
 
             if(handlers.containsKey(parameters[0])) {
                 handlers.get(parameters[0]).add(info);
@@ -294,19 +262,27 @@ public class AsyncEventBus {
         synchronized (handlers) {
             for(Map.Entry<Class, ArrayList<HandlerInfo>> handlerInfos : handlers.entrySet()) {
                 for(HandlerInfo handlerInfo : handlerInfos.getValue()) {
-                    if (handlerInfo.getSubscriber() == null) {
-                        plugin.getPluginLogger().debug("Adding Listener to the KillQueue " + handlerInfo.getMethod().getDeclaringClass().getName() + "." + handlerInfo.getMethod().getName());
-                        try {
-                            killQueue.put(handlerInfo);
-                        } catch (InterruptedException e) {
-                            plugin.getPluginLogger().warn("Could not add a HandlerInfo to the killQueue", e);
-                        }
-
-                        continue;
-                    }
-
                     Object obj = handlerInfo.getSubscriber();
-                    if (obj == null || obj == subscriber) {
+                    if (obj == subscriber) {
+                        killList.add(handlerInfo);
+                    }
+                }
+            }
+        }
+
+        for (HandlerInfo kill : killList) {
+            plugin.getPluginLogger().debug("Killed " + kill.getMethod().getDeclaringClass().getName() + "." + kill.getMethod().getName());
+            handlers.get(kill.getEvent()).remove(kill);
+        }
+    }
+
+    public void removeListener(Module module) {
+        List<HandlerInfo> killList = new ArrayList<>();
+
+        synchronized (handlers) {
+            for(Map.Entry<Class, ArrayList<HandlerInfo>> handlerInfos : handlers.entrySet()) {
+                for(HandlerInfo handlerInfo : handlerInfos.getValue()) {
+                    if(handlerInfo.getModule() != null && handlerInfo.getModule().equals(module)) {
                         killList.add(handlerInfo);
                     }
                 }

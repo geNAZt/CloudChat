@@ -1,9 +1,9 @@
 package net.cubespace.CloudChat.Module.Mute.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Event.PlayerQuitEvent;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -16,7 +16,7 @@ public class PlayerQuitListener implements Listener {
     private MuteModule muteModule;
     private PlayerManager playerManager;
 
-    public PlayerQuitListener(MuteModule muteModule, CloudChatPlugin plugin) {
+    public PlayerQuitListener(MuteModule muteModule, CubespacePlugin plugin) {
         this.muteModule = muteModule;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }

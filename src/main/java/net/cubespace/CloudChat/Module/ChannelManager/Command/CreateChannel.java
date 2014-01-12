@@ -1,7 +1,6 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -9,6 +8,7 @@ import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -16,10 +16,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class CreateChannel implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private ChannelManager channelManager;
 
-    public CreateChannel(CloudChatPlugin plugin) {
+    public CreateChannel(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
     }

@@ -1,8 +1,8 @@
 package net.cubespace.CloudChat.Module.ColorHandler.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 
@@ -11,9 +11,9 @@ import net.cubespace.lib.EventBus.EventPriority;
  * @date Last changed: 28.12.13 12:22
  */
 public class AsyncChatListener {
-    private CloudChatPlugin plugin;;
+    private CubespacePlugin plugin;
 
-    public AsyncChatListener(CloudChatPlugin plugin) {
+    public AsyncChatListener(CubespacePlugin plugin) {
         this.plugin = plugin;
     }
 

@@ -14,6 +14,7 @@ import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -21,11 +22,11 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Invite implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private PlayerManager playerManager;
     private ChannelManager channelManager;
 
-    public Invite(CloudChatPlugin plugin) {
+    public Invite(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");

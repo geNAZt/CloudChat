@@ -1,14 +1,14 @@
 package net.cubespace.CloudChat.Command.Binder;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 
 public class PermissionlessBinder extends Command {
     protected String commandName;
-    protected CloudChatPlugin plugin;
+    protected CubespacePlugin plugin;
 
-    public PermissionlessBinder(CloudChatPlugin plugin, String name, String... aliases) {
+    public PermissionlessBinder(CubespacePlugin plugin, String name, String... aliases) {
         super(name, null, aliases);
 
         this.plugin = plugin;

@@ -3,14 +3,14 @@ package net.cubespace.CloudChat.Command.Binder;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class ChannelBinder extends Binder implements TabExecutor {
-    public ChannelBinder(CloudChatPlugin plugin, String name, String... aliases) {
+    public ChannelBinder(CubespacePlugin plugin, String name, String ... aliases) {
         super(plugin, name, aliases);
     }
 

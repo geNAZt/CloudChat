@@ -2,16 +2,18 @@ package net.cubespace.CloudChat.Module.PlayerManager.Listener;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
-import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerChangeAFKEvent;
+import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.PluginMessages.AFKMessage;
 import net.cubespace.PluginMessages.AffixMessage;
 import net.cubespace.PluginMessages.IgnoreMessage;
 import net.cubespace.PluginMessages.OutputMessage;
 import net.cubespace.PluginMessages.PermissionRequest;
 import net.cubespace.PluginMessages.WorldMessage;
-import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -20,9 +22,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  */
 public class PluginMessageListener implements PacketListener {
     private PlayerManager playerManager;
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
-    public PluginMessageListener(CloudChatPlugin plugin) {
+    public PluginMessageListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.plugin = plugin;
     }
@@ -88,5 +90,14 @@ public class PluginMessageListener implements PacketListener {
         ProxiedPlayer player = outputMessage.getSender().getBungeePlayer();
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         playerDatabase.Output = outputMessage.isOutput();
+
+        ChatHandlerModule chatHandlerModule = plugin.getModuleManager().getModule(ChatHandlerModule.class);
+        if(chatHandlerModule.getChatBuffer().getBuffer(player.getName()) != null) {
+            for(MessageBuilder messageBuilder : chatHandlerModule.getChatBuffer().getBuffer(player.getName())) {
+                messageBuilder.send(player);
+            }
+        }
+
+        chatHandlerModule.getChatBuffer().removeBuffer(player.getName());
     }
 }

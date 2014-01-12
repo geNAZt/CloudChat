@@ -1,10 +1,12 @@
 package net.cubespace.lib;
 
+import net.cubespace.lib.Command.BindManager;
 import net.cubespace.lib.Command.CommandExecutor;
 import net.cubespace.lib.Configuration.ConfigManager;
 import net.cubespace.lib.EventBus.AsyncEventBus;
 import net.cubespace.lib.Logger.Logger;
 import net.cubespace.lib.Manager.ManagerRegistry;
+import net.cubespace.lib.Module.ModuleManager;
 import net.cubespace.lib.Permission.PermissionManager;
 import net.cubespace.lib.PluginMessage.PluginMessageManager;
 import net.cubespace.lib.Report.ReportManager;
@@ -24,10 +26,12 @@ public class CubespacePlugin extends Plugin {
     private AsyncEventBus asyncEventBus;
     private CommandExecutor commandExecutor;
     private ManagerRegistry managerRegistry;
+    private ModuleManager moduleManager;
     private HashMap<String, PluginMessageManager> pluginMessageManagerHashMap = new HashMap<>();
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private PermissionManager permissionManager;
+    private BindManager bindManager;
 
     public void onEnable() {
         getPluginMessageManager("CubespaceLibrary").finish();
@@ -121,12 +125,32 @@ public class CubespacePlugin extends Plugin {
         return pluginMessageManagerHashMap.get(channel);
     }
 
+    /**
+     * Gets the Permission Manager. It holds all Permissions which a sender can have. This also includes Permissions loaded from Bukkit
+     * @return
+     */
     public PermissionManager getPermissionManager() {
         if(permissionManager == null) {
             permissionManager = new PermissionManager(this);
         }
 
         return permissionManager;
+    }
+
+    public BindManager getBindManager() {
+        if(bindManager == null) {
+            bindManager = new BindManager(this);
+        }
+
+        return bindManager;
+    }
+
+    public ModuleManager getModuleManager() {
+        if(moduleManager == null) {
+            moduleManager = new ModuleManager(this);
+        }
+
+        return moduleManager;
     }
 
     /**

@@ -1,10 +1,10 @@
 package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -16,7 +16,7 @@ public class PlayerSendMessageListener implements Listener {
     private PlayerManager playerManager;
     private ChatHandlerModule chatHandlerModule;
 
-    public PlayerSendMessageListener(ChatHandlerModule chatHandlerModule, CloudChatPlugin plugin) {
+    public PlayerSendMessageListener(ChatHandlerModule chatHandlerModule, CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.chatHandlerModule = chatHandlerModule;
     }

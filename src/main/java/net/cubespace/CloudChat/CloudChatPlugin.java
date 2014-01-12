@@ -30,6 +30,8 @@ import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  * @date Last changed: 24.11.13 18:02
@@ -57,24 +59,31 @@ public class CloudChatPlugin extends CubespacePlugin {
         AutoComplete.init(this);
 
         //Load the Modules
-        new PlayerManagerModule(this);
-        new ChannelManagerModule(this);
-        new ChatHandlerModule(this);
-        new FormatHandlerModule(this);
-        new ColorHandlerModule(this);
-        new PMModule(this);
-        new LoggingModule(this);
-        new MuteModule(this);
-        new IRCModule(this);
-        new CloudChatModule(this);
-        new SpamModule(this);
-        new TwitterModule(this);
-        new MailModule(this);
+        getModuleManager().registerModule(new ChannelManagerModule(this));
+        getModuleManager().registerModule(new PlayerManagerModule(this));
+        getModuleManager().registerModule(new ChatHandlerModule(this));
 
-        getPluginMessageManager("CloudChat").finish();
+        getModuleManager().registerModule(new FormatHandlerModule(this));
+        getModuleManager().registerModule(new ColorHandlerModule(this));
+        getModuleManager().registerModule(new PMModule(this));
+        getModuleManager().registerModule(new LoggingModule(this));
+        getModuleManager().registerModule(new MuteModule(this));
+        getModuleManager().registerModule(new IRCModule(this));
+        getModuleManager().registerModule(new CloudChatModule(this));
+        getModuleManager().registerModule(new SpamModule(this));
+        getModuleManager().registerModule(new TwitterModule(this));
+        getModuleManager().registerModule(new MailModule(this));
+
+        this.getProxy().getScheduler().schedule(this, new Runnable() {
+            @Override
+            public void run() {
+                getPluginMessageManager("CloudChat").finish();
+                getModuleManager().enable();
+            }
+        }, 500, TimeUnit.MILLISECONDS);
 
         //Register the Listeners
-        getAsyncEventBus().addListener(new PermissionLoadedListener(this));
+        getAsyncEventBus().addListener(null, new PermissionLoadedListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerQuitListener(this));
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new ServerConnectedListener(this));

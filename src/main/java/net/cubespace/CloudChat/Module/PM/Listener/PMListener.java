@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.PM.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
@@ -9,6 +8,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -19,10 +19,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @date Last changed: 03.01.14 21:46
  */
 public class PMListener implements Listener {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private PlayerManager playerManager;
 
-    public PMListener(CloudChatPlugin plugin) {
+    public PMListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }

@@ -1,8 +1,8 @@
 package net.cubespace.CloudChat.Module.Spam.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.Spam.SpamModule;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -13,10 +13,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @date Last changed: 29.12.13 01:00
  */
 public class ChatMessageListener implements Listener {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private SpamModule spamModule;
 
-    public ChatMessageListener(SpamModule spamModule, CloudChatPlugin plugin) {
+    public ChatMessageListener(SpamModule spamModule, CubespacePlugin plugin) {
         this.spamModule = spamModule;
         this.plugin = plugin;
     }

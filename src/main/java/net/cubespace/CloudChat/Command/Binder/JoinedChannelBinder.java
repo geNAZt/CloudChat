@@ -3,8 +3,8 @@ package net.cubespace.CloudChat.Command.Binder;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.TabExecutor;
@@ -12,7 +12,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import java.util.Collections;
 
 public class JoinedChannelBinder extends Binder implements TabExecutor {
-    public JoinedChannelBinder(CloudChatPlugin plugin, String name, String... aliases) {
+    public JoinedChannelBinder(CubespacePlugin plugin, String name, String... aliases) {
         super(plugin, name, aliases);
     }
 

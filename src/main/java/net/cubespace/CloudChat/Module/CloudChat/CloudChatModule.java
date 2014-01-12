@@ -1,24 +1,45 @@
 package net.cubespace.CloudChat.Module.CloudChat;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PermissionlessBinder;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Admin;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Playermenu;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Reload;
+import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 21:11
  */
-public class CloudChatModule {
-    public CloudChatModule(CloudChatPlugin plugin) {
-        plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "cc:reload"));
-        plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "cc:report"));
-        plugin.getProxy().getPluginManager().registerCommand(plugin, new PermissionlessBinder(plugin, "cc:playermenu"));
+public class CloudChatModule extends Module {
+    public CloudChatModule(CubespacePlugin plugin) {
+        super(plugin);
+    }
 
-        plugin.getCommandExecutor().add(new Reload(plugin));
-        plugin.getCommandExecutor().add(new Admin(plugin));
-        plugin.getCommandExecutor().add(new Playermenu(plugin));
+    @Override
+    public void onLoad() {
+
+    }
+
+    @Override
+    public void onEnable() {
+        //Bind Commands
+        plugin.getBindManager().bind("cc:reload", Binder.class);
+        plugin.getBindManager().bind("cc:report", Binder.class);
+        plugin.getBindManager().bind("cc:playermenu", PermissionlessBinder.class);
+
+        plugin.getCommandExecutor().add(this, new Reload(plugin));
+        plugin.getCommandExecutor().add(this, new Admin(plugin));
+        plugin.getCommandExecutor().add(this, new Playermenu(plugin));
+    }
+
+    @Override
+    public void onDisable() {
+        //Unbind Commands
+        plugin.getBindManager().unbind("cc:reload");
+        plugin.getBindManager().unbind("cc:report");
+        plugin.getBindManager().unbind("cc:playermenu");
+
+        plugin.getCommandExecutor().remove(this);
     }
 }

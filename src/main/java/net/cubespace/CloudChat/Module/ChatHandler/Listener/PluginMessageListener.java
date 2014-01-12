@@ -2,7 +2,6 @@ package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -18,6 +17,7 @@ import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -27,9 +27,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class PluginMessageListener implements PacketListener {
     private PlayerManager playerManager;
     private ChannelManager channelManager;
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
-    public PluginMessageListener(CloudChatPlugin plugin) {
+    public PluginMessageListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
         this.plugin = plugin;

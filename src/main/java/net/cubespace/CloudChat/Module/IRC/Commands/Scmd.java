@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.IRC.Commands;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.IRC.CloudChatCommandSender;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
@@ -8,15 +7,16 @@ import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
 import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.PluginMessages.DispatchScmdMessage;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.config.ServerInfo;
 
 import java.util.Arrays;
 
 public class Scmd implements Command {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private IRCModule ircModule;
 
-    public Scmd(IRCModule ircModule, CloudChatPlugin pl) {
+    public Scmd(IRCModule ircModule, CubespacePlugin pl) {
         plugin = pl;
         this.ircModule = ircModule;
     }

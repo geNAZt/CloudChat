@@ -1,9 +1,5 @@
 package net.cubespace.CloudChat.Module.PM.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
-import net.cubespace.CloudChat.Command.Binder.Binder;
-import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
-import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
@@ -13,30 +9,19 @@ import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Arrays;
 
 public class PM implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private PlayerManager playerManager;
 
-    public PM(CloudChatPlugin plugin) {
+    public PM(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
-
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("msg")) {
-            plugin.getPluginLogger().debug("Registering the /msg command");
-            plugin.getProxy().getPluginManager().registerCommand(plugin, new PlayerBinder(plugin, "msg", "m", "t", "tell"));
-        }
-
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("reply")) {
-            plugin.getPluginLogger().debug("Registering the /reply command");
-            plugin.getProxy().getPluginManager().registerCommand(plugin, new Binder(plugin, "reply", "r"));
-        }
-
-        plugin.getCommandExecutor().add(this);
     }
 
     @Command(command = "msg", arguments = 2)

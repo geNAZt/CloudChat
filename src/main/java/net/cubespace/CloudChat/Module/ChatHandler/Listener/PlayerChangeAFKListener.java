@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -13,6 +12,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -24,11 +24,11 @@ import java.util.ArrayList;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerChangeAFKListener implements Listener {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private PlayerManager playerManager;
     private ChannelManager channelManager;
 
-    public PlayerChangeAFKListener(CloudChatPlugin plugin) {
+    public PlayerChangeAFKListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");

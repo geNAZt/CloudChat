@@ -1,8 +1,8 @@
 package net.cubespace.CloudChat.Config;
 
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.lib.Configuration.Config;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @date Last changed: 29.12.13 17:07
  */
 public class Twitter extends Config {
-    public Twitter(CloudChatPlugin plugin) {
+    public Twitter(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "twitter.yml");
         CONFIG_HEADER = "Config for Twitter";
     }

@@ -1,7 +1,6 @@
 package net.cubespace.CloudChat.Module.Logging;
 
 import com.j256.ormlite.dao.DaoManager;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Module.Logging.Entity.ChatMessage;
 import net.cubespace.CloudChat.Module.Logging.Entity.PrivateMessage;
 import net.cubespace.lib.CubespacePlugin;
@@ -22,7 +21,7 @@ public class AsyncDatabaseLogger implements Listener {
     private CubespacePlugin plugin;
     private long lastWarning = 0;
 
-    public AsyncDatabaseLogger(final CloudChatPlugin plugin) {
+    public AsyncDatabaseLogger(final CubespacePlugin plugin) {
         this.plugin = plugin;
         net.cubespace.CloudChat.Config.Database config = plugin.getConfigManager().getConfig("database");
 

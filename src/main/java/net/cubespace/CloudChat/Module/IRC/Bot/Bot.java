@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.IRC.Bot;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -22,6 +21,7 @@ import net.cubespace.CloudChat.Module.IRC.PMSession;
 import net.cubespace.CloudChat.Module.IRC.Permission.WhoisResolver;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
@@ -35,7 +35,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Bot extends PircBot implements Runnable {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private CommandManager cmdManager;
     private IRCManager ircManager;
     private IRC ircConfig;
@@ -45,7 +45,7 @@ public class Bot extends PircBot implements Runnable {
     private LinkedBlockingQueue<String> whoisQueue = new LinkedBlockingQueue<>();
     private boolean shutdown = false;
 
-    public Bot(IRCModule ircModule, final CloudChatPlugin plugin) {
+    public Bot(IRCModule ircModule, final CubespacePlugin plugin) {
         this.plugin = plugin;
         this.ircModule = ircModule;
         ircConfig = plugin.getConfigManager().getConfig("irc");

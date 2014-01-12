@@ -2,13 +2,13 @@ package net.cubespace.CloudChat.Config;
 
 import com.google.common.collect.ArrayListMultimap;
 import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.lib.Configuration.Config;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 
 public class IRC extends Config {
-    public IRC(CloudChatPlugin plugin) {
+    public IRC(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "irc.yml");
         CONFIG_HEADER = "Config for IRC";
 

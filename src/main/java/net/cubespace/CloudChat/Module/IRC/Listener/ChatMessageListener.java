@@ -1,10 +1,10 @@
 package net.cubespace.CloudChat.Module.IRC.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 
@@ -14,10 +14,10 @@ import net.cubespace.lib.EventBus.EventPriority;
  */
 public class ChatMessageListener {
     private IRCModule ircModule;
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private IRC config;
 
-    public ChatMessageListener(IRCModule ircModule, CloudChatPlugin plugin) {
+    public ChatMessageListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.ircModule = ircModule;
         this.plugin = plugin;
         this.config = plugin.getConfigManager().getConfig("irc");

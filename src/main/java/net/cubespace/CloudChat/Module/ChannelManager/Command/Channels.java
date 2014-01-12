@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
@@ -12,6 +11,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -23,11 +23,11 @@ import java.util.Iterator;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Channels implements CLICommand {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private ChannelManager channelManager;
     private PlayerManager playerManager;
 
-    public Channels(CloudChatPlugin plugin) {
+    public Channels(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

@@ -1,19 +1,19 @@
 package net.cubespace.CloudChat.Module.IRC.Commands;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
 import net.cubespace.CloudChat.Util.AutoComplete;
+import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Message implements Command {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private IRCModule ircModule;
 
-    public Message(IRCModule ircModule, CloudChatPlugin pl) {
+    public Message(IRCModule ircModule, CubespacePlugin pl) {
         plugin = pl;
         this.ircModule = ircModule;
     }

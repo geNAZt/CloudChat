@@ -1,5 +1,7 @@
 package net.cubespace.lib.Command;
 
+import net.cubespace.lib.Module.Module;
+
 import java.lang.reflect.Method;
 
 /**
@@ -10,6 +12,7 @@ public class CommandStruct {
     private Command annotation;
     private CLICommand instance;
     private Method command;
+    private Module module;
 
     public Command getAnnotation() {
         return annotation;
@@ -33,5 +36,13 @@ public class CommandStruct {
 
     public void setInstance(CLICommand instance) {
         this.instance = instance;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 }

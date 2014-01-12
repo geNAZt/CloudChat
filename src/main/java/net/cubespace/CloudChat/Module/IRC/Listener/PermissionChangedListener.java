@@ -1,13 +1,10 @@
 package net.cubespace.CloudChat.Module.IRC.Listener;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRCPermissions;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionGroup;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionUser;
-import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
-import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
-import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.Permission.Event.PermissionChangedEvent;
@@ -21,10 +18,10 @@ import java.util.Map;
  * @date Last changed: 28.12.13 12:22
  */
 public class PermissionChangedListener {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private IRCModule ircModule;
 
-    public PermissionChangedListener(IRCModule ircModule, CloudChatPlugin plugin) {
+    public PermissionChangedListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.plugin = plugin;
         this.ircModule = ircModule;
     }

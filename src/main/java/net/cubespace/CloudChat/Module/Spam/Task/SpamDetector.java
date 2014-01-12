@@ -1,11 +1,11 @@
 package net.cubespace.CloudChat.Module.Spam.Task;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Sub.SpamEntry;
 import net.cubespace.CloudChat.Module.Mute.MuteManager;
-import net.cubespace.PluginMessages.DispatchCmdMessage;
 import net.cubespace.CloudChat.Module.Spam.SpamCounter;
 import net.cubespace.CloudChat.Module.Spam.SpamModule;
+import net.cubespace.PluginMessages.DispatchCmdMessage;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,14 +13,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 00:55
  */
 public class SpamDetector implements Runnable {
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
     private SpamModule spamModule;
     private MuteManager muteManager;
 
-    public SpamDetector(SpamModule spamModule, CloudChatPlugin plugin) {
+    public SpamDetector(SpamModule spamModule, CubespacePlugin plugin) {
         this.spamModule = spamModule;
         this.plugin = plugin;
         this.muteManager = plugin.getManagerRegistry().getManager("muteManager");

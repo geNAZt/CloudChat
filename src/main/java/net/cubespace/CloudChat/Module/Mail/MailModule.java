@@ -1,20 +1,50 @@
 package net.cubespace.CloudChat.Module.Mail;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Binder.PlayerNameBinder;
+import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.Mail.Command.Mail;
 import net.cubespace.CloudChat.Module.Mail.Listener.PlayerJoinListener;
+import net.cubespace.lib.CubespacePlugin;
+import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 04.01.14 17:15
  */
-public class MailModule {
-    public MailModule(CloudChatPlugin plugin) {
-        plugin.getProxy().getPluginManager().registerCommand(plugin, new PlayerNameBinder(plugin, "mail"));
+public class MailModule extends Module {
+    private boolean loaded = false;
 
-        plugin.getCommandExecutor().add(new Mail(plugin));
+    public MailModule(CubespacePlugin plugin) {
+        super(plugin);
+    }
 
-        plugin.getAsyncEventBus().addListener(new PlayerJoinListener(plugin));
+    @Override
+    public void onLoad() {
+
+    }
+
+    @Override
+    public void onEnable() {
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("mail")) {
+            plugin.getBindManager().bind("mail", PlayerNameBinder.class);
+
+            plugin.getCommandExecutor().add(this, new Mail(plugin));
+
+            plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
+
+            loaded = true;
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        if(loaded) {
+            loaded = false;
+
+            plugin.getBindManager().unbind("mail");
+
+            plugin.getCommandExecutor().remove(this);
+
+            plugin.getAsyncEventBus().removeListener(this);
+        }
     }
 }
