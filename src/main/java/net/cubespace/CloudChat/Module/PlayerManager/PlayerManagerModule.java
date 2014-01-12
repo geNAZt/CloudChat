@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.PlayerManager;
 
 import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Module.PlayerManager.Command.Realname;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.PluginMessageListener;
 import net.cubespace.CloudChat.Module.PlayerManager.Command.Nick;
@@ -36,6 +37,7 @@ public class PlayerManagerModule {
 
         //Register the Commands
         new Nick(plugin);
+        new Realname(plugin);
 
         //Register the Packets and the Listeners
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(AffixMessage.class);
