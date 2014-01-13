@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat;
 
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Database;
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.IRC;
@@ -54,6 +55,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("factions", new Factions(this));
         getConfigManager().initConfig("ircPermissions", new IRCPermissions(this));
         getConfigManager().initConfig("messages", new Messages(this));
+        getConfigManager().initConfig("commandAliases", new CommandAliases(this));
 
         //Static init
         AutoComplete.init(this);

@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.ChatHandler;
 
 import net.cubespace.CloudChat.Command.Binder.Binder;
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChatHandler.Command.Broadcast;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.AsyncChatListener;
@@ -33,10 +34,11 @@ public class ChatHandlerModule extends Module {
     @Override
     public void onEnable() {
         Main config = plugin.getConfigManager().getConfig("main");
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         //Register Command
         if(!config.DoNotBind.contains("broadcast")) {
-            plugin.getBindManager().bind("broadcast", Binder.class);
+            plugin.getBindManager().bind("broadcast", Binder.class, commandAliases.Broadcast);
         }
 
         plugin.getCommandExecutor().add(this, new Broadcast(plugin));

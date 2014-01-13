@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.CloudChat;
 
 import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PermissionlessBinder;
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Admin;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Playermenu;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Reload;
@@ -23,9 +24,11 @@ public class CloudChatModule extends Module {
 
     @Override
     public void onEnable() {
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
         //Bind Commands
-        plugin.getBindManager().bind("cc:reload", Binder.class);
-        plugin.getBindManager().bind("cc:report", Binder.class);
+        plugin.getBindManager().bind("cc:reload", Binder.class, commandAliases.CCReload);
+        plugin.getBindManager().bind("cc:report", Binder.class, commandAliases.CCReport);
         plugin.getBindManager().bind("cc:playermenu", PermissionlessBinder.class);
 
         plugin.getCommandExecutor().add(this, new Reload(plugin));

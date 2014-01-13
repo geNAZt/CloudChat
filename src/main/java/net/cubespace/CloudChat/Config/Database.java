@@ -9,7 +9,7 @@ import java.io.File;
 public class Database extends Config {
     public Database(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "database.yml");
-        CONFIG_HEADER = "Config for AsyncDatabaseLogger Logging";
+        CONFIG_HEADER = "Config for Database Logging";
     }
 
     @Comment("Is logging enabled ?")

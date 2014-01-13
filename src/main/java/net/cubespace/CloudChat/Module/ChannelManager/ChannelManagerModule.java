@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.ChannelBinder;
 import net.cubespace.CloudChat.Command.Binder.JoinedChannelBinder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChannelManager.Command.Channels;
 import net.cubespace.CloudChat.Module.ChannelManager.Command.CreateChannel;
@@ -31,6 +32,8 @@ public class ChannelManagerModule extends Module {
 
     @Override
     public void onEnable() {
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
         //Register the Listener
         plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
         plugin.getAsyncEventBus().addListener(this, new PlayerQuitListener(plugin));
@@ -38,14 +41,14 @@ public class ChannelManagerModule extends Module {
         plugin.getAsyncEventBus().addListener(this, new PermissionChangedListener(plugin));
 
         //Register Commands
-        plugin.getBindManager().bind("join", ChannelBinder.class);
-        plugin.getBindManager().bind("leave", JoinedChannelBinder.class);
-        plugin.getBindManager().bind("createchannel", Binder.class);
-        plugin.getBindManager().bind("invite", PlayerBinder.class);
-        plugin.getBindManager().bind("focus", JoinedChannelBinder.class);
+        plugin.getBindManager().bind("join", ChannelBinder.class, commandAliases.Join);
+        plugin.getBindManager().bind("leave", JoinedChannelBinder.class, commandAliases.Leave);
+        plugin.getBindManager().bind("createchannel", Binder.class, commandAliases.Createchannel);
+        plugin.getBindManager().bind("invite", PlayerBinder.class, commandAliases.Invite);
+        plugin.getBindManager().bind("focus", JoinedChannelBinder.class, commandAliases.Focus);
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("list")) {
-            plugin.getBindManager().bind("list", Binder.class);
+            plugin.getBindManager().bind("list", Binder.class, commandAliases.List);
         }
 
         plugin.getCommandExecutor().add(this, new Channels(plugin));

@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.Mute;
 
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Module.Mute.Command.Mute;
 import net.cubespace.CloudChat.Module.Mute.Listener.ChatMessageListener;
 import net.cubespace.CloudChat.Module.Mute.Listener.PMListener;
@@ -32,10 +33,12 @@ public class MuteModule extends Module {
 
     @Override
     public void onEnable() {
-        plugin.getBindManager().bind("mute", PlayerBinder.class);
-        plugin.getBindManager().bind("unmute", PlayerBinder.class);
-        plugin.getBindManager().bind("cc:mute", PlayerBinder.class);
-        plugin.getBindManager().bind("cc:unmute", PlayerBinder.class);
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
+        plugin.getBindManager().bind("mute", PlayerBinder.class, commandAliases.Mute);
+        plugin.getBindManager().bind("unmute", PlayerBinder.class, commandAliases.Unmute);
+        plugin.getBindManager().bind("cc:mute", PlayerBinder.class, commandAliases.CCMute);
+        plugin.getBindManager().bind("cc:unmute", PlayerBinder.class, commandAliases.CCUnmute);
 
         plugin.getCommandExecutor().add(this, new Mute(this, plugin));
 

@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.IRC;
 
 import net.cubespace.CloudChat.Command.Binder.Binder;
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.IRC.Bot.Bot;
 import net.cubespace.CloudChat.Module.IRC.Listener.ChatMessageListener;
@@ -50,6 +51,8 @@ public class IRCModule extends Module {
     @Override
     public void onEnable() {
         if (((IRC) plugin.getConfigManager().getConfig("irc")).Enabled) {
+            CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
             ircBot = new Bot(this, plugin);
 
             plugin.getAsyncEventBus().addListener(this, new ChatMessageListener(this, plugin));
@@ -58,7 +61,7 @@ public class IRCModule extends Module {
             plugin.getAsyncEventBus().addListener(this, new PlayerChangeAFKListener(this, plugin));
             plugin.getAsyncEventBus().addListener(this, new PMListener(this, plugin));
 
-            plugin.getBindManager().bind("irc:reconnect", Binder.class);
+            plugin.getBindManager().bind("irc:reconnect", Binder.class, commandAliases.IRCReconnect);
             plugin.getCommandExecutor().add(this, new net.cubespace.CloudChat.Module.IRC.Command.IRC(this, plugin));
 
             plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, DispatchScmdMessage.class);

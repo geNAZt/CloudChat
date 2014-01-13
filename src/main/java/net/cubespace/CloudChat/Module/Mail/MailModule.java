@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.Mail;
 
 import net.cubespace.CloudChat.Command.Binder.PlayerNameBinder;
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.Mail.Command.Mail;
 import net.cubespace.CloudChat.Module.Mail.Listener.PlayerJoinListener;
@@ -25,7 +26,8 @@ public class MailModule extends Module {
     @Override
     public void onEnable() {
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("mail")) {
-            plugin.getBindManager().bind("mail", PlayerNameBinder.class);
+            CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+            plugin.getBindManager().bind("mail", PlayerNameBinder.class, commandAliases.Mail);
 
             plugin.getCommandExecutor().add(this, new Mail(plugin));
 

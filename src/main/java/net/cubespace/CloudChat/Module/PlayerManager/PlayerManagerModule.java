@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.PlayerManager;
 
 import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.PlayerManager.Command.Nick;
 import net.cubespace.CloudChat.Module.PlayerManager.Command.Realname;
@@ -40,9 +41,11 @@ public class PlayerManagerModule extends Module {
 
     @Override
     public void onEnable() {
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("nick")) {
             //Register the correct Binder
-            plugin.getBindManager().bind("nick", Binder.class);
+            plugin.getBindManager().bind("nick", Binder.class, commandAliases.Nick);
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Nick(plugin));
@@ -52,7 +55,7 @@ public class PlayerManagerModule extends Module {
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("realname")) {
             //Register the correct Binder
-            plugin.getBindManager().bind("realname", PlayerBinder.class);
+            plugin.getBindManager().bind("realname", PlayerBinder.class, commandAliases.Realname);
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Realname(plugin));
