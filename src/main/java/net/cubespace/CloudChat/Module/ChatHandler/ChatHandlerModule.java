@@ -11,6 +11,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PluginMessageListener;
+import net.cubespace.PluginMessages.ChatMessage;
 import net.cubespace.PluginMessages.FactionChatMessage;
 import net.cubespace.PluginMessages.SendChatMessage;
 import net.cubespace.lib.CubespacePlugin;
@@ -38,7 +39,7 @@ public class ChatHandlerModule extends Module {
 
         //Register Command
         if(!config.DoNotBind.contains("broadcast")) {
-            plugin.getBindManager().bind("broadcast", Binder.class, commandAliases.Broadcast);
+            plugin.getBindManager().bind("broadcast", Binder.class, commandAliases.Broadcast.toArray(new String[0]));
         }
 
         plugin.getCommandExecutor().add(this, new Broadcast(plugin));
@@ -58,6 +59,7 @@ public class ChatHandlerModule extends Module {
         //Register PluginMessages and a Listener for them
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, FactionChatMessage.class);
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, SendChatMessage.class);
+        plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, ChatMessage.class);
         plugin.getPluginMessageManager("CloudChat").addListenerToRegister(this, new PluginMessageListener(plugin));
     }
 

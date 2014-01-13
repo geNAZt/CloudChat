@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
 import net.cubespace.CloudChat.Config.Factions;
+import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
@@ -11,6 +12,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.PluginMessages.ChatMessage;
 import net.cubespace.PluginMessages.FactionChatMessage;
 import net.cubespace.PluginMessages.SendChatMessage;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
@@ -152,5 +154,10 @@ public class PluginMessageListener implements PacketListener {
         }
 
         plugin.getPluginLogger().info(message);
+    }
+
+    @PacketHandler
+    public void onChatMessage(ChatMessage chatMessage) {
+        plugin.getAsyncEventBus().callEvent(new AsyncChatEvent(chatMessage.getSender().getBungeePlayer(), chatMessage.getMessage()));
     }
 }

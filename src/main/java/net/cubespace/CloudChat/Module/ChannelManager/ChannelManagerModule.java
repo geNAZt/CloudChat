@@ -41,14 +41,14 @@ public class ChannelManagerModule extends Module {
         plugin.getAsyncEventBus().addListener(this, new PermissionChangedListener(plugin));
 
         //Register Commands
-        plugin.getBindManager().bind("join", ChannelBinder.class, commandAliases.Join);
-        plugin.getBindManager().bind("leave", JoinedChannelBinder.class, commandAliases.Leave);
-        plugin.getBindManager().bind("createchannel", Binder.class, commandAliases.Createchannel);
-        plugin.getBindManager().bind("invite", PlayerBinder.class, commandAliases.Invite);
-        plugin.getBindManager().bind("focus", JoinedChannelBinder.class, commandAliases.Focus);
+        plugin.getBindManager().bind("join", ChannelBinder.class, commandAliases.Join.toArray(new String[0]));
+        plugin.getBindManager().bind("leave", JoinedChannelBinder.class, commandAliases.Leave.toArray(new String[0]));
+        plugin.getBindManager().bind("createchannel", Binder.class, commandAliases.Createchannel.toArray(new String[0]));
+        plugin.getBindManager().bind("invite", PlayerBinder.class, commandAliases.Invite.toArray(new String[0]));
+        plugin.getBindManager().bind("focus", JoinedChannelBinder.class, commandAliases.Focus.toArray(new String[0]));
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("list")) {
-            plugin.getBindManager().bind("list", Binder.class, commandAliases.List);
+            plugin.getBindManager().bind("list", Binder.class, commandAliases.List.toArray(new String[0]));
         }
 
         plugin.getCommandExecutor().add(this, new Channels(plugin));

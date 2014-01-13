@@ -27,8 +27,8 @@ public class CloudChatModule extends Module {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         //Bind Commands
-        plugin.getBindManager().bind("cc:reload", Binder.class, commandAliases.CCReload);
-        plugin.getBindManager().bind("cc:report", Binder.class, commandAliases.CCReport);
+        plugin.getBindManager().bind("cc:reload", Binder.class, commandAliases.CCReload.toArray(new String[0]));
+        plugin.getBindManager().bind("cc:report", Binder.class, commandAliases.CCReport.toArray(new String[0]));
         plugin.getBindManager().bind("cc:playermenu", PermissionlessBinder.class);
 
         plugin.getCommandExecutor().add(this, new Reload(plugin));

@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
+import net.cubespace.CloudChat.Event.CheckCommandEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
@@ -48,7 +49,7 @@ public class AsyncChatListener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, canVeto = true)
-    public boolean onAsyncChat2(AsyncChatEvent event) {
+    public boolean onCheckCommand(CheckCommandEvent event) {
         if(event.isCommand()) {
             String[] cmd = event.getMessage().split(" ");
 
@@ -73,6 +74,6 @@ public class AsyncChatListener {
             return true;
         }
 
-        return ((Main) plugin.getConfigManager().getConfig("main")).PrivateMode;
+        return false;
     }
 }

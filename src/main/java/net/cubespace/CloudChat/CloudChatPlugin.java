@@ -41,7 +41,7 @@ public class CloudChatPlugin extends CubespacePlugin {
     @Override
     public void onEnable() {
         //Setup the Logging Level
-        getPluginLogger().setLogLevel(Level.INFO);
+        getPluginLogger().setLogLevel(Level.DEBUG);
 
         //Load the Permission
         getPermissionManager().setup("cloudchat.");

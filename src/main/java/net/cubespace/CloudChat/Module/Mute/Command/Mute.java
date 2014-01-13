@@ -104,7 +104,7 @@ public class Mute implements CLICommand {
 
         muteModule.getMuteManager().removePlayerMute(sender.getName(), player.getName());
         MessageBuilder messageBuilder = new MessageBuilder();
-        messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_Success)).send(sender);
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_Success.replace("%player", player.getName()))).send(sender);
 
         plugin.getPluginLogger().info(sender.getName() + " unmuted " + player.getName());
     }
@@ -135,7 +135,7 @@ public class Mute implements CLICommand {
 
         muteModule.getMuteManager().addGlobalMute(player.getName());
         MessageBuilder messageBuilder = new MessageBuilder();
-        messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_Success)).send(sender);
+        messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_Success.replace("%player", player.getName()))).send(sender);
         plugin.getPluginLogger().info(sender.getName() + " globally muted " + player.getName());
     }
 
@@ -165,7 +165,7 @@ public class Mute implements CLICommand {
 
         muteModule.getMuteManager().removeGlobalMute(player.getName());
         MessageBuilder messageBuilder = new MessageBuilder();
-        messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_Success)).send(sender);
+        messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_Success.replace("%player", player.getName()))).send(sender);
 
         plugin.getPluginLogger().info(sender.getName() + " globally unmuted " + player.getName());
     }

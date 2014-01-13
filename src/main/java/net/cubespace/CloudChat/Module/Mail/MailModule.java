@@ -27,7 +27,7 @@ public class MailModule extends Module {
     public void onEnable() {
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("mail")) {
             CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
-            plugin.getBindManager().bind("mail", PlayerNameBinder.class, commandAliases.Mail);
+            plugin.getBindManager().bind("mail", PlayerNameBinder.class, commandAliases.Mail.toArray(new String[0]));
 
             plugin.getCommandExecutor().add(this, new Mail(plugin));
 

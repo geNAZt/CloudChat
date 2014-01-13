@@ -61,7 +61,7 @@ public class IRCModule extends Module {
             plugin.getAsyncEventBus().addListener(this, new PlayerChangeAFKListener(this, plugin));
             plugin.getAsyncEventBus().addListener(this, new PMListener(this, plugin));
 
-            plugin.getBindManager().bind("irc:reconnect", Binder.class, commandAliases.IRCReconnect);
+            plugin.getBindManager().bind("irc:reconnect", Binder.class, commandAliases.IRCReconnect.toArray(new String[0]));
             plugin.getCommandExecutor().add(this, new net.cubespace.CloudChat.Module.IRC.Command.IRC(this, plugin));
 
             plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, DispatchScmdMessage.class);

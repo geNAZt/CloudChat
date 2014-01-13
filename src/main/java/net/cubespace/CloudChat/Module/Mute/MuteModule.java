@@ -35,10 +35,10 @@ public class MuteModule extends Module {
     public void onEnable() {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
-        plugin.getBindManager().bind("mute", PlayerBinder.class, commandAliases.Mute);
-        plugin.getBindManager().bind("unmute", PlayerBinder.class, commandAliases.Unmute);
-        plugin.getBindManager().bind("cc:mute", PlayerBinder.class, commandAliases.CCMute);
-        plugin.getBindManager().bind("cc:unmute", PlayerBinder.class, commandAliases.CCUnmute);
+        plugin.getBindManager().bind("mute", PlayerBinder.class, commandAliases.Mute.toArray(new String[0]));
+        plugin.getBindManager().bind("unmute", PlayerBinder.class, commandAliases.Unmute.toArray(new String[0]));
+        plugin.getBindManager().bind("cc:mute", PlayerBinder.class, commandAliases.CCMute.toArray(new String[0]));
+        plugin.getBindManager().bind("cc:unmute", PlayerBinder.class, commandAliases.CCUnmute.toArray(new String[0]));
 
         plugin.getCommandExecutor().add(this, new Mute(this, plugin));
 

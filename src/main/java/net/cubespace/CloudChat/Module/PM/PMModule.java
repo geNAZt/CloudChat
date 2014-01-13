@@ -27,11 +27,11 @@ public class PMModule extends Module {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("msg")) {
-            plugin.getBindManager().bind("msg", PlayerBinder.class, commandAliases.Msg);
+            plugin.getBindManager().bind("msg", PlayerBinder.class, commandAliases.Msg.toArray(new String[0]));
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("reply")) {
-            plugin.getBindManager().bind("reply", Binder.class, commandAliases.Reply);
+            plugin.getBindManager().bind("reply", Binder.class, commandAliases.Reply.toArray(new String[0]));
         }
 
         plugin.getCommandExecutor().add(this, new PM(plugin));

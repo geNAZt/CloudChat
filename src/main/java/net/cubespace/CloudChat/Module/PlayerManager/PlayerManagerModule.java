@@ -45,7 +45,7 @@ public class PlayerManagerModule extends Module {
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("nick")) {
             //Register the correct Binder
-            plugin.getBindManager().bind("nick", Binder.class, commandAliases.Nick);
+            plugin.getBindManager().bind("nick", Binder.class, commandAliases.Nick.toArray(new String[0]));
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Nick(plugin));
@@ -55,7 +55,7 @@ public class PlayerManagerModule extends Module {
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("realname")) {
             //Register the correct Binder
-            plugin.getBindManager().bind("realname", PlayerBinder.class, commandAliases.Realname);
+            plugin.getBindManager().bind("realname", PlayerBinder.class, commandAliases.Realname.toArray(new String[0]));
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Realname(plugin));
