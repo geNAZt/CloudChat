@@ -43,6 +43,10 @@ public class PluginMessageListener implements PacketListener {
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         Factions factions = plugin.getConfigManager().getConfig("factions");
 
+        ClickEvent clickEvent = new ClickEvent();
+        clickEvent.setAction(ClickAction.RUN_COMMAND);
+        clickEvent.setValue("/cc:playermenu " + factionChatMessage.getSender().getName());
+
         if(factionChatMessage.getMode().equals("global")) {
             ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
@@ -59,6 +63,7 @@ public class PluginMessageListener implements PacketListener {
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
             MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent);
             messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
@@ -73,6 +78,7 @@ public class PluginMessageListener implements PacketListener {
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
             MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent);
             messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
@@ -87,6 +93,7 @@ public class PluginMessageListener implements PacketListener {
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
             MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent);
             messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
@@ -101,6 +108,7 @@ public class PluginMessageListener implements PacketListener {
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
             MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent);
             messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
@@ -115,6 +123,7 @@ public class PluginMessageListener implements PacketListener {
             String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
 
             MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent);
             messageBuilder.setText(message);
             for(String playerToSend : factionChatMessage.getPlayers()) {
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
