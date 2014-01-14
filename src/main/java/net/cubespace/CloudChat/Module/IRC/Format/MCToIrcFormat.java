@@ -69,7 +69,7 @@ public enum MCToIrcFormat {
         translate.put("&m", "-");
         translate.put("&n", Colors.UNDERLINE);
         translate.put("&o", "");
-        translate.put("&r", Colors.BLACK);
+        translate.put("&r", Colors.NORMAL);
 
         //MC Colors
         translate.put("§0", "");
@@ -93,7 +93,7 @@ public enum MCToIrcFormat {
         translate.put("§m", "-");
         translate.put("§n", Colors.UNDERLINE);
         translate.put("§o", "");
-        translate.put("§r", Colors.BLACK);
+        translate.put("§r", Colors.NORMAL);
     }
 
     public static String translateString(String value) {
