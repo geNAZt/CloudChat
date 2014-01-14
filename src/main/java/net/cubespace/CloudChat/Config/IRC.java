@@ -25,6 +25,8 @@ public class IRC extends Config {
     public String Name = "CloudChatIRCBot";
     @Comment("Which Host should the bot join ?")
     public String Host = "irc.esper.net";
+    @Comment("With which Password should the Bot auth ? If not NickServed leave this empty")
+    public String Identify = "";
     @Comment("Which Channels should the Bot join ?")
     public ArrayListMultimap<String, String> Channels = ArrayListMultimap.create();
     @Comment("Which Ingame Nickname should the IRC Bot have ?")
