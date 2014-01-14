@@ -71,6 +71,7 @@ public class ComponentBuilderBuilder implements IMessageBuilder {
 
                         format = ChatColor.WHITE;
                     default:
+                        component = new TextComponent();
                         component.setColor(format);
                         break;
                 }
