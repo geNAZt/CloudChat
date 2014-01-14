@@ -34,5 +34,6 @@ public class PlayerDatabase extends Config {
     public Boolean Ignore = false;
     public Boolean Output = true;
     public Boolean Muted = false;
+    public Boolean Spy = false;
     public ArrayList<Mail> Mails = new ArrayList<>();
 }

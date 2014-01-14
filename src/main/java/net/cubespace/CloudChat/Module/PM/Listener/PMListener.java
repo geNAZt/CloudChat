@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
+import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
@@ -13,6 +14,9 @@ import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -29,14 +33,14 @@ public class PMListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPM(PMEvent event) {
-        Messages messages = plugin.getConfigManager().getConfig("messages");
+        final Messages messages = plugin.getConfigManager().getConfig("messages");
 
-        ProxiedPlayer sen = plugin.getProxy().getPlayer(event.getFrom());
-        ProxiedPlayer rec = plugin.getProxy().getPlayer(event.getTo());
+        final ProxiedPlayer sen = plugin.getProxy().getPlayer(event.getFrom());
+        final ProxiedPlayer rec = plugin.getProxy().getPlayer(event.getTo());
 
         LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
         legacyMessageBuilder.setText(event.getMessage());
-        String message = legacyMessageBuilder.getString();
+        final String message = legacyMessageBuilder.getString();
 
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.setText(FontFormat.translateString(messages.Message_Receiver.replace("%sender", sen.getName()).replace("%message", message))).send(rec);
@@ -48,6 +52,25 @@ public class PMListener implements Listener {
 
         playerManager.get(sen.getName()).Reply = rec.getName();
         playerManager.get(rec.getName()).Reply = sen.getName();
+
+        //Let people spy
+        plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+            @Override
+            public void run() {
+                MessageBuilder messageBuilder2 = new MessageBuilder();
+                messageBuilder2.setText(FontFormat.translateString(messages.Message_Spy.
+                        replace("%receiver", rec.getName()).
+                        replace("%sender", sen.getName()).
+                        replace("%message", message)));
+
+
+                for(Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
+                    if(playerDatabase.getValue().Spy) {
+                        messageBuilder2.send(plugin.getProxy().getPlayer(playerDatabase.getKey()));
+                    }
+                }
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH, canVeto = true)

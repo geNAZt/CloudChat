@@ -44,4 +44,5 @@ public class CommandAliases extends Config {
     public ArrayList<String> Invite = new ArrayList<String>();
     public ArrayList<String> Focus = new ArrayList<String>();
     public ArrayList<String> List = new ArrayList<String>();
+    public ArrayList<String> Socialspy = new ArrayList<>();
 }

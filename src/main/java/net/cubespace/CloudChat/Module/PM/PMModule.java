@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.PM.Command.PM;
+import net.cubespace.CloudChat.Module.PM.Command.SocialSpy;
 import net.cubespace.CloudChat.Module.PM.Listener.PMListener;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
@@ -34,6 +35,11 @@ public class PMModule extends Module {
             plugin.getBindManager().bind("reply", Binder.class, commandAliases.Reply.toArray(new String[0]));
         }
 
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("socialspy")) {
+            plugin.getBindManager().bind("socialspy", Binder.class, commandAliases.Socialspy.toArray(new String[0]));
+            plugin.getCommandExecutor().add(this, new SocialSpy(plugin));
+        }
+
         plugin.getCommandExecutor().add(this, new PM(plugin));
 
         plugin.getAsyncEventBus().addListener(this, new PMListener(plugin));
@@ -47,6 +53,10 @@ public class PMModule extends Module {
 
         if(plugin.getBindManager().isBound("reply")) {
             plugin.getBindManager().unbind("reply");
+        }
+
+        if(plugin.getBindManager().isBound("socialspy")) {
+            plugin.getBindManager().unbind("socialspy");
         }
 
         plugin.getCommandExecutor().remove(this);
