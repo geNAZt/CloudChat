@@ -70,6 +70,12 @@ public enum IrcToMCFormat {
     public static String translateString(String value) {
         int length = value.length();
 
+        boolean bold = false;
+        boolean underline = false;
+        boolean strike = false;
+        boolean italic = false;
+        String lastColor = "&f";
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             char ch = value.charAt(i);
@@ -101,29 +107,146 @@ public enum IrcToMCFormat {
                         }
 
                         sb.append(translate.get(color));
+                        lastColor = translate.get(color);
+                    }
+
+                    //if color is "" reset
+                    if(color.equals("")) {
+                        sb.append("&r");
+
+                        if(bold) {
+                            sb.append("&l");
+                        }
+
+                        if(strike) {
+                            sb.append("&m");
+                        }
+
+                        if(italic) {
+                            sb.append("&o");
+                        }
+
+                        if(underline) {
+                            sb.append("&n");
+                        }
                     }
 
                     break;
 
                 case 2:
-                    sb.append("&l");
+                    if(!bold) {
+                        sb.append("&l");
+                        bold = true;
+                    } else {
+                        sb.append("&r");
+                        sb.append(lastColor);
+
+                        if(bold) {
+                            sb.append("&l");
+                        }
+
+                        if(strike) {
+                            sb.append("&m");
+                        }
+
+                        if(italic) {
+                            sb.append("&o");
+                        }
+
+                        if(underline) {
+                            sb.append("&n");
+                        }
+
+                        bold = false;
+                    }
+
                     break;
 
                 case 15:
                     sb.append("&r");
+                    lastColor = "&f";
                     break;
 
                 case 19:
-                    sb.append("&m");
+                    if(!strike) {
+                        sb.append("&m");
+                        strike = true;
+                    } else {
+                        sb.append("&r");
+                        sb.append(lastColor);
+
+                        if(bold) {
+                            sb.append("&l");
+                        }
+
+                        if(strike) {
+                            sb.append("&m");
+                        }
+
+                        if(italic) {
+                            sb.append("&o");
+                        }
+
+                        if(underline) {
+                            sb.append("&n");
+                        }
+
+                        strike = false;
+                    }
+
                     break;
 
                 case 22:
                 case 29:
-                    sb.append("&o");
+                    if(!italic) {
+                        sb.append("&o");
+                        italic = true;
+                    } else {
+                        sb.append("&r");
+                        sb.append(lastColor);
+
+                        if(bold) {
+                            sb.append("&l");
+                        }
+
+                        if(strike) {
+                            sb.append("&m");
+                        }
+
+                        if(italic) {
+                            sb.append("&o");
+                        }
+
+                        if(underline) {
+                            sb.append("&n");
+                        }
+                    }
                     break;
 
                 case 31:
-                    sb.append("&n");
+                    if(underline) {
+                        sb.append("&n");
+                        underline = true;
+                    } else {
+                        sb.append("&r");
+                        sb.append(lastColor);
+
+                        if(bold) {
+                            sb.append("&l");
+                        }
+
+                        if(strike) {
+                            sb.append("&m");
+                        }
+
+                        if(italic) {
+                            sb.append("&o");
+                        }
+
+                        if(underline) {
+                            sb.append("&n");
+                        }
+                    }
 
                 default:
                     sb.append(ch);
