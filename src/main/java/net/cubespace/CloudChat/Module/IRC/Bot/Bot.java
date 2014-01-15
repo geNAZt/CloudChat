@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.IRC.Bot;
 
 import net.cubespace.CloudChat.Config.IRC;
+import net.cubespace.CloudChat.Config.Sub.IRCPermissionGroup;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
@@ -203,6 +204,7 @@ public class Bot extends PircBot implements Runnable {
      */
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         plugin.getPluginLogger().debug("Got IRC Message from " + channel + ": " + message);
+
         relayMessage(sender, channel, IrcToMCFormat.translateString(message), true);
     }
 
@@ -375,8 +377,11 @@ public class Bot extends PircBot implements Runnable {
     private void relayMessage(String sender, String channel, String message, boolean useChannelFormat) {
         plugin.getPluginLogger().debug("Got a new relay Message from IRC: " + sender + ": " + message);
 
+        //Get the Group of the user
+        IRCPermissionGroup group = ircManager.getPermissionManager().getGroup(sender);
+
         IRCSender ircSender = new IRCSender();
-        ircSender.setNick(ircConfig.IngameName + " " + sender);
+        ircSender.setNick(ircConfig.IngameName.replace("%prefix", group.prefix).replace("%suffix", group.suffix) + " " + sender);
         ircSender.setChannel(channel);
         ircSender.setRawNick(sender);
 

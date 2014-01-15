@@ -12,4 +12,6 @@ public class IRCPermissionGroup extends Config {
     public int Rank = 0;
     public ArrayList<String> Permissions = new ArrayList<>();
     public ArrayList<String> Inherits = new ArrayList<>();
+    public String prefix;
+    public String suffix;
 }

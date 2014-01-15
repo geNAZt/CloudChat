@@ -27,14 +27,14 @@ public class PermissionManager {
     private IRCManager ircManager;
 
     //Loaded Auth permissions
-    private HashMap<String, ArrayList<String>> loadedPermisisons = new HashMap<>();
+    private HashMap<String, PermissionEntry> loadedPermisisons = new HashMap<>();
 
     public PermissionManager(IRCManager ircManager, CubespacePlugin plugin) {
         this.plugin = plugin;
         this.ircManager = ircManager;
     }
 
-    private ArrayList<String> calcEffectivePermissions(String auth) {
+    private PermissionEntry calcEffectivePermissions(String auth) {
         //Get the IRCPermissions
         IRCPermissions ircPermissions = plugin.getConfigManager().getConfig("ircPermissions");
 
@@ -112,6 +112,7 @@ public class PermissionManager {
         Collections.sort(groups, new SortGroup());
 
         //Calc the Permissions
+        IRCPermissionGroup lastGroup = null;
         for(IRCPermissionGroup group : groups) {
             if(group.Permissions.size() > 0) {
                 for(String permission : group.Permissions) {
@@ -129,6 +130,8 @@ public class PermissionManager {
                     }
                 }
             }
+
+            lastGroup = group;
         }
 
         //Check User permissions
@@ -149,16 +152,20 @@ public class PermissionManager {
             }
         }
 
-        return permissions;
+        PermissionEntry permissionEntry = new PermissionEntry();
+        permissionEntry.setPermissions(permissions);
+        permissionEntry.setPrimaryGroup(lastGroup);
+
+        return permissionEntry;
     }
 
     public void load(String nickname, String auth) {
-        ArrayList<String> permissions = calcEffectivePermissions(auth);
+        PermissionEntry permissions = calcEffectivePermissions(auth);
         loadedPermisisons.put(nickname, permissions);
     }
 
     public void move(String oldNick, String newNick) {
-        ArrayList<String> permissions = loadedPermisisons.get(oldNick);
+        PermissionEntry permissions = loadedPermisisons.get(oldNick);
         loadedPermisisons.remove(oldNick);
         loadedPermisisons.put(newNick, permissions);
     }
@@ -176,6 +183,10 @@ public class PermissionManager {
     }
 
     public boolean has(String nickname, String permission) {
-        return loadedPermisisons.containsKey(nickname) && loadedPermisisons.get(nickname).contains(permission);
+        return loadedPermisisons.containsKey(nickname) && loadedPermisisons.get(nickname).getPermissions().contains(permission);
+    }
+
+    public IRCPermissionGroup getGroup(String nickname) {
+        return loadedPermisisons.get(nickname).getPrimaryGroup();
     }
 }
