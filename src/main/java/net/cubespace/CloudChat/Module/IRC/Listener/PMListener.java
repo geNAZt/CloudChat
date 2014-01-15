@@ -38,10 +38,10 @@ public class PMListener implements Listener {
 
             //Check if there is a " " in the name
             String ircNick;
-            if(event.getFrom().contains(" ")) {
-                ircNick = FontFormat.stripColor(event.getFrom()).split(" ")[1];
+            if(event.getFrom().contains(config.IngameName)) {
+                ircNick = FontFormat.stripColor(event.getFrom().replace(config.IngameName, ""));
             } else {
-                ircNick = FontFormat.stripColor(event.getMessage().split(" ")[0]);
+                ircNick = FontFormat.stripColor(event.getMessage().replace(config.IngameName, "").split(" ")[0]);
             }
 
             ProxiedPlayer sen = plugin.getProxy().getPlayer(event.getTo());
@@ -60,9 +60,9 @@ public class PMListener implements Listener {
                 pmSession.setTo(sen.getName());
             }
 
-            playerManager.get(sen.getName()).Reply = FontFormat.stripColor(config.IngameName) + " " + ircNick;
+            playerManager.get(sen.getName()).Reply = FontFormat.stripColor(config.IngameName) + ircNick;
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(messages.Message_Receiver.replace("%sender", config.IngameName + " " + ircNick).replace("%message", event.getMessage().replace(ircNick + " ", "")));
+            messageBuilder.setText(messages.Message_Receiver.replace("%sender", config.IngameName + ircNick).replace("%message", event.getMessage().replace(ircNick + " ", "")));
             messageBuilder.send(sen);
 
             plugin.getPluginLogger().info(event.getFrom() + " -> " + event.getTo() + ": " + event.getMessage().replace(ircNick + " ", ""));
@@ -82,13 +82,13 @@ public class PMListener implements Listener {
 
             //Check if there is a " " in the name
             String ircNick;
-            if(event.getTo().contains(" ")) {
-                ircNick = FontFormat.stripColor(event.getTo()).split(" ")[1];
+            if(event.getTo().contains(config.IngameName)) {
+                ircNick = FontFormat.stripColor(event.getTo().replace(config.IngameName, ""));
             } else {
-                ircNick = FontFormat.stripColor(event.getMessage().split(" ")[0]);
+                ircNick = FontFormat.stripColor(event.getMessage().replace(config.IngameName, "").split(" ")[0]);
             }
 
-            event.setTo(config.IngameName + " " + ircNick);
+            event.setTo(config.IngameName + ircNick);
             ProxiedPlayer sen = plugin.getProxy().getPlayer(event.getFrom());
 
             //Check if sender can do this
@@ -110,7 +110,7 @@ public class PMListener implements Listener {
                     pmSession.setTo(sen.getName());
                 }
 
-                playerManager.get(sen.getName()).Reply = FontFormat.stripColor(config.IngameName) + " " + ircNick;
+                playerManager.get(sen.getName()).Reply = FontFormat.stripColor(config.IngameName) + ircNick;
 
                 ircModule.getIrcBot().sendToChannel(event.getFrom() + ": " + event.getMessage().replace(ircNick + " ", ""), ircNick);
 

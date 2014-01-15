@@ -381,7 +381,7 @@ public class Bot extends PircBot implements Runnable {
         IRCPermissionGroup group = ircManager.getPermissionManager().getGroup(sender);
 
         IRCSender ircSender = new IRCSender();
-        ircSender.setNick(ircConfig.IngameName.replace("%prefix", group.prefix).replace("%suffix", group.suffix) + " " + sender);
+        ircSender.setNick(ircConfig.IngameName.replace("%prefix", group.prefix).replace("%suffix", group.suffix) + sender);
         ircSender.setChannel(channel);
         ircSender.setRawNick(sender);
 

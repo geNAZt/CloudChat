@@ -22,6 +22,7 @@ import net.cubespace.CloudChat.Module.FormatHandler.FormatHandlerModule;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.Logging.LoggingModule;
 import net.cubespace.CloudChat.Module.Mail.MailModule;
+import net.cubespace.CloudChat.Module.Metrics.MetricsModule;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
 import net.cubespace.CloudChat.Module.PM.PMModule;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
@@ -75,6 +76,8 @@ public class CloudChatPlugin extends CubespacePlugin {
         getModuleManager().registerModule(new SpamModule(this));
         getModuleManager().registerModule(new TwitterModule(this));
         getModuleManager().registerModule(new MailModule(this));
+
+        getModuleManager().registerModule(new MetricsModule(this));
 
         this.getProxy().getScheduler().schedule(this, new Runnable() {
             @Override

@@ -30,7 +30,7 @@ public class IRC extends Config {
     @Comment("Which Channels should the Bot join ?")
     public ArrayListMultimap<String, String> Channels = ArrayListMultimap.create();
     @Comment("Which Ingame Nickname should the IRC Bot have ?")
-    public String IngameName = "&8[&2IRC&8]&r";
+    public String IngameName = "&8[&2IRC&8]&r ";
     @Comment("Should the Actions from IRC be relayed ?")
     public boolean Relay_Action = false;
     @Comment("The prefix for Actions")
