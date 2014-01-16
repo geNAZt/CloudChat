@@ -29,7 +29,8 @@ public class ReportFileWriterTask implements Runnable {
         while (!closed || linesToWrite.size() > 0) {
             try {
                 String line = linesToWrite.poll(10, TimeUnit.MILLISECONDS);
-                writer.write(line + "\n");
+                if(line != null)
+                    writer.write(line + "\n");
             } catch (Exception e) {
 
             }
