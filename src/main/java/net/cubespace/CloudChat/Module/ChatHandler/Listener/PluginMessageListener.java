@@ -60,7 +60,7 @@ public class PluginMessageListener implements PacketListener {
 
         if(channelDatabase != null) {
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = channelDatabase.Format.replace("%message", townyChatMessage.getMessage()).replace("%nation", townyChatMessage.getNationName()).replace("%town", townyChatMessage.getTownName());
+            String message = MessageFormat.format(channelDatabase.Format.replace("%message", townyChatMessage.getMessage()).replace("%nation", townyChatMessage.getNationName()).replace("%town", townyChatMessage.getTownName()), channelDatabase, playerDatabase);
 
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.addEvent("playerMenu", clickEvent);
