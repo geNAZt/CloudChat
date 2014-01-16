@@ -25,6 +25,9 @@ public class MessageFormat {
         output = output.replace("%nick", playerDatabase.Nick);
         output = output.replace("%prefix", playerDatabase.Prefix);
         output = output.replace("%suffix", playerDatabase.Suffix);
+        output = output.replace("%faction", playerDatabase.Faction);
+        output = output.replace("%town", playerDatabase.Town);
+        output = output.replace("%nation", playerDatabase.Nation);
 
         //Server things
         output = output.replace("%server", playerDatabase.Server);

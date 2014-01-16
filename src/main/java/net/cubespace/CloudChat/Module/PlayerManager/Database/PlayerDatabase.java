@@ -26,6 +26,9 @@ public class PlayerDatabase extends Config {
     public String Nick = "";
     public String Prefix = "";
     public String Suffix = "";
+    public String Town = "";
+    public String Nation = "";
+    public String Faction = "";
     public String Reply = "";
     public String World = "";
     public String WorldAlias = "";

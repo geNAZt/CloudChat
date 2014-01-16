@@ -40,6 +40,10 @@ public class PluginMessageListener implements PacketListener {
         if(affixMessage.getSuffix() != null)
             playerDatabase.Suffix = affixMessage.getSuffix();
 
+        playerDatabase.Town = affixMessage.getTown();
+        playerDatabase.Nation = affixMessage.getNation();
+        playerDatabase.Faction = affixMessage.getFaction();
+
         //Get new Permissions
         //plugin.getPluginMessageManager("CubespaceLibrary").sendPluginMessage(player, new PermissionRequest(plugin.getPermissionManager().getPrefix()));
         plugin.getPluginLogger().debug("Got new Affix Message for " + player.getName() + " - " + affixMessage.getPrefix() + "/" + affixMessage.getSuffix());
