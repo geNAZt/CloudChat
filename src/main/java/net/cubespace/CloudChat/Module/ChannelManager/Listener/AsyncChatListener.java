@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
-import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Event.CheckCommandEvent;
@@ -44,8 +43,7 @@ public class AsyncChatListener {
         }
 
         //Check if this Chat gets handled by CloudChat
-        return (((Main) plugin.getConfigManager().getConfig("main")).DontHandleForServers.contains(event.getSender().getServer().getInfo().getName()) ||
-                ((Factions) plugin.getConfigManager().getConfig("factions")).FactionServers.contains(event.getSender().getServer().getInfo().getName()));
+        return (((Main) plugin.getConfigManager().getConfig("main")).DontHandleForServers.contains(event.getSender().getServer().getInfo().getName()));
     }
 
     @EventHandler(priority = EventPriority.HIGH, canVeto = true)

@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
 import net.cubespace.CloudChat.Config.Factions;
+import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -15,6 +16,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.PluginMessages.ChatMessage;
 import net.cubespace.PluginMessages.FactionChatMessage;
 import net.cubespace.PluginMessages.SendChatMessage;
+import net.cubespace.PluginMessages.TownyChatMessage;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
@@ -38,6 +40,38 @@ public class PluginMessageListener implements PacketListener {
     }
 
     @PacketHandler
+    public void onTownyChatMessage(TownyChatMessage townyChatMessage) {
+        ProxiedPlayer player = townyChatMessage.getSender().getBungeePlayer();
+        Towny towny = plugin.getConfigManager().getConfig("towny");
+        PlayerDatabase playerDatabase = playerManager.get(player.getName());
+
+        ClickEvent clickEvent = new ClickEvent();
+        clickEvent.setAction(ClickAction.RUN_COMMAND);
+        clickEvent.setValue("/cc:playermenu " + townyChatMessage.getSender().getName());
+
+        ChannelDatabase channelDatabase = null;
+        if(townyChatMessage.getMode().equals("town")) {
+            channelDatabase = channelManager.get(towny.TownChannel);
+        }
+
+        if(townyChatMessage.getMode().equals("nation")) {
+            channelDatabase = channelManager.get(towny.NationChannel);
+        }
+
+        if(channelDatabase != null) {
+            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+            String message = channelDatabase.Format.replace("%message", townyChatMessage.getMessage()).replace("%nation", townyChatMessage.getNationName()).replace("%town", townyChatMessage.getTownName());
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent);
+            messageBuilder.setText(message);
+            for(String playerToSend : townyChatMessage.getPlayers()) {
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
+            }
+        }
+    }
+
+    @PacketHandler
     public void onFactionChatMessage(FactionChatMessage factionChatMessage){
         ProxiedPlayer player = factionChatMessage.getSender().getBungeePlayer();
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
@@ -55,81 +89,41 @@ public class PluginMessageListener implements PacketListener {
             plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
 
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
-        }
-
-        if(factionChatMessage.getMode().equals("faction")) {
-            ChannelDatabase channelDatabase = channelManager.get(factions.FactionChannel);
-            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
-            messageBuilder.setText(message);
-            for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
+        } else {
+            ChannelDatabase channelDatabase = null;
+            if(factionChatMessage.getMode().equals("faction")) {
+                channelDatabase = channelManager.get(factions.FactionChannel);
             }
 
-            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
-        }
-
-        if(factionChatMessage.getMode().equals("ally")) {
-            ChannelDatabase channelDatabase = channelManager.get(factions.AllyChannel);
-            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
-            messageBuilder.setText(message);
-            for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
+            if(factionChatMessage.getMode().equals("ally")) {
+                channelDatabase = channelManager.get(factions.AllyChannel);
             }
 
-            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
-        }
-
-        if(factionChatMessage.getMode().equals("allyandtruce")) {
-            ChannelDatabase channelDatabase = channelManager.get(factions.AllyAndTruceChannel);
-            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
-            messageBuilder.setText(message);
-            for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
+            if(factionChatMessage.getMode().equals("allyandtruce")) {
+                channelDatabase = channelManager.get(factions.AllyAndTruceChannel);
             }
 
-            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
-        }
-
-        if(factionChatMessage.getMode().equals("truce")) {
-            ChannelDatabase channelDatabase = channelManager.get(factions.TruceChannel);
-            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
-            messageBuilder.setText(message);
-            for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
+            if(factionChatMessage.getMode().equals("truce")) {
+                channelDatabase = channelManager.get(factions.TruceChannel);
             }
 
-            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
-        }
-
-        if(factionChatMessage.getMode().equals("enemy")) {
-            ChannelDatabase channelDatabase = channelManager.get(factions.EnemyChannel);
-            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
-            messageBuilder.setText(message);
-            for(String playerToSend : factionChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
+            if(factionChatMessage.getMode().equals("enemy")) {
+                channelDatabase = channelManager.get(factions.EnemyChannel);
             }
 
-            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+            if(channelDatabase != null) {
+                Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+                String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
+
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.addEvent("playerMenu", clickEvent);
+                messageBuilder.setText(message);
+                for(String playerToSend : factionChatMessage.getPlayers()) {
+                    plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
+                }
+
+                plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.ChannelManager;
 
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Manager.IManager;
@@ -100,6 +101,17 @@ public class ChannelManager implements IManager {
         if(!loadedChannels.containsKey(factionsConfig.EnemyChannel)) {
             createFactionChannel(factionsConfig.EnemyChannel, "F:E");
         }
+
+        //Check if the Towny channels are there
+        Towny towny = plugin.getConfigManager().getConfig("towny");
+
+        if(!loadedChannels.containsKey(towny.TownChannel)) {
+            createTownyChannel(towny.TownChannel, "T");
+        }
+
+        if(!loadedChannels.containsKey(towny.NationChannel)) {
+            createTownyChannel(towny.NationChannel, "N");
+        }
     }
 
     private void createFactionChannel(String channel, String alias) {
@@ -114,6 +126,22 @@ public class ChannelManager implements IManager {
             loadedChannels.put(channel, faction);
         } catch (Exception e) {
             plugin.getPluginLogger().error("Could not create Faction channel", e);
+            throw new RuntimeException();
+        }
+    }
+
+    private void createTownyChannel(String channel, String alias) {
+        ChannelDatabase towny = new ChannelDatabase(plugin, channel);
+        towny.Short = alias;
+        towny.Name = channel;
+        towny.Format = "&8[&2%channel_short&8] (%nation:%town&8)&r%prefix%nick{click:playerMenu}%suffix&r: %message";
+        towny.Forced = false;
+
+        try {
+            towny.save();
+            loadedChannels.put(channel, towny);
+        } catch (Exception e) {
+            plugin.getPluginLogger().error("Could not create Towny channel", e);
             throw new RuntimeException();
         }
     }
