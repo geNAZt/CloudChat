@@ -30,6 +30,16 @@ public class Mail implements CLICommand {
         this.plugin = plugin;
     }
 
+    @Command(command = "mail", arguments = 0)
+    public void mailDefaultCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
+        for(String line : messages.Command_Mail_HelpText.split("\n")) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(line)).send(sender);
+        }
+    }
+
     @Command(command = "mail send", arguments = 2)
     public void mailSendCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

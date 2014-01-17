@@ -105,6 +105,10 @@ public class Messages extends Config {
     public String Command_Mail_Clear_NotPlayer = "&cOnly Players can clear mails";
     public String Command_Mail_Clear_Success = "&6Mails where cleared";
 
+    public String Command_Mail_HelpText = "&6Welcome to the Mail System\n&6Use &a/mail send <player> <message>&6 to send mails\n" +
+            "&6Use &a/mail read &6 to read mails\n" +
+            "&6Use &a/mail clear&6 to clear your mails";
+
     public String Command_Mute_NotPlayer = "&cOnly Players can mute";
     public String Command_Mute_OfflinePlayer = "&cYou can't mute offline Players";
     public String Command_Mute_Success = "&6You muted %player";
