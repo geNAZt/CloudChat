@@ -34,6 +34,8 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event) {
+        if(plugin.getPermissionManager().has(event.getPlayer(), "cloudchat.bypass.announce.quit")) return;
+
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
         ArrayList<ProxiedPlayer> sent = new ArrayList<>();
 

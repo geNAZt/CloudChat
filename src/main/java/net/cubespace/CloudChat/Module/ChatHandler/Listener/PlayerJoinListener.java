@@ -36,6 +36,8 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if(plugin.getPermissionManager().has(event.getPlayer(), "cloudchat.bypass.announce.join")) return;
+
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
         ArrayList<ProxiedPlayer> sent = new ArrayList<>();
 
