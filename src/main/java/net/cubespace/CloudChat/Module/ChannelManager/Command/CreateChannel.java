@@ -24,12 +24,15 @@ public class CreateChannel implements CLICommand {
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
     }
 
-    @Command(command = "createchannel", arguments = 2)
+    @Command(command = "createchannel", arguments = 1)
     public void createChannelCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
 
         String name = args[0];
-        String password = args[1];
+        String password = "";
+        if(args.length > 1) {
+            password = args[1];
+        }
 
         //Check if name collides
         for(ChannelDatabase channel : channelManager.getChannels()) {
