@@ -60,7 +60,7 @@ public class Bot extends PircBot implements Runnable {
             plugin.getPluginLogger().warn("Could not set IRC Bot encoding");
         }
 
-        cmdManager = new CommandManager();
+        cmdManager = new CommandManager(plugin);
         cmdManager.registerCommand("players", new Players(ircModule, plugin));
         cmdManager.registerCommand("mute", new Mute(ircModule, plugin));
         cmdManager.registerCommand("unmute", new Unmute(ircModule, plugin));

@@ -1,17 +1,17 @@
 package net.cubespace.CloudChat.Module.IRC;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.IRC.Commands.Command;
+import net.cubespace.lib.CubespacePlugin;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class CommandManager {
     private HashMap<String, Command> executors = new HashMap<String, Command>();
-    private CloudChatPlugin plugin;
+    private CubespacePlugin plugin;
 
-    public CommandManager(CloudChatPlugin plugin) {
+    public CommandManager(CubespacePlugin plugin) {
         this.plugin = plugin;
     }
 
