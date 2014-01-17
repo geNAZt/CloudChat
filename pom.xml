@@ -6,7 +6,7 @@
 
     <groupId>net.cubespace</groupId>
     <artifactId>CloudChat</artifactId>
-    <version>3.11.0</version>
+    <version>3.11.1</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
