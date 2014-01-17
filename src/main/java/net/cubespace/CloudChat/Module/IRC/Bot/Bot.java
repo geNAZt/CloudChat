@@ -383,6 +383,8 @@ public class Bot extends PircBot implements Runnable {
 
         IRCSender ircSender = new IRCSender();
         plugin.getPluginLogger().debug("Created new IRCSender");
+        plugin.getPluginLogger().debug("IRCConfig: " + ircConfig);
+        plugin.getPluginLogger().debug("IngameName: " + ircConfig.IngameName);
         ircSender.setNick(ircConfig.IngameName.replace("%prefix", group.prefix).replace("%suffix", group.suffix) + sender);
         plugin.getPluginLogger().debug("Set nick to IRCSender");
         ircSender.setChannel(channel);
