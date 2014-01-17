@@ -5,7 +5,6 @@ import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
-import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -23,34 +22,23 @@ public class Message implements Command {
         Messages messages = plugin.getConfigManager().getConfig("messages");
 
         //Check for Permissions
-        if(!ircModule.getPermissions().has(sender.getRawNick(), "command.message")) {
+        if (!ircModule.getPermissions().has(sender.getRawNick(), "command.message")) {
             ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Message_NotEnoughPermission.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
-        if(args.length < 1) {
+        if (args.length < 1) {
             ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Message_NotEnoughArguments.replace("%nick", sender.getRawNick())), sender.getChannel());
             return true;
         }
 
-        ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
-        if(player == null) {
-            plugin.getPluginLogger().debug("Direct lookup returned null");
-            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
-
-            if(player == null) {
-                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                player = NicknameParser.getPlayer(plugin, args[0]);
-
-                if(player == null) {
-                    plugin.getPluginLogger().debug("Nickname Parser returned null");
-                    ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Message_OfflinePlayer.replace("%nick", sender.getRawNick())), sender.getChannel());
-                    return true;
-                }
-            }
+        ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
+        if (player == null) {
+            ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Message_OfflinePlayer.replace("%nick", sender.getRawNick())), sender.getChannel());
+            return true;
         }
 
-        if(ircModule.getIrcBot().getIrcManager().hasPmSession(sender.getRawNick())) {
+        if (ircModule.getIrcBot().getIrcManager().hasPmSession(sender.getRawNick())) {
             ircModule.getIrcBot().getIrcManager().getPmSession(sender.getRawNick()).setTo(player.getName());
         } else {
             ircModule.getIrcBot().getIrcManager().newPMSession(sender.getRawNick());

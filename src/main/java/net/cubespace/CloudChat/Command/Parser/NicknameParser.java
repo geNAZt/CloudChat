@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -12,10 +13,9 @@ import java.util.Map;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 30.12.13 22:38
  */
 public class NicknameParser {
-    public static ProxiedPlayer getPlayer(CubespacePlugin plugin, String tabCompleteString) {
+    private static ProxiedPlayer parseNickname(CubespacePlugin plugin, String tabCompleteString) {
         PlayerManager playerManager = plugin.getManagerRegistry().getManager("playerManager");
         Messages messages = plugin.getConfigManager().getConfig("messages");
 
@@ -29,5 +29,28 @@ public class NicknameParser {
         }
 
         return player;
+    }
+
+    public static ProxiedPlayer getPlayer(CubespacePlugin plugin, String player) {
+        ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
+        if(rec == null) {
+            plugin.getPluginLogger().debug("Direct lookup returned null");
+
+            //Check for autocomplete
+            player = AutoComplete.completeUsername(player);
+            rec = plugin.getProxy().getPlayer(player);
+
+            if(rec == null) {
+                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
+                rec = NicknameParser.getPlayer(plugin, player);
+
+                if(rec == null) {
+                    plugin.getPluginLogger().debug("Nickname parsing returned null");
+                    return null;
+                }
+            }
+        }
+
+        return rec;
     }
 }

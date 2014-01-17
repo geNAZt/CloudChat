@@ -7,7 +7,6 @@ import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
-import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
@@ -72,8 +71,8 @@ public class PMListener implements Listener {
                         replace("%message", message)));
 
 
-                for(Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
-                    if(playerDatabase.getValue().Spy) {
+                for (Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
+                    if (playerDatabase.getValue().Spy) {
                         messageBuilder2.send(plugin.getProxy().getPlayer(playerDatabase.getKey()));
                     }
                 }
@@ -88,29 +87,15 @@ public class PMListener implements Listener {
         String player = event.getTo();
 
         ProxiedPlayer sender = plugin.getProxy().getPlayer(event.getFrom());
-        if(sender == null) {
+        if (sender == null) {
             return true;
         }
 
-        ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
-        if(rec == null) {
-            plugin.getPluginLogger().debug("Direct lookup returned null");
-
-            //Check for autocomplete
-            player = AutoComplete.completeUsername(player);
-            rec = plugin.getProxy().getPlayer(player);
-
-            if(rec == null) {
-                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                rec = NicknameParser.getPlayer(plugin, player);
-
-                if(rec == null) {
-                    plugin.getPluginLogger().debug("Nickname parsing returned null");
-                    MessageBuilder messageBuilder2 = new MessageBuilder();
-                    messageBuilder2.setText(FontFormat.translateString(messages.Message_OfflinePlayer)).send(sender);
-                    return true;
-                }
-            }
+        ProxiedPlayer rec = NicknameParser.getPlayer(plugin, player);
+        if (rec == null) {
+            MessageBuilder messageBuilder2 = new MessageBuilder();
+            messageBuilder2.setText(FontFormat.translateString(messages.Message_OfflinePlayer)).send(sender);
+            return true;
         }
 
         if (sender.equals(rec)) {

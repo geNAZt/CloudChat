@@ -4,7 +4,6 @@ import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
-import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
@@ -31,7 +30,7 @@ public class Mute implements CLICommand {
 
         plugin.getPluginLogger().debug("Got a mute Request");
 
-        if(!(sender instanceof ProxiedPlayer)) {
+        if (!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But the sender is not a Player");
 
             MessageBuilder messageBuilder = new MessageBuilder();
@@ -39,24 +38,12 @@ public class Mute implements CLICommand {
             return;
         }
 
-        ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
-        if(player == null) {
-            plugin.getPluginLogger().debug("Direct lookup returned null");
-            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+        ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
+        if (player == null) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_OfflinePlayer)).send(sender);
 
-            if(player == null) {
-                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                player = NicknameParser.getPlayer(plugin, args[0]);
-
-                if(player == null) {
-                    plugin.getPluginLogger().debug("Nickname Parser returned null");
-
-                    MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_OfflinePlayer)).send(sender);
-
-                    return;
-                }
-            }
+            return;
         }
 
         muteModule.getMuteManager().addPlayerMute(sender.getName(), player.getName());
@@ -73,7 +60,7 @@ public class Mute implements CLICommand {
 
         plugin.getPluginLogger().debug("Got a unmute Request");
 
-        if(!(sender instanceof ProxiedPlayer)) {
+        if (!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But the sender is not a Player");
 
             MessageBuilder messageBuilder = new MessageBuilder();
@@ -82,24 +69,12 @@ public class Mute implements CLICommand {
             return;
         }
 
-        ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
-        if(player == null) {
-            plugin.getPluginLogger().debug("Direct lookup returned null");
-            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
+        ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
+        if (player == null) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
 
-            if(player == null) {
-                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                player = NicknameParser.getPlayer(plugin, args[0]);
-
-                if(player == null) {
-                    plugin.getPluginLogger().debug("Nickname Parser returned null");
-
-                    MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
-
-                    return;
-                }
-            }
+            return;
         }
 
         muteModule.getMuteManager().removePlayerMute(sender.getName(), player.getName());
@@ -115,22 +90,11 @@ public class Mute implements CLICommand {
 
         plugin.getPluginLogger().debug("Got a global mute Request");
 
-        ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
-        if(player == null) {
-            plugin.getPluginLogger().debug("Direct lookup returned null");
-            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
-
-            if(player == null) {
-                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                player = NicknameParser.getPlayer(plugin, args[0]);
-
-                if(player == null) {
-                    plugin.getPluginLogger().debug("Nickname Parser returned null");
-                    MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
-                    return;
-                }
-            }
+        ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
+        if (player == null) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
+            return;
         }
 
         muteModule.getMuteManager().addGlobalMute(player.getName());
@@ -145,22 +109,11 @@ public class Mute implements CLICommand {
 
         plugin.getPluginLogger().debug("Got a global unmute Request");
 
-        ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
-        if(player == null) {
-            plugin.getPluginLogger().debug("Direct lookup returned null");
-            player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
-
-            if(player == null) {
-                plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                player = NicknameParser.getPlayer(plugin, args[0]);
-
-                if(player == null) {
-                    plugin.getPluginLogger().debug("Nickname Parser returned null");
-                    MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
-                    return;
-                }
-            }
+        ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
+        if (player == null) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
+            return;
         }
 
         muteModule.getMuteManager().removeGlobalMute(player.getName());

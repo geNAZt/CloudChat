@@ -1,6 +1,5 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
-import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
@@ -8,7 +7,6 @@ import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
-import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
@@ -37,20 +35,12 @@ public class Invite implements CLICommand {
         Messages messages = plugin.getConfigManager().getConfig("messages");
 
         String player = args[0];
-        ProxiedPlayer rec = plugin.getProxy().getPlayer(player);
+        ProxiedPlayer rec = NicknameParser.getPlayer(plugin, player);
+
         if(rec == null) {
-            rec = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
-
-            if(rec == null) {
-                rec = NicknameParser.getPlayer(plugin, player);
-
-                if(rec == null) {
-                    MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_OfflinePlayer)).send(sender);
-
-                    return;
-                }
-            }
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_OfflinePlayer)).send(sender);
+            return;
         }
 
         //Check for an optional Argument

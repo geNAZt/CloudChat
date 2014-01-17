@@ -1,9 +1,11 @@
 package net.cubespace.CloudChat.Module.ChatHandler;
 
 import net.cubespace.CloudChat.Command.Binder.Binder;
+import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChatHandler.Command.Broadcast;
+import net.cubespace.CloudChat.Module.ChatHandler.Command.Clearchat;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.ChatMessageListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerChangeAFKListener;
@@ -41,9 +43,13 @@ public class ChatHandlerModule extends Module {
         //Register Command
         if(!config.DoNotBind.contains("broadcast")) {
             plugin.getBindManager().bind("broadcast", Binder.class, commandAliases.Broadcast.toArray(new String[0]));
+            plugin.getCommandExecutor().add(this, new Broadcast(plugin));
         }
 
-        plugin.getCommandExecutor().add(this, new Broadcast(plugin));
+        if(!config.DoNotBind.contains("clearchat")) {
+            plugin.getBindManager().bind("clearchat", PlayerBinder.class, commandAliases.Clearchat.toArray(new String[0]));
+            plugin.getCommandExecutor().add(this, new Clearchat(plugin));
+        }
 
         //Register the Listener
         if(config.Announce_PlayerJoin)
@@ -69,6 +75,10 @@ public class ChatHandlerModule extends Module {
     public void onDisable() {
         if(plugin.getBindManager().isBound("broadcast")) {
             plugin.getBindManager().unbind("broadcast");
+        }
+
+        if(plugin.getBindManager().isBound("clearchat")) {
+            plugin.getBindManager().unbind("clearchat");
         }
 
         plugin.getCommandExecutor().remove(this);

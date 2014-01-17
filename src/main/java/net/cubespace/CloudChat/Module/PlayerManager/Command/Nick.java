@@ -6,7 +6,6 @@ import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerNickchangeEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
-import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
@@ -25,14 +24,14 @@ public class Nick implements CLICommand {
         this.plugin = plugin;
     }
 
-    @Command(command="nick", arguments = 1)
+    @Command(command = "nick", arguments = 1)
     public void nickCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
 
         plugin.getPluginLogger().debug("Got a Nickchange");
 
         //Check if the Sender is a Player since we only can change Players Nicknames
-        if(!(sender instanceof ProxiedPlayer)) {
+        if (!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But not for a Player");
 
             MessageBuilder messageBuilder = new MessageBuilder();
@@ -41,29 +40,18 @@ public class Nick implements CLICommand {
             return;
         }
 
-        if(args.length > 1) {
-            if(!plugin.getPermissionManager().has(sender, "cloudchat.command.nick.other")) {
+        if (args.length > 1) {
+            if (!plugin.getPermissionManager().has(sender, "cloudchat.command.nick.other")) {
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_NoPermissionToChangeOther)).send(sender);
                 return;
             }
 
-            ProxiedPlayer player = plugin.getProxy().getPlayer(args[0]);
-            if(player == null) {
-                plugin.getPluginLogger().debug("Direct lookup returned null");
-                player = plugin.getProxy().getPlayer(AutoComplete.completeUsername(args[0]));
-
-                if(player == null) {
-                    plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                    player = NicknameParser.getPlayer(plugin, args[0]);
-
-                    if(player == null) {
-                        plugin.getPluginLogger().debug("Nickname Parser returned null");
-                        MessageBuilder messageBuilder = new MessageBuilder();
-                        messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_OfflinePlayer)).send(sender);
-                        return;
-                    }
-                }
+            ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
+            if (player == null) {
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_OfflinePlayer)).send(sender);
+                return;
             }
 
             //Fire the correct Event to check if this is ok

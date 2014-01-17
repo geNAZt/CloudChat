@@ -151,4 +151,13 @@ public class Messages extends Config {
     public String Command_SocialSpy_NotPlayer = "&cOnly Players can spy on PMs";
     public String Command_SocialSpy_Disabled = "&6You no longer spy on PMs";
     public String Command_SocialSpy_Enabled = "&6You now spy on PMs";
+
+    public String Command_Clearchat_NotPlayer = "&cOnly Players can clear Chat";
+    public String Command_Clearchat_InvalidMode = "&cInvalid clear mode. Only can be 'player' or 'server'";
+    public String Command_Clearchat_NoPermissionForOther = "&cYou can not clear Chat of other Players";
+    public String Command_Clearchat_NoPermissionForServer = "&cYou can not clear Chat of Servers";
+    public String Command_Clearchat_NotEnoughArguments = "&cNot enough Arguments";
+    public String Command_Clearchat_ChatCleared = "&6Chat was cleared";
+    public String Command_Clearchat_PlayerOffline = "&cYou can not clear Chat from offline Players";
+    public String Command_Clearchat_NoServer = "&cThis Server does not exist";
 }
