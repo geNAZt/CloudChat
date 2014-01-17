@@ -132,6 +132,7 @@ public class Messages extends Config {
     public String Message_Sender = "&6You&8 -> &6%receiver&8:&7 %message";
     public String Message_Receiver = "&6%sender&8 -> &6You&8:&7 %message";
     public String Message_Spy = "&6%sender&8 -> &6%receiver&8:&7 %message";
+    public String Message_Nick = "%prefix%nick%suffix";
     public String Message_OfflinePlayer = "&cYou can't message to offline Players";
     public String Message_Self = "&cYou can't message with yourself";
     public String Message_NoIrcNick = "&cYou can not send PMs to IRC";

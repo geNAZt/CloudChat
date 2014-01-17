@@ -91,7 +91,6 @@ public class ComponentBuilderBuilder implements IMessageBuilder {
 
                 String identifier = sb.toString().replace("click:", "");
                 if(!clickEventHashMap.containsKey(identifier)) {
-                    builder.append("{" + sb.toString() + "}");
                     continue;
                 }
 

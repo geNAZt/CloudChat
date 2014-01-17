@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Module.PM.Listener;
 import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PM.Event.PMEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
@@ -42,11 +43,18 @@ public class PMListener implements Listener {
         legacyMessageBuilder.setText(event.getMessage());
         final String message = legacyMessageBuilder.getString();
 
+        //Get Sender and Receiver Databases
+        PlayerDatabase senderDB = playerManager.get(sen.getName());
+        PlayerDatabase receiverDB = playerManager.get(rec.getName());
+
+        final String sender = MessageFormat.format(messages.Message_Nick, null, senderDB);
+        final String receiver = MessageFormat.format(messages.Message_Nick, null, receiverDB);
+
         MessageBuilder messageBuilder = new MessageBuilder();
-        messageBuilder.setText(FontFormat.translateString(messages.Message_Receiver.replace("%sender", sen.getName()).replace("%message", message))).send(rec);
+        messageBuilder.setText(FontFormat.translateString(messages.Message_Receiver.replace("%sender", sender).replace("%message", message))).send(rec);
 
         MessageBuilder messageBuilder2 = new MessageBuilder();
-        messageBuilder2.setText(FontFormat.translateString(messages.Message_Sender.replace("%receiver", rec.getName()).replace("%message", message))).send(sen);
+        messageBuilder2.setText(FontFormat.translateString(messages.Message_Sender.replace("%receiver", receiver).replace("%message", message))).send(sen);
 
         plugin.getPluginLogger().info(sen.getName() + " -> " + rec.getName() + ": " + event.getMessage());
 
@@ -59,8 +67,8 @@ public class PMListener implements Listener {
             public void run() {
                 MessageBuilder messageBuilder2 = new MessageBuilder();
                 messageBuilder2.setText(FontFormat.translateString(messages.Message_Spy.
-                        replace("%receiver", rec.getName()).
-                        replace("%sender", sen.getName()).
+                        replace("%receiver", sender).
+                        replace("%sender", receiver).
                         replace("%message", message)));
 
 
