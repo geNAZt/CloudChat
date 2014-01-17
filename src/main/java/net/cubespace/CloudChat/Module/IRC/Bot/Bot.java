@@ -379,11 +379,13 @@ public class Bot extends PircBot implements Runnable {
 
         //Get the Group of the user
         IRCPermissionGroup group = ircManager.getPermissionManager().getGroup(sender);
+        plugin.getPluginLogger().debug("IRC Group: " + group);
 
         IRCSender ircSender = new IRCSender();
         ircSender.setNick(ircConfig.IngameName.replace("%prefix", group.prefix).replace("%suffix", group.suffix) + sender);
         ircSender.setChannel(channel);
         ircSender.setRawNick(sender);
+        plugin.getPluginLogger().debug("IRC Sender: " + ircSender.getNick());
 
         if(!cmdManager.dispatchCommand(ircSender, message)) {
             plugin.getPluginLogger().debug("Message is not a Command");

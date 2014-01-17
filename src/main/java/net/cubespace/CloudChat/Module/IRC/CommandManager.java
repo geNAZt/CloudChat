@@ -24,6 +24,7 @@ public class CommandManager {
         IRC config = plugin.getConfigManager().getConfig("irc");
 
         if(!command.startsWith(config.Command_Prefix)) {
+            plugin.getPluginLogger().debug("Message does not start with a Command prefix");
             return false;
         }
 
@@ -37,9 +38,10 @@ public class CommandManager {
         }
 
         if(executors.containsKey(cmd[0])) {
+            plugin.getPluginLogger().info("Executing IRC Command " + cmd[0]);
             return executors.get(cmd[0]).execute(sender, Arrays.copyOfRange(cmd, 1, cmd.length));
         } else {
-            //No command given
+            plugin.getPluginLogger().debug("Command given was not found");
             return false;
         }
     }
