@@ -83,7 +83,7 @@ public class Invite implements CLICommand {
 
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.addEvent("joinChannel", clickEvent);
-        messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_SendInvitation.replace("%channel", channelDatabase.Name).replace("%password", channelDatabase.Password))).send(sender);
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Invite_SendInvitation.replace("%channel", channelDatabase.Name).replace("%password", channelDatabase.Password))).send(rec);
 
         rec.setPermission("cloudchat.channel." + channelDatabase.Name, true);
 
