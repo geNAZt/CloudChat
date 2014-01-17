@@ -1,5 +1,5 @@
 name: CloudChat
 main : net.cubespace.CloudChat.CloudChatPlugin
-version: 3.12.0
+version: 3.13.0
 author: geNAZt
 depends: [BungeeYAML]

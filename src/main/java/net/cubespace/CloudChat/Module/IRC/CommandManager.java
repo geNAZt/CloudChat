@@ -1,30 +1,37 @@
 package net.cubespace.CloudChat.Module.IRC;
 
+import net.cubespace.CloudChat.CloudChatPlugin;
+import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Module.IRC.Commands.Command;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-/**
- * Created by Fabian on 29.11.13.
- */
 public class CommandManager {
     private HashMap<String, Command> executors = new HashMap<String, Command>();
+    private CloudChatPlugin plugin;
+
+    public CommandManager(CloudChatPlugin plugin) {
+        this.plugin = plugin;
+    }
+
 
     public void registerCommand(String command, Command executor) {
         executors.put(command, executor);
     }
 
     public boolean dispatchCommand(IRCSender sender, String command) {
-        if(!command.startsWith(".")) {
+        IRC config = plugin.getConfigManager().getConfig("irc");
+
+        if(!command.startsWith(config.Command_Prefix)) {
             return false;
         }
 
-        command = command.substring(1);
+        command = command.substring(config.Command_Prefix.length());
 
         String[] cmd = command.split(" ");
 
-        //We got .
+        //We only got the Command prefix :(
         if(cmd.length == 0) {
             return false;
         }
