@@ -26,6 +26,8 @@ public class PlayerSendMessageListener implements Listener {
         if(event.getPlayer() == null) return;
 
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
+        if(playerDatabase == null) return;
+
         if(playerDatabase.Output)
             event.getMessage().send(event.getPlayer());
         else
