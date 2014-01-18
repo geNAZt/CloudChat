@@ -141,10 +141,6 @@ public enum IrcToMCFormat {
                         sb.append("&r");
                         sb.append(lastColor);
 
-                        if(bold) {
-                            sb.append("&l");
-                        }
-
                         if(strike) {
                             sb.append("&m");
                         }
@@ -179,10 +175,6 @@ public enum IrcToMCFormat {
                             sb.append("&l");
                         }
 
-                        if(strike) {
-                            sb.append("&m");
-                        }
-
                         if(italic) {
                             sb.append("&o");
                         }
@@ -213,10 +205,6 @@ public enum IrcToMCFormat {
                             sb.append("&m");
                         }
 
-                        if(italic) {
-                            sb.append("&o");
-                        }
-
                         if(underline) {
                             sb.append("&n");
                         }
@@ -241,10 +229,6 @@ public enum IrcToMCFormat {
 
                         if(italic) {
                             sb.append("&o");
-                        }
-
-                        if(underline) {
-                            sb.append("&n");
                         }
                     }
 
