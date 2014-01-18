@@ -18,7 +18,7 @@ public class PlayerQuitListener implements Listener {
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         channelManager.remove(event.getPlayer());
     }
