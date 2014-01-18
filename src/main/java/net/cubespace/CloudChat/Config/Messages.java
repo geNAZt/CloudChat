@@ -82,9 +82,9 @@ public class Messages extends Config {
 
     public String IRC_Command_Scmd_NotEnoughPermission = "&c%nick: You have not enough Permissions to execute this";
     public String IRC_Command_Scmd_NotEnoughArguments = "&c%nick: Not enough Arguments to execute this";
-    public String IRC_Command_Scmd_NotEnoughPermissionForServer = "&c%nick: You dont't have Permission to execute this on that Server";
-    public String IRC_Command_Scmd_NotEnoughPermissionForCommand = "&c%nick: You dont't have Permission to execute that Scmd Command";
-    public String IRC_Command_Scmd_InvalidServer = "&c%nick: You dont't have Permission to execute that Scmd Command";
+    public String IRC_Command_Scmd_NotEnoughPermissionForServer = "&c%nick: You don't have Permission to execute this on that Server";
+    public String IRC_Command_Scmd_NotEnoughPermissionForCommand = "&c%nick: You don't have Permission to execute that Scmd Command";
+    public String IRC_Command_Scmd_InvalidServer = "&c%nick: You don't have Permission to execute that Scmd Command";
     public String IRC_Command_Scmd_ServerIsEmpty = "&c%nick: Can't send the Command. It needs to be at least one Player online on the Server";
     public String IRC_Command_Scmd_CommandIssued = "&6Command has been issued";
 
