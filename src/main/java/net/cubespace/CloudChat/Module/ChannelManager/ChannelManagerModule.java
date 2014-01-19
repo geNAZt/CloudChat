@@ -13,17 +13,12 @@ import net.cubespace.CloudChat.Module.ChannelManager.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PermissionChangedListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PlayerQuitListener;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class ChannelManagerModule extends Module {
-    public ChannelManagerModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public void onLoad() {
         //Register the Manager

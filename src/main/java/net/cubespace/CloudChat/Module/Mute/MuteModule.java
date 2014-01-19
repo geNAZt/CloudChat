@@ -7,7 +7,6 @@ import net.cubespace.CloudChat.Module.Mute.Listener.ChatMessageListener;
 import net.cubespace.CloudChat.Module.Mute.Listener.PMListener;
 import net.cubespace.CloudChat.Module.Mute.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.Mute.Listener.PlayerQuitListener;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 
 /**
@@ -16,10 +15,6 @@ import net.cubespace.lib.Module.Module;
  */
 public class MuteModule extends Module {
     private MuteManager muteManager;
-
-    public MuteModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
 
     public MuteManager getMuteManager() {
         return muteManager;

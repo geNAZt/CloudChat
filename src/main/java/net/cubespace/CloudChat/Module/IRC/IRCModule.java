@@ -22,11 +22,6 @@ import net.cubespace.lib.Module.Module;
 public class IRCModule extends Module {
     private Bot ircBot;
 
-    public IRCModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
-
-
     public Bot getIrcBot() {
         return ircBot;
     }

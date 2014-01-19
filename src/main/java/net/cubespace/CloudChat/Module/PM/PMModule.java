@@ -7,17 +7,12 @@ import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.PM.Command.PM;
 import net.cubespace.CloudChat.Module.PM.Command.SocialSpy;
 import net.cubespace.CloudChat.Module.PM.Listener.PMListener;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PMModule extends Module {
-    public PMModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public void onLoad() {
 

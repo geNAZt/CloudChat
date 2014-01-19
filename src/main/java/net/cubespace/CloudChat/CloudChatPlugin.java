@@ -15,25 +15,13 @@ import net.cubespace.CloudChat.Listener.PermissionLoadedListener;
 import net.cubespace.CloudChat.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Listener.ServerConnectedListener;
-import net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule;
-import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
-import net.cubespace.CloudChat.Module.CloudChat.CloudChatModule;
-import net.cubespace.CloudChat.Module.ColorHandler.ColorHandlerModule;
-import net.cubespace.CloudChat.Module.FormatHandler.FormatHandlerModule;
-import net.cubespace.CloudChat.Module.IRC.IRCModule;
-import net.cubespace.CloudChat.Module.Logging.LoggingModule;
-import net.cubespace.CloudChat.Module.Mail.MailModule;
-import net.cubespace.CloudChat.Module.Metrics.MetricsModule;
-import net.cubespace.CloudChat.Module.Mute.MuteModule;
-import net.cubespace.CloudChat.Module.PM.PMModule;
-import net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule;
-import net.cubespace.CloudChat.Module.Spam.SpamModule;
-import net.cubespace.CloudChat.Module.Twitter.TwitterModule;
 import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
+import net.cubespace.lib.Module.ModuleDescription;
 
-import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.util.HashSet;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -64,30 +52,32 @@ public class CloudChatPlugin extends CubespacePlugin {
         AutoComplete.init(this);
 
         //Load the Modules
-        getModuleManager().registerModule(new ChannelManagerModule(this));
-        getModuleManager().registerModule(new PlayerManagerModule(this));
-        getModuleManager().registerModule(new ChatHandlerModule(this));
+        getModuleManager().registerModule(new ModuleDescription("ChannelManager", "net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("PlayerManager", "net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("ChatHandler", "net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
 
-        getModuleManager().registerModule(new FormatHandlerModule(this));
-        getModuleManager().registerModule(new ColorHandlerModule(this));
-        getModuleManager().registerModule(new PMModule(this));
-        getModuleManager().registerModule(new LoggingModule(this));
-        getModuleManager().registerModule(new MuteModule(this));
-        getModuleManager().registerModule(new IRCModule(this));
-        getModuleManager().registerModule(new CloudChatModule(this));
-        getModuleManager().registerModule(new SpamModule(this));
-        getModuleManager().registerModule(new TwitterModule(this));
-        getModuleManager().registerModule(new MailModule(this));
+        getModuleManager().registerModule(new ModuleDescription("FormatHandler", "net.cubespace.CloudChat.Module.FormatHandler.FormatHandlerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("ColorHandler", "net.cubespace.CloudChat.Module.ColorHandler.ColorHandlerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("PM", "net.cubespace.CloudChat.Module.PM.PMModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("Logging", "net.cubespace.CloudChat.Module.Logging.LoggingModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("Mute", "net.cubespace.CloudChat.Module.Mute.MuteModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("IRC", "net.cubespace.CloudChat.Module.IRC.IRCModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("CloudChat", "net.cubespace.CloudChat.Module.CloudChat.CloudChatModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("Spam", "net.cubespace.CloudChat.Module.Spam.SpamModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("Twitter", "net.cubespace.CloudChat.Module.Twitter.TwitterModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("Mail", "net.cubespace.CloudChat.Module.Mail.MailModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
 
-        getModuleManager().registerModule(new MetricsModule(this));
+        getModuleManager().registerModule(new ModuleDescription("Metrics", "net.cubespace.CloudChat.Module.Metrics.MetricsModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
 
-        this.getProxy().getScheduler().schedule(this, new Runnable() {
-            @Override
-            public void run() {
-                getModuleManager().enable();
-                getPluginMessageManager("CloudChat").finish();
-            }
-        }, 500, TimeUnit.MILLISECONDS);
+        File moduleFolder = new File(getDataFolder(), "modules");
+        if(!moduleFolder.exists()) {
+            moduleFolder.mkdirs();
+        }
+
+        getModuleManager().detectModules(moduleFolder);
+        getModuleManager().loadAndEnableModules();
+        getPluginMessageManager("CloudChat").finish();
+
 
         //Register the Listeners
         getAsyncEventBus().addListener(null, new PermissionLoadedListener(this));

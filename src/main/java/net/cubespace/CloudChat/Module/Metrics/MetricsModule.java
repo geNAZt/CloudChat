@@ -4,7 +4,6 @@ import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.Metrics.Listener.ChatMessageListener;
 import net.cubespace.CloudChat.Module.Metrics.Listener.PMListener;
 import net.cubespace.CloudChat.Module.Twitter.TwitterModule;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Metrics;
 import net.cubespace.lib.Module.Module;
 
@@ -14,12 +13,6 @@ import java.io.IOException;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class MetricsModule extends Module {
-    private Metrics metrics;
-
-    public MetricsModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public void onLoad() {
 
@@ -28,7 +21,7 @@ public class MetricsModule extends Module {
     @Override
     public void onEnable() {
         try {
-            metrics = new Metrics(plugin);
+            Metrics metrics = new Metrics(plugin);
 
             Metrics.Graph chatGraph = metrics.createGraph("Amount of Messages");
 

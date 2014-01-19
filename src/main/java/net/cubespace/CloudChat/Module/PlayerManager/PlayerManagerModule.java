@@ -18,7 +18,6 @@ import net.cubespace.PluginMessages.AffixMessage;
 import net.cubespace.PluginMessages.IgnoreMessage;
 import net.cubespace.PluginMessages.OutputMessage;
 import net.cubespace.PluginMessages.WorldMessage;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 
 /**
@@ -26,13 +25,6 @@ import net.cubespace.lib.Module.Module;
  * @date Last changed: 28.12.13 12:19
  */
 public class PlayerManagerModule extends Module {
-    private boolean boundNick = false;
-    private boolean boundRealname = false;
-
-    public PlayerManagerModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public void onLoad() {
         //Register the PlayerManager
@@ -49,8 +41,6 @@ public class PlayerManagerModule extends Module {
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Nick(plugin));
-
-            boundNick = true;
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("realname")) {
@@ -59,8 +49,6 @@ public class PlayerManagerModule extends Module {
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Realname(plugin));
-
-            boundRealname = true;
         }
 
         //Register the Listener
@@ -83,11 +71,11 @@ public class PlayerManagerModule extends Module {
 
     @Override
     public void onDisable() {
-        if(boundNick) {
+        if(plugin.getBindManager().isBound("nick")) {
             plugin.getBindManager().unbind("nick");
         }
 
-        if(boundRealname) {
+        if(plugin.getBindManager().isBound("realname")) {
             plugin.getBindManager().unbind("realname");
         }
 

@@ -5,7 +5,6 @@ import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.Mail.Command.Mail;
 import net.cubespace.CloudChat.Module.Mail.Listener.PlayerJoinListener;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 
 /**
@@ -13,10 +12,6 @@ import net.cubespace.lib.Module.Module;
  */
 public class MailModule extends Module {
     private boolean loaded = false;
-
-    public MailModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
 
     @Override
     public void onLoad() {

@@ -3,7 +3,6 @@ package net.cubespace.CloudChat.Module.Logging;
 import net.cubespace.CloudChat.Config.Database;
 import net.cubespace.CloudChat.Module.Logging.Listener.ChatMessageListener;
 import net.cubespace.CloudChat.Module.Logging.Listener.PMListener;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 
 /**
@@ -12,10 +11,6 @@ import net.cubespace.lib.Module.Module;
  */
 public class LoggingModule extends Module {
     private AsyncDatabaseLogger asyncDatabaseLogger;
-
-    public LoggingModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
 
     public AsyncDatabaseLogger getAsyncDatabaseLogger() {
         return asyncDatabaseLogger;

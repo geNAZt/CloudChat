@@ -5,7 +5,6 @@ import net.cubespace.CloudChat.Module.Spam.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.Spam.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.Spam.Task.SpamDetector;
 import net.cubespace.PluginMessages.DispatchCmdMessage;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
@@ -18,10 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class SpamModule extends Module {
     private SpamManager spamManager;
     private ScheduledTask task;
-
-    public SpamModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
 
     public SpamManager getSpamManager() {
         return spamManager;

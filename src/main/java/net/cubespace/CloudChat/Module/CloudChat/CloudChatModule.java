@@ -6,17 +6,12 @@ import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Admin;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Playermenu;
 import net.cubespace.CloudChat.Module.CloudChat.Command.Reload;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class CloudChatModule extends Module {
-    public CloudChatModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public void onLoad() {
 

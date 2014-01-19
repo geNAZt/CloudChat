@@ -2,7 +2,6 @@ package net.cubespace.CloudChat.Module.Twitter;
 
 import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Module.Twitter.Task.TwitterCheckTweetTask;
-import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Module.Module;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import twitter4j.TwitterFactory;
@@ -17,10 +16,6 @@ public class TwitterModule extends Module {
     private TwitterFactory twitterFactory;
     private TwitterManager twitterManager;
     private ScheduledTask task;
-
-    public TwitterModule(CubespacePlugin plugin) {
-        super(plugin);
-    }
 
     public TwitterFactory getTwitterFactory() {
         return twitterFactory;
