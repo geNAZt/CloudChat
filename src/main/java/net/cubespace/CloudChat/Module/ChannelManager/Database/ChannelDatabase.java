@@ -6,6 +6,7 @@ import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -35,4 +36,6 @@ public class ChannelDatabase extends Config {
     public String Password = "";
     @Comment("The people who can invite others")
     public ArrayList<String> CanInvite = new ArrayList<>();
+
+    public HashMap<String, String> Formats = new HashMap<>();
 }
