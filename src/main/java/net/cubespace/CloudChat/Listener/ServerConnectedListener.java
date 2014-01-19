@@ -1,12 +1,8 @@
 package net.cubespace.CloudChat.Listener;
 
 import net.cubespace.CloudChat.Config.Main;
-import net.cubespace.CloudChat.Event.PlayerJoinEvent;
 import net.cubespace.CloudChat.Event.ServerConnectEvent;
-import net.cubespace.PluginMessages.PermissionRequest;
 import net.cubespace.lib.CubespacePlugin;
-import net.cubespace.lib.Permission.PermissionManager;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
