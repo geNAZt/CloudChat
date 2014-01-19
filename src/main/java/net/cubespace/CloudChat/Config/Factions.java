@@ -1,7 +1,6 @@
 package net.cubespace.CloudChat.Config;
 
-import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.cubespace.lib.Configuration.Config;
+import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
@@ -11,14 +10,9 @@ public class Factions extends Config {
         CONFIG_FILE = new File(plugin.getDataFolder(), "factions.yml");
     }
 
-    @Comment("Faction Channel")
     public String FactionChannel = "faction";
-    @Comment("Ally Channel")
     public String AllyChannel = "factionally";
-    @Comment("Ally and Truce Channel")
     public String AllyAndTruceChannel = "factionallyandtruce";
-    @Comment("Truce Channel")
     public String TruceChannel = "factiontruce";
-    @Comment("Enemy Channel")
     public String EnemyChannel = "factionenemy";
 }

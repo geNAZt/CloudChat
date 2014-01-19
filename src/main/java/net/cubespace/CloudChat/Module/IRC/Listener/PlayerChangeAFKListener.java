@@ -15,8 +15,6 @@ import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 
-import java.util.Map;
-
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  * @date Last changed: 28.12.13 15:50
@@ -39,20 +37,18 @@ public class PlayerChangeAFKListener implements Listener {
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
         IRC config = plugin.getConfigManager().getConfig("irc");
 
-        for(ChannelDatabase channel : channelManager.getAllJoinedChannels(event.getPlayer())) {
-            for(Map.Entry<String, String> ircChannel : config.Channels.entries()) {
-                LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
-                if(event.isAfk()) {
-                    legacyMessageBuilder.setText(MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotAfk, channel, playerDatabase));
-                } else {
-                    legacyMessageBuilder.setText(MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotOutOfAfk, channel, playerDatabase));
-                }
+        for (ChannelDatabase channel : channelManager.getAllJoinedChannels(event.getPlayer())) {
+            String ircChannel = config.Channels.get(channel.Name);
+            if (ircChannel == null) continue;
 
-                if(ircChannel.getKey().equals(channel.Name)) {
-                    ircModule.getIrcBot().sendToChannel(legacyMessageBuilder.getString(), ircChannel.getValue());
-                    break;
-                }
+            LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
+            if (event.isAfk()) {
+                legacyMessageBuilder.setText(MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotAfk, channel, playerDatabase));
+            } else {
+                legacyMessageBuilder.setText(MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotOutOfAfk, channel, playerDatabase));
             }
+
+            ircModule.getIrcBot().sendToChannel(legacyMessageBuilder.getString(), ircChannel);
         }
     }
 }

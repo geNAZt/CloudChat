@@ -1,6 +1,6 @@
 package net.cubespace.CloudChat.Config;
 
-import net.cubespace.lib.Configuration.Config;
+import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;

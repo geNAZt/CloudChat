@@ -30,8 +30,7 @@ public class ChatMessageListener {
         LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
         legacyMessageBuilder.setText(event.getMessage());
         String message = legacyMessageBuilder.getString();
-        for(String channel : config.Channels.get(event.getSender().getChannel().Name)) {
-            ircModule.getIrcBot().sendToChannel(message, channel);
-        }
+        String channel = config.Channels.get(event.getSender().getChannel().Name);
+        ircModule.getIrcBot().sendToChannel(message, channel);
     }
 }

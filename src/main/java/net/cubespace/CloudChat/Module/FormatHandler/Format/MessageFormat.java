@@ -1,8 +1,8 @@
 package net.cubespace.CloudChat.Module.FormatHandler.Format;
 
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
+import net.cubespace.Yamler.Config.InvalidConfigurationException;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)

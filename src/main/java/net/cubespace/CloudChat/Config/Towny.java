@@ -1,7 +1,6 @@
 package net.cubespace.CloudChat.Config;
 
-import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
-import net.cubespace.lib.Configuration.Config;
+import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
@@ -14,8 +13,6 @@ public class Towny extends Config {
         CONFIG_FILE = new File(plugin.getDataFolder(), "towny.yml");
     }
 
-    @Comment("Town Channel")
     public String TownChannel = "towny";
-    @Comment("Nation Channel")
     public String NationChannel = "townynation";
 }

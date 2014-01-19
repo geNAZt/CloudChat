@@ -1,11 +1,10 @@
 package net.cubespace.CloudChat.Config.Sub;
 
 import net.cubespace.CloudChat.Module.Spam.SpamAction;
-import net.cubespace.lib.Configuration.Config;
+import net.cubespace.Yamler.Config.Config;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 00:35
  */
 public class SpamEntry extends Config {
     public Integer AmountOfMessages = 1000;

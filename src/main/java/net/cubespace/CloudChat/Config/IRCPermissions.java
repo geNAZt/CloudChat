@@ -1,9 +1,8 @@
 package net.cubespace.CloudChat.Config;
 
-import net.craftminecraft.bungee.bungeeyaml.supereasyconfig.Comment;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionGroup;
 import net.cubespace.CloudChat.Config.Sub.IRCPermissionUser;
-import net.cubespace.lib.Configuration.Config;
+import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
@@ -32,8 +31,6 @@ public class IRCPermissions extends Config {
         Users.put("IAmOnlyForDemo", ircPermissionUser);
     }
 
-    @Comment("IRC Permission Groups")
     public HashMap<String, IRCPermissionGroup> Groups = new HashMap<>();
-    @Comment("IRC User Permissions/Groups")
     public HashMap<String, IRCPermissionUser> Users = new HashMap<>();
 }

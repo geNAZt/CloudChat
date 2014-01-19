@@ -1,12 +1,12 @@
 package net.cubespace.CloudChat.Config.Sub;
 
-import net.cubespace.lib.Configuration.Config;
+
+import net.cubespace.Yamler.Config.Config;
 
 import java.util.ArrayList;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 04.01.14 00:40
  */
 public class IRCPermissionUser extends Config {
     public String IngameName = "";

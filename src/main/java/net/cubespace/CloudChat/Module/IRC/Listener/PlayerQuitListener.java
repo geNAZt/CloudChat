@@ -15,8 +15,6 @@ import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 
-import java.util.Map;
-
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  * @date Last changed: 28.12.13 15:50
@@ -39,18 +37,16 @@ public class PlayerQuitListener implements Listener {
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
         IRC config = plugin.getConfigManager().getConfig("irc");
 
-        for(ChannelDatabase channel : channelManager.getAllJoinedChannels(event.getPlayer())) {
-            for(Map.Entry<String, String> ircChannel : config.Channels.entries()) {
-                String message = MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerQuit, channel, playerDatabase);
+        for (ChannelDatabase channel : channelManager.getAllJoinedChannels(event.getPlayer())) {
+            String ircChannel = config.Channels.get(channel.Name);
+            if(ircChannel == null) continue;
 
-                LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
-                legacyMessageBuilder.setText(message);
+            String message = MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerQuit, channel, playerDatabase);
 
-                if(ircChannel.getKey().equals(channel.Name)) {
-                    ircModule.getIrcBot().sendToChannel(legacyMessageBuilder.getString(), ircChannel.getValue());
-                    break;
-                }
-            }
+            LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
+            legacyMessageBuilder.setText(message);
+
+            ircModule.getIrcBot().sendToChannel(legacyMessageBuilder.getString(), ircChannel);
         }
     }
 }

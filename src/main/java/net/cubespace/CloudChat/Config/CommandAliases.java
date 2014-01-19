@@ -1,6 +1,6 @@
 package net.cubespace.CloudChat.Config;
 
-import net.cubespace.lib.Configuration.Config;
+import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class CommandAliases extends Config {
     public CommandAliases(CubespacePlugin plugin) {
         CONFIG_FILE = new File(plugin.getDataFolder(), "commandAliases.yml");
-        CONFIG_HEADER = "Config for Command Aliases";
+        CONFIG_HEADER = new String[]{"Config for Command Aliases"};
 
         Msg.add("m");
         Msg.add("t");

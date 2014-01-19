@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.Mail.Database;
 
-import net.cubespace.lib.Configuration.Config;
+
+import net.cubespace.Yamler.Config.Config;
 
 import java.util.Date;
 

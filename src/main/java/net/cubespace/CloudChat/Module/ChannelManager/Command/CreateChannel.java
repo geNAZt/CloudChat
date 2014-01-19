@@ -1,10 +1,10 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
