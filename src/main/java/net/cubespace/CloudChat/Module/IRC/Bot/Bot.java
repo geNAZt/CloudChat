@@ -233,25 +233,25 @@ public class Bot extends PircBot implements Runnable {
      * @param hostname
      */
     protected void onJoin(String channel, String sender, String login, String hostname) {
-        if(ircConfig.Relay_Join) {
-            if(!sender.equals(ircConfig.Name)) {
-                plugin.getPluginLogger().debug("Adding user " + sender + " to the IRC User list for Channel " + channel);
-                relayMessage(sender, channel, ircConfig.Relay_JoinMessage, false);
+        if(!ircManager.isNickOnline(sender)) {
+            ircManager.newPMSession(sender);
 
-                if(!ircManager.isNickOnline(sender)) {
-                    ircManager.newPMSession(sender);
-
-                    if(!ircManager.isResolving(sender)) {
-                        ircManager.addWhoIsResolver(sender, new WhoisResolver());
-                        whoisQueue.add(sender);
-                    }
-                }
-            } else {
-                plugin.getPluginLogger().info("Bot joined " + channel);
+            if(!ircManager.isResolving(sender)) {
+                ircManager.addWhoIsResolver(sender, new WhoisResolver());
+                whoisQueue.add(sender);
             }
         }
 
         ircManager.addJoinedChannel(sender, channel);
+
+        if(ircConfig.Relay_Join) {
+            if(!sender.equals(ircConfig.Name)) {
+                plugin.getPluginLogger().debug("Adding user " + sender + " to the IRC User list for Channel " + channel);
+                relayMessage(sender, channel, ircConfig.Relay_JoinMessage, false);
+            } else {
+                plugin.getPluginLogger().info("Bot joined " + channel);
+            }
+        }
     }
 
     public void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
