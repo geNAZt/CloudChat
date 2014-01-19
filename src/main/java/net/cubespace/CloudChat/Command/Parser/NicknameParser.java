@@ -42,7 +42,7 @@ public class NicknameParser {
 
             if(rec == null) {
                 plugin.getPluginLogger().debug("Autocomplete lookup returned null");
-                rec = NicknameParser.getPlayer(plugin, player);
+                rec = parseNickname(plugin, player);
 
                 if(rec == null) {
                     plugin.getPluginLogger().debug("Nickname parsing returned null");
