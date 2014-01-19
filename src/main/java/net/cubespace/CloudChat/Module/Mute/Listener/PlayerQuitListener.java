@@ -21,7 +21,7 @@ public class PlayerQuitListener implements Listener {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event) {
         playerManager.get(event.getPlayer().getName()).Muted = muteModule.getMuteManager().isGlobalMute(event.getPlayer().getName());
         muteModule.getMuteManager().remove(event.getPlayer().getName());
