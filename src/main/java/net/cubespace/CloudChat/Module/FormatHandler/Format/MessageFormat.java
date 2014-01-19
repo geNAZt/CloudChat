@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Module.FormatHandler.Format;
 
+import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 
@@ -13,48 +14,67 @@ public class MessageFormat {
     }
 
     private static void preCheckFormats(ChannelDatabase channelDatabase) {
+        boolean save = false;
+
         if(!channelDatabase.Formats.containsKey("channel_short")) {
             channelDatabase.Formats.put("channel_short", "%channel_short");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("channel_name")) {
             channelDatabase.Formats.put("channel_name", "%channel_name");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("nick")) {
             channelDatabase.Formats.put("nick", "%nick");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("prefix")) {
             channelDatabase.Formats.put("prefix", "%prefix");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("suffix")) {
             channelDatabase.Formats.put("suffix", "%suffix");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("faction")) {
             channelDatabase.Formats.put("faction", "%faction");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("town")) {
             channelDatabase.Formats.put("town", "%town");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("nation")) {
             channelDatabase.Formats.put("nation", "%nation");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("server")) {
             channelDatabase.Formats.put("server", "%server");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("world_alias")) {
             channelDatabase.Formats.put("world_alias", "%world_alias");
+            save = true;
         }
 
         if(!channelDatabase.Formats.containsKey("world")) {
             channelDatabase.Formats.put("world", "%world");
+            save = true;
+        }
+
+        if(save) {
+            try {
+                channelDatabase.save();
+            } catch (InvalidConfigurationException e) { }
         }
     }
 
