@@ -112,6 +112,7 @@ public class Messages extends Config {
     public String Command_Mute_NotPlayer = "&cOnly Players can mute";
     public String Command_Mute_OfflinePlayer = "&cYou can't mute offline Players";
     public String Command_Mute_Success = "&6You muted %player";
+    public String Command_Mute_CannotBeMuted = "&cYou can't mute this Player";
 
     public String Command_Unmute_NotPlayer = "&cOnly Players can unmute";
     public String Command_Unmute_OfflinePlayer = "&cYou can't unmute offline Players";

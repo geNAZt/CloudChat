@@ -46,6 +46,13 @@ public class Mute implements CLICommand {
             return;
         }
 
+        if(plugin.getPermissionManager().has(player, "cloudchat.cannot.muted")) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_CannotBeMuted)).send(sender);
+
+            return;
+        }
+
         muteModule.getMuteManager().addPlayerMute(sender.getName(), player.getName());
 
         MessageBuilder messageBuilder = new MessageBuilder();
