@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
@@ -70,7 +71,7 @@ public class PermissionChangedListener {
             Messages messages = plugin.getConfigManager().getConfig("messages");
 
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(messages.Command_Channel_Focus_FocusChannel.replace("%channel", playerDatabase.Focus)).send(player);
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", playerDatabase.Focus))).send(player);
         }
     }
 }
