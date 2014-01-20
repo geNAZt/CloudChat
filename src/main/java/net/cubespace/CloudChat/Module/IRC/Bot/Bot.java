@@ -159,13 +159,20 @@ public class Bot extends PircBot implements Runnable {
      */
     protected void onUserList(String channel, User[] users) {
         for(User user : users) {
-            plugin.getPluginLogger().debug("Adding user " + user.getNick() + " to the IRC User list for Channel " + channel);
+            String nick;
+            if(user.getNick().startsWith("~") || user.getNick().startsWith("+") || user.getNick().startsWith("@")) {
+                nick = user.getNick().substring(1);
+            } else {
+                nick = user.getNick();
+            }
 
-            if(!ircManager.isNickOnline(user.getNick())) {
-                ircManager.newPMSession(user.getNick());
+            plugin.getPluginLogger().debug("Adding user " + nick + " to the IRC User list for Channel " + channel);
 
-                if(!ircManager.isResolving(user.getNick())) {
-                    ircManager.addWhoIsResolver(user.getNick(), new WhoisResolver());
+            if(!ircManager.isNickOnline(nick)) {
+                ircManager.newPMSession(nick);
+
+                if(!ircManager.isResolving(nick)) {
+                    ircManager.addWhoIsResolver(nick, new WhoisResolver());
                     whoisQueue.add(user.getNick());
                 }
             }
