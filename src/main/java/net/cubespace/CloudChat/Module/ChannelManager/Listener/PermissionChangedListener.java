@@ -1,9 +1,11 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
@@ -50,12 +52,25 @@ public class PermissionChangedListener {
 
         channelManager.joinForcedChannels(player);
 
-        if(newFocus) {
-            for(ChannelDatabase channelDatabase : new ArrayList<>(joinedChannels)) {
-                if(channelDatabase.Forced) {
-                    playerDatabase.Focus = channelDatabase.Name.toLowerCase();
-                }
+        boolean focusedNew = false;
+        for(ChannelDatabase channelDatabase : new ArrayList<>(joinedChannels)) {
+            if(channelDatabase.FocusOnJoin) {
+                playerDatabase.Focus = channelDatabase.Name.toLowerCase();
+                focusedNew = true;
+                break;
             }
+
+            if(newFocus && (channelDatabase.Forced || channelDatabase.ForceIntoWhenPermission)) {
+                playerDatabase.Focus = channelDatabase.Name.toLowerCase();
+                focusedNew = true;
+            }
+        }
+
+        if(focusedNew) {
+            Messages messages = plugin.getConfigManager().getConfig("messages");
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(messages.Command_Channel_Focus_FocusChannel.replace("%channel", playerDatabase.Focus)).send(player);
         }
     }
 }
