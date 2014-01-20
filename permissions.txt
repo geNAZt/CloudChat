@@ -7,3 +7,5 @@ cloudchat.command.irc.reconnect - Allows to use the irc:reconnect command
 cloudchat.command.cc.reload     - Allows to use the cc:reload command
 
 cloudchat.channel.<channelname> - Allows the User to join the Channel
+
+cloudchat.ignore.focusonjoin    - Ignore the FocusOnJoin Flag for Channels

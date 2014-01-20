@@ -55,7 +55,7 @@ public class PermissionChangedListener {
 
         boolean focusedNew = false;
         for(ChannelDatabase channelDatabase : new ArrayList<>(joinedChannels)) {
-            if(channelDatabase.FocusOnJoin) {
+            if(channelDatabase.FocusOnJoin && !plugin.getPermissionManager().has(player, "cloudchat.ignore.focusonjoin")) {
                 playerDatabase.Focus = channelDatabase.Name.toLowerCase();
                 focusedNew = true;
                 break;
