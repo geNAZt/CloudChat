@@ -230,7 +230,7 @@ public class ChannelManager implements IManager {
         }
 
         //Check if Player has enough Space in their List (Maximum Channels)
-        if(playerJoinedChannels.get(player).size() == ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter) {
+        if(playerJoinedChannels.get(player).size() == ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter && !plugin.getPermissionManager().has(player, "cloudchat.ignore.maxchannel")) {
             player.sendMessage("You cant join this Channel. You are already in the maximum Amount of Channels");
             plugin.getPluginLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
             return false;
