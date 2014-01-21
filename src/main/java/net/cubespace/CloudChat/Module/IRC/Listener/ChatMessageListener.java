@@ -14,12 +14,10 @@ import net.cubespace.lib.EventBus.EventPriority;
  */
 public class ChatMessageListener {
     private IRCModule ircModule;
-    private CubespacePlugin plugin;
     private IRC config;
 
     public ChatMessageListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.ircModule = ircModule;
-        this.plugin = plugin;
         this.config = plugin.getConfigManager().getConfig("irc");
     }
 
@@ -31,6 +29,9 @@ public class ChatMessageListener {
         legacyMessageBuilder.setText(event.getMessage());
         String message = legacyMessageBuilder.getString();
         String channel = config.Channels.get(event.getSender().getChannel().Name);
-        ircModule.getIrcBot().sendToChannel(message, channel);
+
+        if(channel != null) {
+            ircModule.getIrcBot().sendToChannel(message, channel);
+        }
     }
 }
