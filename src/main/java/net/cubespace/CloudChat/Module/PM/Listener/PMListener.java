@@ -66,8 +66,8 @@ public class PMListener implements Listener {
             public void run() {
                 MessageBuilder messageBuilder2 = new MessageBuilder();
                 messageBuilder2.setText(FontFormat.translateString(messages.Message_Spy.
-                        replace("%receiver", sender).
-                        replace("%sender", receiver).
+                        replace("%receiver", receiver).
+                        replace("%sender", sender).
                         replace("%message", message)));
 
 
