@@ -3,8 +3,6 @@ package net.cubespace.CloudChat.Command.Binder;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import net.cubespace.CloudChat.Config.Messages;
-import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.CubespacePlugin;
@@ -22,7 +20,6 @@ public class PlayerBinder extends Binder implements TabExecutor {
     @Override
     public Iterable<String> onTabComplete(CommandSender commandSender, String[] args) {
         playerManager = plugin.getManagerRegistry().getManager("playerManager");
-        final Messages config = plugin.getConfigManager().getConfig("messages");
 
         final String lastArg = ( args.length > 0 ) ? args[args.length - 1] : "";
 
@@ -36,7 +33,7 @@ public class PlayerBinder extends Binder implements TabExecutor {
             @Override
             public String apply(ProxiedPlayer player) {
                 PlayerDatabase playerDatabase = playerManager.get(player.getName());
-                return MessageFormat.format(config.Complete_Player, null, playerDatabase, true);
+                return playerDatabase.Nick;
             }
         });
     }
