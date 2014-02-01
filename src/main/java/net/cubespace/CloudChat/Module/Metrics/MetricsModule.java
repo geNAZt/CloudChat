@@ -40,7 +40,7 @@ public class MetricsModule extends Module {
                 }
             });
 
-            chatGraph.addPlotter(new Metrics.Plotter() {
+            chatGraph.addPlotter(new Metrics.Plotter("PMs") {
                 @Override
                 public int getValue() {
                     return PMListener.getPMs();

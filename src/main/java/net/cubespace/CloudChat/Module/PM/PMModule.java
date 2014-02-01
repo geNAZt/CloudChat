@@ -22,16 +22,16 @@ public class PMModule extends Module {
     public void onEnable() {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("msg")) {
-            plugin.getBindManager().bind("msg", PlayerBinder.class, commandAliases.Msg.toArray(new String[0]));
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("msg"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("msg"), PlayerBinder.class, commandAliases.Msg.toArray(new String[0]));
         }
 
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("reply")) {
-            plugin.getBindManager().bind("reply", Binder.class, commandAliases.Reply.toArray(new String[0]));
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("reply"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("reply"), Binder.class, commandAliases.Reply.toArray(new String[0]));
         }
 
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("socialspy")) {
-            plugin.getBindManager().bind("socialspy", Binder.class, commandAliases.Socialspy.toArray(new String[0]));
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("socialspy"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("socialspy"), Binder.class, commandAliases.Socialspy.toArray(new String[0]));
             plugin.getCommandExecutor().add(this, new SocialSpy(plugin));
         }
 
@@ -42,16 +42,18 @@ public class PMModule extends Module {
 
     @Override
     public void onDisable() {
-        if(plugin.getBindManager().isBound("msg")) {
-            plugin.getBindManager().unbind("msg");
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("msg"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("msg"));
         }
 
-        if(plugin.getBindManager().isBound("reply")) {
-            plugin.getBindManager().unbind("reply");
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("reply"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("reply"));
         }
 
-        if(plugin.getBindManager().isBound("socialspy")) {
-            plugin.getBindManager().unbind("socialspy");
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("socialspy"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("socialspy"));
         }
 
         plugin.getCommandExecutor().remove(this);

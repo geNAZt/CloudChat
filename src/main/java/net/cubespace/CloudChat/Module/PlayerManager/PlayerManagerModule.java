@@ -35,17 +35,17 @@ public class PlayerManagerModule extends Module {
     public void onEnable() {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("nick")) {
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("nick"))) {
             //Register the correct Binder
-            plugin.getBindManager().bind("nick", Binder.class, commandAliases.Nick.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("nick"), Binder.class, commandAliases.Nick.toArray(new String[0]));
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Nick(plugin));
         }
 
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("realname")) {
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("realname"))) {
             //Register the correct Binder
-            plugin.getBindManager().bind("realname", PlayerBinder.class, commandAliases.Realname.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("realname"), PlayerBinder.class, commandAliases.Realname.toArray(new String[0]));
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Realname(plugin));
@@ -71,12 +71,14 @@ public class PlayerManagerModule extends Module {
 
     @Override
     public void onDisable() {
-        if(plugin.getBindManager().isBound("nick")) {
-            plugin.getBindManager().unbind("nick");
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("nick"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("nick"));
         }
 
-        if(plugin.getBindManager().isBound("realname")) {
-            plugin.getBindManager().unbind("realname");
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("realname"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("realname"));
         }
 
         plugin.getCommandExecutor().remove(this);

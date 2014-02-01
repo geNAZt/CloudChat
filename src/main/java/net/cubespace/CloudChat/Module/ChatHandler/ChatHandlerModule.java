@@ -36,13 +36,13 @@ public class ChatHandlerModule extends Module {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         //Register Command
-        if(!config.DoNotBind.contains("broadcast")) {
-            plugin.getBindManager().bind("broadcast", Binder.class, commandAliases.Broadcast.toArray(new String[0]));
+        if(!config.DoNotBind.contains(commandAliases.BaseCommands.get("broadcast"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("broadcast"), Binder.class, commandAliases.Broadcast.toArray(new String[0]));
             plugin.getCommandExecutor().add(this, new Broadcast(plugin));
         }
 
-        if(!config.DoNotBind.contains("clearchat")) {
-            plugin.getBindManager().bind("clearchat", PlayerBinder.class, commandAliases.Clearchat.toArray(new String[0]));
+        if(!config.DoNotBind.contains(commandAliases.BaseCommands.get("clearchat"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("clearchat"), PlayerBinder.class, commandAliases.Clearchat.toArray(new String[0]));
             plugin.getCommandExecutor().add(this, new Clearchat(plugin));
         }
 
@@ -68,12 +68,14 @@ public class ChatHandlerModule extends Module {
 
     @Override
     public void onDisable() {
-        if(plugin.getBindManager().isBound("broadcast")) {
-            plugin.getBindManager().unbind("broadcast");
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("broadcast"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("broadcast"));
         }
 
-        if(plugin.getBindManager().isBound("clearchat")) {
-            plugin.getBindManager().unbind("clearchat");
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("clearchat"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("clearchat"));
         }
 
         plugin.getCommandExecutor().remove(this);

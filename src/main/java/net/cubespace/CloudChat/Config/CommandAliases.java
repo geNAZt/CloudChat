@@ -5,6 +5,7 @@ import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -23,7 +24,31 @@ public class CommandAliases extends Config {
         Mute.add("ignore");
 
         Unmute.add("unignore");
+
+        BaseCommands.put("msg", "msg");
+        BaseCommands.put("reply", "reply");
+        BaseCommands.put("nick", "nick");
+        BaseCommands.put("realname", "realname");
+        BaseCommands.put("mute", "mute");
+        BaseCommands.put("unmute", "unmute");
+        BaseCommands.put("cc:mute", "cc:mute");
+        BaseCommands.put("cc:unmute", "cc:unmute");
+        BaseCommands.put("mail", "mail");
+        BaseCommands.put("irc:reconnect", "irc:reconnect");
+        BaseCommands.put("cc:reload", "cc:reload");
+        BaseCommands.put("cc:report", "cc:report");
+        BaseCommands.put("broadcast", "broadcast");
+        BaseCommands.put("join", "join");
+        BaseCommands.put("leave", "leave");
+        BaseCommands.put("createchannel", "createchannel");
+        BaseCommands.put("invite", "invite");
+        BaseCommands.put("focus", "focus");
+        BaseCommands.put("list", "list");
+        BaseCommands.put("socialspy", "socialspy");
+        BaseCommands.put("clearchat", "clearchat");
     }
+
+    public HashMap<String, String> BaseCommands = new HashMap<>();
 
     public ArrayList<String> Msg = new ArrayList<String>();
     public ArrayList<String> Reply = new ArrayList<String>();

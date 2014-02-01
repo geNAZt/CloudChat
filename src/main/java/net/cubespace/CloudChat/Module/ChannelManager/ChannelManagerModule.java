@@ -36,14 +36,14 @@ public class ChannelManagerModule extends Module {
         plugin.getAsyncEventBus().addListener(this, new PermissionChangedListener(plugin));
 
         //Register Commands
-        plugin.getBindManager().bind("join", ChannelBinder.class, commandAliases.Join.toArray(new String[0]));
-        plugin.getBindManager().bind("leave", JoinedChannelBinder.class, commandAliases.Leave.toArray(new String[0]));
-        plugin.getBindManager().bind("createchannel", Binder.class, commandAliases.Createchannel.toArray(new String[0]));
-        plugin.getBindManager().bind("invite", PlayerBinder.class, commandAliases.Invite.toArray(new String[0]));
-        plugin.getBindManager().bind("focus", JoinedChannelBinder.class, commandAliases.Focus.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("join"), ChannelBinder.class, commandAliases.Join.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("leave"), JoinedChannelBinder.class, commandAliases.Leave.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("createchannel"), Binder.class, commandAliases.Createchannel.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("invite"), PlayerBinder.class, commandAliases.Invite.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("focus"), JoinedChannelBinder.class, commandAliases.Focus.toArray(new String[0]));
 
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("list")) {
-            plugin.getBindManager().bind("list", Binder.class, commandAliases.List.toArray(new String[0]));
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("list"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("list"), Binder.class, commandAliases.List.toArray(new String[0]));
         }
 
         plugin.getCommandExecutor().add(this, new Channels(plugin));
@@ -53,18 +53,20 @@ public class ChannelManagerModule extends Module {
 
     @Override
     public void onDisable() {
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
         //Unbind the Listeners
         plugin.getAsyncEventBus().removeListener(this);
 
         //Unbind commands
-        plugin.getBindManager().unbind("join");
-        plugin.getBindManager().unbind("leave");
-        plugin.getBindManager().unbind("createchannel");
-        plugin.getBindManager().unbind("invite");
-        plugin.getBindManager().unbind("focus");
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("join"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("leave"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("createchannel"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("invite"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("focus"));
 
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("list")) {
-            plugin.getBindManager().unbind("list");
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("list"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("list"));
         }
 
         plugin.getCommandExecutor().remove(this);

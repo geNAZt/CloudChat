@@ -30,10 +30,10 @@ public class MuteModule extends Module {
     public void onEnable() {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
-        plugin.getBindManager().bind("mute", PlayerBinder.class, commandAliases.Mute.toArray(new String[0]));
-        plugin.getBindManager().bind("unmute", PlayerBinder.class, commandAliases.Unmute.toArray(new String[0]));
-        plugin.getBindManager().bind("cc:mute", PlayerBinder.class, commandAliases.CCMute.toArray(new String[0]));
-        plugin.getBindManager().bind("cc:unmute", PlayerBinder.class, commandAliases.CCUnmute.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("mute"), PlayerBinder.class, commandAliases.Mute.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("unmute"), PlayerBinder.class, commandAliases.Unmute.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:mute"), PlayerBinder.class, commandAliases.CCMute.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:unmute"), PlayerBinder.class, commandAliases.CCUnmute.toArray(new String[0]));
 
         plugin.getCommandExecutor().add(this, new Mute(this, plugin));
 
@@ -45,10 +45,12 @@ public class MuteModule extends Module {
 
     @Override
     public void onDisable() {
-        plugin.getBindManager().unbind("mute");
-        plugin.getBindManager().unbind("unmute");
-        plugin.getBindManager().unbind("cc:mute");
-        plugin.getBindManager().unbind("cc:unmute");
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("mute"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("unmute"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("cc:mute"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("cc:unmute"));
 
         plugin.getCommandExecutor().remove(this);
 

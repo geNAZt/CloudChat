@@ -11,8 +11,6 @@ import net.cubespace.lib.Module.Module;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class MailModule extends Module {
-    private boolean loaded = false;
-
     @Override
     public void onLoad() {
 
@@ -20,27 +18,22 @@ public class MailModule extends Module {
 
     @Override
     public void onEnable() {
-        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains("mail")) {
-            CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
-            plugin.getBindManager().bind("mail", PlayerNameBinder.class, commandAliases.Mail.toArray(new String[0]));
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
+        if (!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("mail"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("mail"), PlayerNameBinder.class, commandAliases.Mail.toArray(new String[0]));
             plugin.getCommandExecutor().add(this, new Mail(plugin));
-
             plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
-
-            loaded = true;
         }
     }
 
     @Override
     public void onDisable() {
-        if(loaded) {
-            loaded = false;
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
-            plugin.getBindManager().unbind("mail");
-
+        if (plugin.getBindManager().isBound(commandAliases.BaseCommands.get("mail"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("mail"));
             plugin.getCommandExecutor().remove(this);
-
             plugin.getAsyncEventBus().removeListener(this);
         }
     }

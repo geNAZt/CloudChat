@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Module.CloudChat.Command;
 
+import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.Mute.MuteManager;
@@ -35,24 +36,28 @@ public class Playermenu implements CLICommand {
 
         String message = messages.Playermenu_Prefix;
 
-        if((plugin.getPermissionManager().has(sender, "cloudchat.command.*") || plugin.getPermissionManager().has(sender, "cloudchat.command.mute")) && !muted) {
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+        String mutePermission = commandAliases.BaseCommands.get("mute").replace(":", ".");
+        String unmutePermission = commandAliases.BaseCommands.get("unmute").replace(":", ".");
+
+        if((plugin.getPermissionManager().has(sender, "cloudchat.command.*") || plugin.getPermissionManager().has(sender, "cloudchat.command." + mutePermission)) && !muted) {
             message += messages.Playermenu_Mute;
-        } else if((plugin.getPermissionManager().has(sender, "cloudchat.command.*") || plugin.getPermissionManager().has(sender, "cloudchat.command.unmute")) && muted) {
+        } else if((plugin.getPermissionManager().has(sender, "cloudchat.command.*") || plugin.getPermissionManager().has(sender, "cloudchat.command." + unmutePermission)) && muted) {
             message += messages.Playermenu_Unmute;
         }
 
         message += messages.Playermenu_Message;
 
         ClickEvent clickEvent = new ClickEvent();
-        clickEvent.setValue("/mute " + args[0]);
+        clickEvent.setValue("/" + commandAliases.BaseCommands.get("mute") + " " + args[0]);
         clickEvent.setAction(ClickAction.RUN_COMMAND);
 
         ClickEvent clickEvent2 = new ClickEvent();
-        clickEvent2.setValue("/unmute " + args[0]);
+        clickEvent2.setValue("/" + commandAliases.BaseCommands.get("unmute") + " " + args[0]);
         clickEvent2.setAction(ClickAction.RUN_COMMAND);
 
         ClickEvent clickEvent3 = new ClickEvent();
-        clickEvent3.setValue("/msg " + args[0] + " ");
+        clickEvent3.setValue("/" + commandAliases.BaseCommands.get("msg") + " " + args[0] + " ");
         clickEvent3.setAction(ClickAction.SUGGEST_COMMAND);
 
         MessageBuilder messageBuilder = new MessageBuilder();

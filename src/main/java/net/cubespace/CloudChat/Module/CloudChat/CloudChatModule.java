@@ -22,8 +22,8 @@ public class CloudChatModule extends Module {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         //Bind Commands
-        plugin.getBindManager().bind("cc:reload", Binder.class, commandAliases.CCReload.toArray(new String[0]));
-        plugin.getBindManager().bind("cc:report", Binder.class, commandAliases.CCReport.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:reload"), Binder.class, commandAliases.CCReload.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:report"), Binder.class, commandAliases.CCReport.toArray(new String[0]));
         plugin.getBindManager().bind("cc:playermenu", PermissionlessBinder.class);
 
         plugin.getCommandExecutor().add(this, new Reload(plugin));
@@ -33,9 +33,11 @@ public class CloudChatModule extends Module {
 
     @Override
     public void onDisable() {
+        CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
+
         //Unbind Commands
-        plugin.getBindManager().unbind("cc:reload");
-        plugin.getBindManager().unbind("cc:report");
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("cc:reload"));
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("cc:report"));
         plugin.getBindManager().unbind("cc:playermenu");
 
         plugin.getCommandExecutor().remove(this);
