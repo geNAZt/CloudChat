@@ -1,5 +1,8 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Command;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
@@ -227,6 +230,32 @@ public class Channels implements CLICommand {
         if(sb.length() > 0) {
             MessageBuilder messageBuilder2 = new MessageBuilder();
             messageBuilder2.setText(sb.toString()).send(sender);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Command(command = "channels", arguments = 0)
+    public void channelsCommand(final CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Channels_Header)).send(sender);
+
+        Iterable<String> iterable = Iterables.transform(Iterables.filter(channelManager.getChannels(), new Predicate<ChannelDatabase>() {
+            @Override
+            public boolean apply(ChannelDatabase database) {
+                return plugin.getPermissionManager().has(sender, "cloudchat.channel." + database.Name);
+            }
+        }), new Function<ChannelDatabase, String>() {
+            @Override
+            public String apply(ChannelDatabase database) {
+                return database.Name;
+            }
+        });
+
+        Iterator<String> iterator = iterable.iterator();
+        while(iterator.hasNext()) {
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Channels_Channel.replace("%channel", iterator.next()))).send(sender);
         }
     }
 }

@@ -46,6 +46,7 @@ public class CommandAliases extends Config {
         BaseCommands.put("list", "list");
         BaseCommands.put("socialspy", "socialspy");
         BaseCommands.put("clearchat", "clearchat");
+        BaseCommands.put("channels", "channels");
     }
 
     public HashMap<String, String> BaseCommands = new HashMap<>();
@@ -71,4 +72,5 @@ public class CommandAliases extends Config {
     public ArrayList<String> List = new ArrayList<String>();
     public ArrayList<String> Socialspy = new ArrayList<>();
     public ArrayList<String> Clearchat = new ArrayList<>();
+    public ArrayList<String> Channels = new ArrayList<>();
 }

@@ -7,9 +7,6 @@ import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 
-/**
- * Created by Fabian on 30.12.13.
- */
 public class ServerConnectListener implements Listener {
     private CubespacePlugin plugin;
     private PlayerManager playerManager;

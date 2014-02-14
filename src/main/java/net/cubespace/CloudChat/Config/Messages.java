@@ -165,4 +165,7 @@ public class Messages extends Config {
     public String Command_Clearchat_ChatCleared = "&6Chat was cleared";
     public String Command_Clearchat_PlayerOffline = "&cYou can not clear Chat from offline Players";
     public String Command_Clearchat_NoServer = "&cThis Server does not exist";
+
+    public String Command_Channels_Header = "&4=== All Channels you can enter ===";
+    public String Command_Channels_Channel = "&4%channel";
 }

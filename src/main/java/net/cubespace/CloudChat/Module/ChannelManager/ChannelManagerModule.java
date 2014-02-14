@@ -37,6 +37,7 @@ public class ChannelManagerModule extends Module {
 
         //Register Commands
         plugin.getBindManager().bind(commandAliases.BaseCommands.get("join"), ChannelBinder.class, commandAliases.Join.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("channels"), ChannelBinder.class, commandAliases.Channels.toArray(new String[0]));
         plugin.getBindManager().bind(commandAliases.BaseCommands.get("leave"), JoinedChannelBinder.class, commandAliases.Leave.toArray(new String[0]));
         plugin.getBindManager().bind(commandAliases.BaseCommands.get("createchannel"), Binder.class, commandAliases.Createchannel.toArray(new String[0]));
         plugin.getBindManager().bind(commandAliases.BaseCommands.get("invite"), PlayerBinder.class, commandAliases.Invite.toArray(new String[0]));
