@@ -23,7 +23,7 @@ public class ChannelManagerModule extends Module {
     @Override
     public void onLoad() {
         //Register the Manager
-        plugin.getManagerRegistry().registerManager("channelManager", new ChannelManager(plugin));
+        plugin.getManagerRegistry().registerManager("channelManager", new ChannelManager(plugin, this));
     }
 
     @Override

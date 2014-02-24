@@ -23,14 +23,25 @@ public class PlayerSendMessageListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerSendMessage(PlayerSendMessageEvent event) {
-        if(event.getPlayer() == null) return;
+        if(event.getPlayer() == null) {
+            chatHandlerModule.getModuleLogger().warn("Could not send Message because the Player has been unloaded");
+            return;
+        }
 
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
-        if(playerDatabase == null) return;
+        if(playerDatabase == null) {
+            chatHandlerModule.getModuleLogger().warn("Could not send Message because the PlayerDatabase has been unloaded");
+            return;
+        }
 
-        if(playerDatabase.Output)
+        if(playerDatabase.Output) {
             event.getMessage().send(event.getPlayer());
-        else
+            chatHandlerModule.getModuleLogger().debug("Sending Message to the Player directly");
+        }
+
+        else {
+            chatHandlerModule.getModuleLogger().debug("Sending Message to the ChatBuffer");
             chatHandlerModule.getChatBuffer().addToBuffer(event.getPlayer().getName(), event.getMessage());
+        }
     }
 }

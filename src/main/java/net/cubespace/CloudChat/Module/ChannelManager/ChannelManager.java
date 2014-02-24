@@ -16,21 +16,22 @@ import java.util.Map;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 24.11.13 18:48
  */
 public class ChannelManager implements IManager {
     private CubespacePlugin plugin;
+    private ChannelManagerModule channelManagerModule;
 
     private HashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> playerJoinedChannels = new HashMap<>();
     private HashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new HashMap<>();
 
     private HashMap<String, ChannelDatabase> loadedChannels = new HashMap<>();
 
-    public ChannelManager(CubespacePlugin plugin) {
-        plugin.getPluginLogger().debug("Creating new ChannelManager");
+    public ChannelManager(CubespacePlugin plugin, ChannelManagerModule channelManagerModule) {
+        channelManagerModule.getModuleLogger().debug("Creating new ChannelManager");
 
         //Store the Plugin ref
         this.plugin = plugin;
+        this.channelManagerModule = channelManagerModule;
 
         //Load the Channels
         load();
@@ -40,13 +41,13 @@ public class ChannelManager implements IManager {
      * Load Channels from Disk and store them in the Cache
      */
     private void load() {
-        plugin.getPluginLogger().info("Loading Channels...");
+        channelManagerModule.getModuleLogger().info("Loading Channels...");
 
-        //Check the AsyncDatabaseLogger Directory
+        //Check the Channel Database Directory
         File databaseDirectory = new File(plugin.getDataFolder(), "database" + File.separator + "channels" + File.separator);
         if(!databaseDirectory.exists()) {
             if(!databaseDirectory.mkdirs()) {
-                plugin.getPluginLogger().error("Could not create the Database Directory");
+                channelManagerModule.getModuleLogger().error("Could not create the Database Directory");
                 throw new RuntimeException();
             }
         }
@@ -67,9 +68,9 @@ public class ChannelManager implements IManager {
             try {
                 channelDatabase.init();
                 loadedChannels.put(channelDatabase.Name.toLowerCase(), channelDatabase);
-                plugin.getPluginLogger().info("Loaded Channel " + channelDatabase.Name);
+                channelManagerModule.getModuleLogger().info("Loaded Channel " + channelDatabase.Name);
             } catch (Exception e) {
-                plugin.getPluginLogger().error("Could not load Channel", e);
+                channelManagerModule.getModuleLogger().error("Could not load Channel", e);
                 throw new RuntimeException();
             }
         }
@@ -125,7 +126,7 @@ public class ChannelManager implements IManager {
             faction.save();
             loadedChannels.put(channel, faction);
         } catch (Exception e) {
-            plugin.getPluginLogger().error("Could not create Faction channel", e);
+            channelManagerModule.getModuleLogger().error("Could not create Faction channel", e);
             throw new RuntimeException();
         }
     }
@@ -141,7 +142,7 @@ public class ChannelManager implements IManager {
             towny.save();
             loadedChannels.put(channel, towny);
         } catch (Exception e) {
-            plugin.getPluginLogger().error("Could not create Towny channel", e);
+            channelManagerModule.getModuleLogger().error("Could not create Towny channel", e);
             throw new RuntimeException();
         }
     }
@@ -150,6 +151,7 @@ public class ChannelManager implements IManager {
      * Reload all Channels
      */
     public void reload() {
+        channelManagerModule.getModuleLogger().info("Reloading Channels");
         loadedChannels.clear();
         load();
 
@@ -181,7 +183,7 @@ public class ChannelManager implements IManager {
     }
 
     private void generateBasicChannels() {
-        plugin.getPluginLogger().info("Creating Global channel.");
+        channelManagerModule.getModuleLogger().info("Creating Global channel.");
 
         //Only generate a Global Channel
         ChannelDatabase global = new ChannelDatabase(plugin, ((Main) plugin.getConfigManager().getConfig("main")).Global);
@@ -194,7 +196,7 @@ public class ChannelManager implements IManager {
             global.save();
             loadedChannels.put(((Main) plugin.getConfigManager().getConfig("main")).Global.toLowerCase(), global);
         } catch (Exception e) {
-            plugin.getPluginLogger().error("Could not create Basic Channel " + ((Main) plugin.getConfigManager().getConfig("main")).Global, e);
+            channelManagerModule.getModuleLogger().error("Could not create Basic Channel " + ((Main) plugin.getConfigManager().getConfig("main")).Global, e);
             throw new RuntimeException();
         }
     }
@@ -206,6 +208,7 @@ public class ChannelManager implements IManager {
      * @return
      */
     public ChannelDatabase get(String channel) {
+        channelManagerModule.getModuleLogger().debug("Getting Channel " + channel);
         return loadedChannels.get(channel.toLowerCase());
     }
 
@@ -219,32 +222,35 @@ public class ChannelManager implements IManager {
     public boolean join(ProxiedPlayer player, ChannelDatabase channel) {
         //The channel is not existent anymore (channels yml got deleted)
         if(channel == null) {
+            channelManagerModule.getModuleLogger().warn("Player " + player.getName() + " tried to join a non existent Channel");
             return false;
         }
 
-        plugin.getPluginLogger().info(player.getName() + " tried to join Channel " + channel.Name);
+        channelManagerModule.getModuleLogger().info(player.getName() + " tried to join Channel " + channel.Name);
 
         //Check if Player is in the playerJoinedChannels list
         if(!playerJoinedChannels.containsKey(player)) {
+            channelManagerModule.getModuleLogger().debug("Creating new empty playerJoinedChannels entry for Player " + player.getName());
             playerJoinedChannels.put(player, new ArrayList<ChannelDatabase>());
         }
 
         //Check if Player has enough Space in their List (Maximum Channels)
         if(playerJoinedChannels.get(player).size() == ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter && !plugin.getPermissionManager().has(player, "cloudchat.ignore.maxchannel")) {
             player.sendMessage("You cant join this Channel. You are already in the maximum Amount of Channels");
-            plugin.getPluginLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
+            channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
             return false;
         }
 
         //Check if the Player has the Permission to join
         if(!plugin.getPermissionManager().has(player, "cloudchat.channel." + channel.Name.toLowerCase())) {
             player.sendMessage("You cant join this Channel. You don't have enough Permissions");
-            plugin.getPluginLogger().info(player.getName() + " got rejected due to missing Permission of joining Channel " + channel.Name);
+            channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to missing Permission of joining Channel " + channel.Name);
             return false;
         }
 
         //Check if the Channel has some Members
         if(!playerInChannel.containsKey(channel)) {
+            channelManagerModule.getModuleLogger().debug("Creating new empty playerInChannel entry for Channel " + channel.Name);
             playerInChannel.put(channel, new ArrayList<ProxiedPlayer>());
         }
 
@@ -255,12 +261,12 @@ public class ChannelManager implements IManager {
 
             playerJoinedChannels.get(player).add(channel);
 
-            plugin.getPluginLogger().info("Player " + player.getName() + " entered Channel " + channel.Name);
+            channelManagerModule.getModuleLogger().info("Player " + player.getName() + " entered Channel " + channel.Name);
             return true;
         }
 
         //Player already is in the Channel
-        plugin.getPluginLogger().info("Player " + player.getName() + " is already in the Channel " + channel.Name);
+        channelManagerModule.getModuleLogger().info("Player " + player.getName() + " is already in the Channel " + channel.Name);
         return true;
     }
 
@@ -272,8 +278,10 @@ public class ChannelManager implements IManager {
     public void joinForcedChannels(ProxiedPlayer player) {
         for(Map.Entry<String, ChannelDatabase> channelDatabaseEntry : loadedChannels.entrySet()) {
             if(channelDatabaseEntry.getValue().Forced) {
+                channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " gets forced into Channel " + channelDatabaseEntry.getValue().Name);
                 join(player, channelDatabaseEntry.getValue());
             } else if(channelDatabaseEntry.getValue().ForceIntoWhenPermission && plugin.getPermissionManager().has(player, "cloudchat.channel." + channelDatabaseEntry.getValue().Name.toLowerCase())) {
+                channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " gets forced(permission) into Channel " + channelDatabaseEntry.getValue().Name);
                 join(player, channelDatabaseEntry.getValue());
             }
         }
@@ -285,8 +293,13 @@ public class ChannelManager implements IManager {
      * @param player
      */
     public void remove(ProxiedPlayer player) {
+        channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " should get removed from all Channels");
+
         //Check if player is in any channels
-        if(!playerJoinedChannels.containsKey(player)) return;
+        if(!playerJoinedChannels.containsKey(player)) {
+            channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " is already unloaded");
+            return;
+        }
 
         for(ChannelDatabase channel : new ArrayList<>(playerJoinedChannels.get(player))) {
             leave(player, channel);
@@ -302,11 +315,16 @@ public class ChannelManager implements IManager {
      * @param channelDatabase
      */
     public void leave(ProxiedPlayer player, ChannelDatabase channelDatabase) {
-        if(!playerInChannel.containsKey(channelDatabase)) return;
+        channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " wants to leave Channel " + channelDatabase.Name);
+
+        if(!playerInChannel.containsKey(channelDatabase)) {
+            channelManagerModule.getModuleLogger().warn("The Channel has no Information about Players in it. This highly identifies a Bug. Please report it to me");
+            return;
+        }
 
         playerInChannel.get(channelDatabase).remove(player);
         playerJoinedChannels.get(player).remove(channelDatabase);
-        plugin.getPluginLogger().info("Player " + player.getName() + " left Channel " + channelDatabase.Name);
+        channelManagerModule.getModuleLogger().info("Player " + player.getName() + " left Channel " + channelDatabase.Name);
     }
 
     /**
@@ -316,12 +334,16 @@ public class ChannelManager implements IManager {
      * @return
      */
     public ChannelDatabase getViaShort(String chShort) {
+        channelManagerModule.getModuleLogger().debug("Trying to get Channel for Short " + chShort);
+
         for(Map.Entry<String, ChannelDatabase> channelDatabaseEntry : loadedChannels.entrySet()) {
             if(channelDatabaseEntry.getValue().Short.equalsIgnoreCase(chShort)) {
+                channelManagerModule.getModuleLogger().debug("Found Channel " + channelDatabaseEntry.getValue().Name);
                 return channelDatabaseEntry.getValue();
             }
         }
 
+        channelManagerModule.getModuleLogger().debug("Did not found any Channel by this Short");
         return null;
     }
 
@@ -332,8 +354,10 @@ public class ChannelManager implements IManager {
      * @return
      */
     public ChannelDatabase getViaShortOrName(String selectedChannel) {
+        channelManagerModule.getModuleLogger().debug("Searching for a Channel " + selectedChannel);
+
         if(loadedChannels.containsKey(selectedChannel.toLowerCase())) {
-            return loadedChannels.get(selectedChannel.toLowerCase());
+            return get(selectedChannel);
         } else {
             return getViaShort(selectedChannel);
         }
@@ -346,6 +370,8 @@ public class ChannelManager implements IManager {
      * @return
      */
     public ArrayList<ProxiedPlayer> getAllInChannel(ChannelDatabase channelDatabase) {
+        channelManagerModule.getModuleLogger().debug("Getting list of all Players which are in Channel " + channelDatabase.Name);
+
         ArrayList<ProxiedPlayer> returnVal = playerInChannel.get(channelDatabase);
         if(returnVal == null) return new ArrayList<>();
 
@@ -359,6 +385,8 @@ public class ChannelManager implements IManager {
      * @return
      */
     public ArrayList<ChannelDatabase> getAllJoinedChannels(ProxiedPlayer player) {
+        channelManagerModule.getModuleLogger().debug("Getting all channels where the Player is in. Player " + player.getName());
+
         ArrayList<ChannelDatabase> returnVal = playerJoinedChannels.get(player);
         if(returnVal == null) return new ArrayList<>();
 
@@ -371,6 +399,8 @@ public class ChannelManager implements IManager {
      * @return
      */
     public Collection<ChannelDatabase> getChannels() {
+        channelManagerModule.getModuleLogger().debug("Getting all channels which are loaded");
+
         return loadedChannels.values();
     }
 
@@ -381,6 +411,8 @@ public class ChannelManager implements IManager {
      * @return
      */
     public boolean exists(String channel) {
+        channelManagerModule.getModuleLogger().debug("Check if Channel " + channel + " exists");
+
         return loadedChannels.containsKey(channel.toLowerCase());
     }
 }
