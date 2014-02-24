@@ -47,6 +47,7 @@ public class Channels implements CLICommand {
             return;
         }
 
+        ProxiedPlayer player = (ProxiedPlayer) sender;
         ChannelDatabase channelDatabase = channelManager.getViaShortOrName(args[0]);
         if(channelDatabase == null) {
             MessageBuilder messageBuilder = new MessageBuilder();
@@ -75,6 +76,11 @@ public class Channels implements CLICommand {
         if(channelManager.join((ProxiedPlayer) sender, channelDatabase)) {
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Join_JoinedChannel.replace("%channel", channelDatabase.Name))).send(sender);
+
+            if (channelDatabase.FocusOnJoin) {
+                playerManager.get(player.getName()).Focus = channelDatabase.Name.toLowerCase();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", channelDatabase.Name))).send(sender);
+            }
         }
     }
 
