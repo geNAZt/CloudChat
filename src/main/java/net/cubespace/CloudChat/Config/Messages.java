@@ -24,6 +24,8 @@ public class Messages extends Config {
 
     public String Complete_Player = "%prefix%nick%suffix&r";
 
+    public String PM_Blocked = "&cYou can't send PMs to this Player";
+
     public String Command_CC_Report_On = "&6Reporting has been enabled and the Report will be saved to %file. Type &c/cc:report&6 off to stop or it will automaticly stop after &a10&6 Minutes";
     public String Command_CC_Report_Off = "&6Reporting is now &aoff";
 
@@ -168,4 +170,7 @@ public class Messages extends Config {
 
     public String Command_Channels_Header = "&4=== All Channels you can enter ===";
     public String Command_Channels_Channel = "&4%channel";
+
+    public String Command_TogglePM_YouNowIgnore = "&6You now ignore PMs";
+    public String Command_TogglePM_YouDontIgnore = "&6You don't ignore PMs";
 }

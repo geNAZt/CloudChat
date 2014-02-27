@@ -37,6 +37,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getPermissionManager().setup("cloudchat.");
 
         //Load the Configs
+        CommandAliases commandAliases = new CommandAliases(this);
         getConfigManager().initConfig("main", new Main(this));
         getConfigManager().initConfig("irc", new IRC(this));
         getConfigManager().initConfig("database", new Database(this));
@@ -45,8 +46,15 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("factions", new Factions(this));
         getConfigManager().initConfig("ircPermissions", new IRCPermissions(this));
         getConfigManager().initConfig("messages", new Messages(this));
-        getConfigManager().initConfig("commandAliases", new CommandAliases(this));
+        getConfigManager().initConfig("commandAliases", commandAliases);
         getConfigManager().initConfig("towny", new Towny(this));
+
+        //Keep track of new Commands
+        if (!commandAliases.BaseCommands.containsKey("channels"))
+            commandAliases.BaseCommands.put("channels", "channels");
+
+        if (!commandAliases.BaseCommands.containsKey("togglepm"))
+            commandAliases.BaseCommands.put("togglepm", "togglepm");
 
         //Static init
         AutoComplete.init(this);
@@ -77,7 +85,6 @@ public class CloudChatPlugin extends CubespacePlugin {
         getModuleManager().detectModules(moduleFolder);
         getModuleManager().loadAndEnableModules();
         getPluginMessageManager("CloudChat").finish();
-
 
         //Register the Listeners
         getAsyncEventBus().addListener(null, new PermissionLoadedListener(this));

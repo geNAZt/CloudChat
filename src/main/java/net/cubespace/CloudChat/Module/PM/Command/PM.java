@@ -77,4 +77,32 @@ public class PM implements CLICommand {
         PMEvent event = new PMEvent(player.getName(), playerDatabase.Reply, message);
         plugin.getAsyncEventBus().callEvent(event);
     }
+
+    @Command(command = "togglepm", arguments = 1)
+    public void togglepmCommand(CommandSender sender, String[] args) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+
+        plugin.getPluginLogger().debug("Got a PM toggle");
+
+        if(!(sender instanceof ProxiedPlayer)) {
+            plugin.getPluginLogger().debug("But it was not send from a Player");
+
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Reply_NotPlayer)).send(sender);
+
+            return;
+        }
+
+        ProxiedPlayer player = (ProxiedPlayer) sender;
+        PlayerDatabase playerDatabase = playerManager.get(player.getName());
+
+        playerDatabase.IgnorePM = !playerDatabase.IgnorePM;
+        MessageBuilder messageBuilder = new MessageBuilder();
+
+        if (playerDatabase.IgnorePM) {
+            messageBuilder.setText(FontFormat.translateString(messages.Command_TogglePM_YouNowIgnore)).send(sender);
+        } else {
+            messageBuilder.setText(FontFormat.translateString(messages.Command_TogglePM_YouDontIgnore)).send(sender);
+        }
+    }
 }

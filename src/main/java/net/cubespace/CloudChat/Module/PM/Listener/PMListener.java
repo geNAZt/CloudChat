@@ -46,6 +46,13 @@ public class PMListener implements Listener {
         PlayerDatabase senderDB = playerManager.get(sen.getName());
         PlayerDatabase receiverDB = playerManager.get(rec.getName());
 
+        //Check if receiver can get PMs
+        if (receiverDB.IgnorePM) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.PM_Blocked)).send(sen);
+            return;
+        }
+
         final String sender = MessageFormat.format(messages.Message_Nick, null, senderDB);
         final String receiver = MessageFormat.format(messages.Message_Nick, null, receiverDB);
 

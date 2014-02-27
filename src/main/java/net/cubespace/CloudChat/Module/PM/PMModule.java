@@ -35,6 +35,10 @@ public class PMModule extends Module {
             plugin.getCommandExecutor().add(this, new SocialSpy(plugin));
         }
 
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("togglepm"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("togglepm"), Binder.class, commandAliases.TogglePM.toArray(new String[0]));
+        }
+
         plugin.getCommandExecutor().add(this, new PM(plugin));
 
         plugin.getAsyncEventBus().addListener(this, new PMListener(plugin));
@@ -54,6 +58,10 @@ public class PMModule extends Module {
 
         if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("socialspy"))) {
             plugin.getBindManager().unbind(commandAliases.BaseCommands.get("socialspy"));
+        }
+
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("togglepm"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("togglepm"));
         }
 
         plugin.getCommandExecutor().remove(this);
