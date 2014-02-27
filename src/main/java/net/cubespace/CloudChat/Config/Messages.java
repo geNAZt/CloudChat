@@ -130,6 +130,7 @@ public class Messages extends Config {
     public String Command_Nick_NoPermissionToChangeOther = "&cYou are not allowed to change Nicknames of other Players";
     public String Command_Nick_OfflinePlayer = "&cYou can not change Nicknames from offline Players";
     public String Command_Nick_ChangedNick = "&6Your nickname was changed to &a%nick";
+    public String Command_Nick_ResetNick = "&6The Nickname has been removed";
 
     public String Command_Msg_NotPlayer = "&cOnly Players can send Messages";
 

@@ -15,7 +15,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.11.13 13:13
  */
 public class Nick implements CLICommand {
     private CubespacePlugin plugin;
@@ -32,7 +31,7 @@ public class Nick implements CLICommand {
 
         //Check if the Sender is a Player since we only can change Players Nicknames
         if (!(sender instanceof ProxiedPlayer)) {
-            plugin.getPluginLogger().debug("But not for a Player");
+            plugin.getPluginLogger().debug("But not from a Player");
 
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_NotPlayer)).send(sender);
@@ -54,13 +53,30 @@ public class Nick implements CLICommand {
                 return;
             }
 
-            //Fire the correct Event to check if this is ok
             PlayerDatabase playerDatabase = ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).get(player.getName());
-            plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(player, playerDatabase.Nick, args[1]));
+
+            //Check if this is a "off" Request
+            if (args[1].equalsIgnoreCase("off")) {
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_ResetNick)).send(sender);
+
+                playerDatabase.Nick = playerDatabase.Realname;
+            } else {
+                //Fire the correct Event to check if this is ok
+                plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(player, playerDatabase.Nick, args[1]));
+            }
         } else {
-            //Fire the correct Event to check if this is ok
             PlayerDatabase playerDatabase = ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).get(sender.getName());
-            plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(sender, playerDatabase.Nick, args[0]));
+
+            if (args[0].equalsIgnoreCase("off")) {
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_ResetNick)).send(sender);
+
+                playerDatabase.Nick = playerDatabase.Realname;
+            } else {
+                //Fire the correct Event to check if this is ok
+                plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(sender, playerDatabase.Nick, args[0]));
+            }
         }
     }
 }
