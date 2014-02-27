@@ -12,14 +12,15 @@ import net.md_5.bungee.event.EventPriority;
  * @date Last changed: 26.11.13 23:38
  */
 public class PlayerJoinListener implements Listener {
-    private final CloudChatPlugin plugin;
+    private final PlayerManager playerManager;
 
     public PlayerJoinListener(CloudChatPlugin plugin) {
-        this.plugin = plugin;
+        this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PostLoginEvent event) {
-        ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).load(event.getPlayer().getName());
+        playerManager.load(event.getPlayer().getName());
+        playerManager.get(event.getPlayer().getName()).Realname = event.getPlayer().getName();
     }
 }

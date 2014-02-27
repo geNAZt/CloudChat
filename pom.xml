@@ -6,7 +6,7 @@
 
     <groupId>net.cubespace</groupId>
     <artifactId>CloudChat</artifactId>
-    <version>4.3.3</version>
+    <version>4.4.0</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -78,7 +78,6 @@
                         </configuration>
                     </execution>
                 </executions>
-
             </plugin>
         </plugins>
     </build>

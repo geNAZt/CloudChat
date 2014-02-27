@@ -1,14 +1,21 @@
 package net.cubespace.CloudChat.Module.FormatHandler.Format;
 
+import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.Yamler.Config.InvalidConfigurationException;
+import net.cubespace.lib.CubespacePlugin;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.11.13 22:44
  */
 public class MessageFormat {
+    private static CubespacePlugin plugin;
+
+    public static void setPlugin(CubespacePlugin plugin) {
+        MessageFormat.plugin = plugin;
+    }
+
     public static String format(String message, ChannelDatabase channel, PlayerDatabase playerDatabase) {
         return format(message, channel, playerDatabase, false);
     }
@@ -100,7 +107,12 @@ public class MessageFormat {
 
             //Player formats
             if(!playerDatabase.Nick.equals("")) {
-                output = output.replace("%nick", channel.Formats.get("nick").replace("%nick", playerDatabase.Nick));
+                String nick = playerDatabase.Nick;
+                if (!playerDatabase.Nick.equals(playerDatabase.Realname)) {
+                    nick = ((Main) plugin.getConfigManager().getConfig("main")).NicknamePrefix + nick;
+                }
+
+                output = output.replace("%nick", channel.Formats.get("nick").replace("%nick", nick));
             } else {
                 output = output.replace("%nick", "");
             }
@@ -153,8 +165,13 @@ public class MessageFormat {
                 output = output.replace("%world", "");
             }
         } else {
+            String nick = playerDatabase.Nick;
+            if (!playerDatabase.Nick.equals(playerDatabase.Realname)) {
+                nick = ((Main) plugin.getConfigManager().getConfig("main")).NicknamePrefix + nick;
+            }
+
             //Player things
-            output = output.replace("%nick", playerDatabase.Nick);
+            output = output.replace("%nick", nick);
             output = output.replace("%prefix", playerDatabase.Prefix);
             output = output.replace("%suffix", playerDatabase.Suffix);
             output = output.replace("%faction", playerDatabase.Faction);
