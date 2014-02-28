@@ -5,8 +5,6 @@ import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Event.CheckCommandEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
-import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
-import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.CubespacePlugin;
@@ -17,7 +15,6 @@ import java.util.Arrays;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:22
  */
 public class AsyncChatListener {
     private CubespacePlugin plugin;
@@ -59,10 +56,7 @@ public class AsyncChatListener {
             ChannelDatabase channelDatabase = channelManager.getViaShortOrName(selectedChannel);
             if(channelDatabase != null) {
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
-                    //Format the Message
-                    String message = channelDatabase.Format.replace("%message", StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " "));
-                    Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
-                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
+                    plugin.getAsyncEventBus().callEvent(new AsyncChatEvent(event.getSender(), StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " ")));
                     event.setCancelParent(true);
 
                     return true;
