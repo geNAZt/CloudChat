@@ -11,7 +11,6 @@ import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 22:29
  */
 public class MuteModule extends Module {
     private MuteManager muteManager;
@@ -22,7 +21,7 @@ public class MuteModule extends Module {
 
     @Override
     public void onLoad() {
-        this.muteManager = new MuteManager();
+        this.muteManager = new MuteManager(plugin);
         plugin.getManagerRegistry().registerManager("muteManager", muteManager);
     }
 

@@ -37,7 +37,7 @@ public class SpamDetector implements Runnable {
                     switch (spamCounterEntry.getKey().ActionIfReached) {
                         case MUTE:
                             plugin.getPluginLogger().info("Muting Player " + playerSpam.getValue() + " for " + spamCounterEntry.getKey().HowLongToMuteInSeconds + " seconds due to Spamming");
-                            muteManager.addGlobalMute(playerSpam.getKey());
+                            muteManager.addGlobalMute(playerSpam.getKey(), 0);
                             plugin.getProxy().getPlayer(playerSpam.getKey()).sendMessage(spamCounterEntry.getKey().MuteMessage.replace("%amount", spamCounterEntry.getKey().HowLongToMuteInSeconds.toString()));
 
                             final String player = playerSpam.getKey();

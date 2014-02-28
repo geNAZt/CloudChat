@@ -6,6 +6,7 @@ import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.IRCSender;
 import net.cubespace.CloudChat.Module.Mute.MuteManager;
+import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -41,7 +42,13 @@ public class Mute implements Command {
             return true;
         }
 
-        muteManager.addGlobalMute(player.getName());
+        int timedMute = 0;
+        if (args.length > 1) {
+            timedMute = StringUtils.getTime(args[1]);
+        }
+
+        muteManager.addGlobalMute(player.getName(), timedMute);
+
         ircModule.getIrcBot().sendToChannel(MCToIrcFormat.translateString(messages.IRC_Command_Mute_Success.replace("%nick", sender.getRawNick()).replace("%muted", args[0])), sender.getChannel());
         return true;
     }
