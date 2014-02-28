@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.Command.Parser.NicknameParser;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
+import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.Command.CLICommand;
 import net.cubespace.lib.Command.Command;
@@ -13,7 +14,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 22:32
  */
 public class Mute implements CLICommand {
     private CubespacePlugin plugin;
@@ -104,7 +104,13 @@ public class Mute implements CLICommand {
             return;
         }
 
-        muteModule.getMuteManager().addGlobalMute(player.getName());
+        int timedMute = 0;
+        if (args.length > 1) {
+            timedMute = StringUtils.getTime(args[1]);
+        }
+
+        muteModule.getMuteManager().addGlobalMute(player.getName(), timedMute);
+
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_Success.replace("%player", player.getName()))).send(sender);
         plugin.getPluginLogger().info(sender.getName() + " globally muted " + player.getName());

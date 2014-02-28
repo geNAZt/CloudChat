@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.Mute.Listener;
 
 import net.cubespace.CloudChat.Event.PlayerJoinEvent;
 import net.cubespace.CloudChat.Module.Mute.MuteModule;
+import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
@@ -10,7 +11,6 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:21
  */
 public class PlayerJoinListener implements Listener {
     private PlayerManager playerManager;
@@ -23,8 +23,10 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if(playerManager.get(event.getPlayer().getName()).Muted) {
-            muteModule.getMuteManager().addGlobalMute(event.getPlayer().getName());
+        PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
+
+        if(playerDatabase.Muted) {
+            muteModule.getMuteManager().addGlobalMute(event.getPlayer().getName(), playerDatabase.MutedFor);
         }
     }
 }
