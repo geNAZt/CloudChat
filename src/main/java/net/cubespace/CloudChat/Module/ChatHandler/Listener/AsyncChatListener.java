@@ -6,7 +6,6 @@ import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
-import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
@@ -30,13 +29,8 @@ public class AsyncChatListener {
         //Format the Message
         ChannelDatabase channelDatabase = channelManager.get(playerManager.get(event.getSender().getName()).Focus);
 
-        //Secure the message against click events
-        LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
-        legacyMessageBuilder.setText(event.getMessage());
-
-        String message = channelDatabase.Format.replace("%message", legacyMessageBuilder.getString());
         Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
 
-        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
+        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, event.getMessage()));
     }
 }

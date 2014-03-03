@@ -5,6 +5,8 @@ import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Event.CheckCommandEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
+import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.lib.CubespacePlugin;
@@ -56,7 +58,10 @@ public class AsyncChatListener {
             ChannelDatabase channelDatabase = channelManager.getViaShortOrName(selectedChannel);
             if(channelDatabase != null) {
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
-                    plugin.getAsyncEventBus().callEvent(new AsyncChatEvent(event.getSender(), StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " ")));
+                    //Format the Message
+                    String message = channelDatabase.Format.replace("%message", StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " "));
+                    Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
+                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
                     event.setCancelParent(true);
 
                     return true;

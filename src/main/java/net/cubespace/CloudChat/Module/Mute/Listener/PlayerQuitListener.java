@@ -11,7 +11,6 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 22:48
  */
 public class PlayerQuitListener implements Listener {
     private MuteModule muteModule;
@@ -24,11 +23,16 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event) {
+        muteModule.getMuteManager().remove(event.getPlayer().getName());
+
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
+
+        if(playerDatabase == null) {
+            muteModule.getModuleLogger().error("Could not get Player Database for " + event.getPlayer().getName());
+            return;
+        }
 
         playerDatabase.Muted = muteModule.getMuteManager().isGlobalMute(event.getPlayer().getName());
         playerDatabase.MutedFor = muteModule.getMuteManager().getRestTimeGlobalMute(event.getPlayer().getName());
-
-        muteModule.getMuteManager().remove(event.getPlayer().getName());
     }
 }

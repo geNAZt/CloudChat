@@ -6,7 +6,7 @@
 
     <groupId>net.cubespace</groupId>
     <artifactId>CloudChat</artifactId>
-    <version>4.5.0</version>
+    <version>4.5.1</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>net.cubespace</groupId>
             <artifactId>BungeeLib</artifactId>
-            <version>1.5.2-SNAPSHOT</version>
+            <version>1.6.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>pircbot</groupId>

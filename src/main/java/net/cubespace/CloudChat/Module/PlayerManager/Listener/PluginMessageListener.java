@@ -18,7 +18,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 02.01.14 04:09
  */
 public class PluginMessageListener implements PacketListener {
     private PlayerManager playerManager;
@@ -32,8 +31,17 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onAffixMessage(AffixMessage affixMessage){
         ProxiedPlayer player = affixMessage.getSender().getBungeePlayer();
+        if(player == null) {
+            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
+            return;
+        }
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
+        if(playerDatabase == null) {
+            plugin.getPluginLogger().error("Could not get Player Database for " + player.getName());
+            return;
+        }
+
         if(affixMessage.getPrefix() != null)
             playerDatabase.Prefix = affixMessage.getPrefix();
 
@@ -52,9 +60,18 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onWorldMessage(WorldMessage worldMessage){
         ProxiedPlayer player = worldMessage.getSender().getBungeePlayer();
+        if(player == null) {
+            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
+            return;
+        }
 
         if(worldMessage.getName() != null && worldMessage.getAlias() != null) {
             PlayerDatabase playerDatabase = playerManager.get(player.getName());
+            if(playerDatabase == null) {
+                plugin.getPluginLogger().error("Could not get Player Database for " + player.getName());
+                return;
+            }
+
             playerDatabase.World = worldMessage.getName();
             playerDatabase.WorldAlias = worldMessage.getAlias();
 
@@ -68,8 +85,17 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onAFKMessage(AFKMessage afkMessage){
         ProxiedPlayer player = afkMessage.getSender().getBungeePlayer();
+        if(player == null) {
+            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
+            return;
+        }
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
+        if(playerDatabase == null) {
+            plugin.getPluginLogger().error("Could not get Player Database for " + player.getName());
+            return;
+        }
+
         if(afkMessage.isAfk() && !playerDatabase.AFK) {
             //The Player has gone AFK
             plugin.getAsyncEventBus().callEvent(new PlayerChangeAFKEvent(player, true));
@@ -85,14 +111,34 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onIgnoreMessage(IgnoreMessage ignoreMessage) {
         ProxiedPlayer player = ignoreMessage.getSender().getBungeePlayer();
+        if(player == null) {
+            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
+            return;
+        }
+
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
+        if(playerDatabase == null) {
+            plugin.getPluginLogger().error("Could not get Player Database for " + player.getName());
+            return;
+        }
+
         playerDatabase.Ignore = ignoreMessage.getIgnore();
     }
 
     @PacketHandler
     public void onOutputMessage(OutputMessage outputMessage) {
         ProxiedPlayer player = outputMessage.getSender().getBungeePlayer();
+        if(player == null) {
+            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
+            return;
+        }
+
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
+        if(playerDatabase == null) {
+            plugin.getPluginLogger().error("Could not get Player Database for " + player.getName());
+            return;
+        }
+
         playerDatabase.Output = outputMessage.isOutput();
 
         ChatHandlerModule chatHandlerModule = plugin.getModuleManager().getModule(ChatHandlerModule.class);
