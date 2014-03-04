@@ -18,7 +18,7 @@ public class AsyncChatListener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChatMessage(ChatMessageEvent event) {
         //Format the Message
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(event.getSender().getPlayerDatabase().Realname);
