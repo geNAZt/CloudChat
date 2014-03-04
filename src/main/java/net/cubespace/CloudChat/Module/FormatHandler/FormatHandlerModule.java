@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Module.FormatHandler;
 
+import net.cubespace.CloudChat.Module.ColorHandler.Listener.PMListener;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.FormatHandler.Listener.ChatMessageListener;
 import net.cubespace.lib.Module.Module;
@@ -16,6 +17,7 @@ public class FormatHandlerModule extends Module {
     @Override
     public void onEnable() {
         plugin.getAsyncEventBus().addListener(this, new ChatMessageListener(plugin));
+        plugin.getAsyncEventBus().addListener(this, new PMListener(plugin));
         MessageFormat.setPlugin(plugin);
     }
 

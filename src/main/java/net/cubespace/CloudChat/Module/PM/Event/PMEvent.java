@@ -4,12 +4,11 @@ import net.cubespace.lib.EventBus.Event;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 03.01.14 21:44
  */
 public class PMEvent implements Event {
     private final String from;
     private String to;
-    private final String message;
+    private String message;
 
     public PMEvent(String from, String to, String message) {
         this.from = from;
@@ -31,5 +30,9 @@ public class PMEvent implements Event {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
