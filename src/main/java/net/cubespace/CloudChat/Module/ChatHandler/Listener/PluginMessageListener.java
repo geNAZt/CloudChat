@@ -84,9 +84,8 @@ public class PluginMessageListener implements PacketListener {
         if(factionChatMessage.getMode().equals("global")) {
             ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = channelDatabase.Format.replace("%message", factionChatMessage.getMessage());
 
-            plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
+            plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, factionChatMessage.getMessage()));
 
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
         } else {
