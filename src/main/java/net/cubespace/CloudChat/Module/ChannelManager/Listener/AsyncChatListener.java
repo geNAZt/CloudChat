@@ -59,7 +59,7 @@ public class AsyncChatListener {
             if(channelDatabase != null) {
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
                     //Format the Message
-                    String message = channelDatabase.Format.replace("%message", StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " "));
+                    String message = StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " "));
                     Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
                     plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
                     event.setCancelParent(true);
