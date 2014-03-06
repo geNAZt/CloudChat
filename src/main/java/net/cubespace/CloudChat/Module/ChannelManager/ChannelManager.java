@@ -242,7 +242,7 @@ public class ChannelManager implements IManager {
         }
 
         //Check if the Player has the Permission to join
-        if(!plugin.getPermissionManager().has(player, "cloudchat.channel." + channel.Name.toLowerCase())) {
+        if(!channel.Forced && !plugin.getPermissionManager().has(player, "cloudchat.channel." + channel.Name.toLowerCase())) {
             player.sendMessage("You cant join this Channel. You don't have enough Permissions");
             channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to missing Permission of joining Channel " + channel.Name);
             return false;

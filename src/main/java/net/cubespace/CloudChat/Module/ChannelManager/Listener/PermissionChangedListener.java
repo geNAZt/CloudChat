@@ -42,7 +42,7 @@ public class PermissionChangedListener {
 
         boolean newFocus = false;
         for(ChannelDatabase channelDatabase : new ArrayList<>(joinedChannels)) {
-            if(!plugin.getPermissionManager().has(player, "cloudchat.channel." + channelDatabase.Name)) {
+            if(!channelDatabase.Forced && !plugin.getPermissionManager().has(player, "cloudchat.channel." + channelDatabase.Name)) {
                 channelManager.leave(player, channelDatabase);
 
                 if(playerDatabase.Focus.toLowerCase().equals(channelDatabase.Name.toLowerCase())) {
