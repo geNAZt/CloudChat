@@ -21,10 +21,10 @@ public class Reload implements CLICommand {
 
     @Command(command = "cc:reload", arguments = 0)
     public void reloadCommand(CommandSender sender, String[] args) {
-        Messages messages = plugin.getConfigManager().getConfig("messages");
-
         channelManager.reload();
         plugin.getConfigManager().reloadAll();
+
+        Messages messages = plugin.getConfigManager().getConfig("messages");
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Reload_Success)).send(sender);
     }

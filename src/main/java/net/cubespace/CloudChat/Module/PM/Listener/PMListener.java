@@ -57,10 +57,10 @@ public class PMListener implements Listener {
         final String receiver = MessageFormat.format(messages.Message_Nick, null, receiverDB);
 
         MessageBuilder messageBuilder = new MessageBuilder();
-        messageBuilder.setText(FontFormat.translateString(messages.Message_Receiver.replace("%sender", sender).replace("%message", message))).send(rec);
+        messageBuilder.setText(FontFormat.translateString(messages.Message_Receiver.replace("%sender", sender).replace("%message", message).replace("%server", sen.getServer().getInfo().getName()))).send(rec);
 
         MessageBuilder messageBuilder2 = new MessageBuilder();
-        messageBuilder2.setText(FontFormat.translateString(messages.Message_Sender.replace("%receiver", receiver).replace("%message", message))).send(sen);
+        messageBuilder2.setText(FontFormat.translateString(messages.Message_Sender.replace("%receiver", receiver).replace("%message", message).replace("%server", rec.getServer().getInfo().getName()))).send(sen);
 
         plugin.getPluginLogger().info(sen.getName() + " -> " + rec.getName() + ": " + event.getMessage());
 

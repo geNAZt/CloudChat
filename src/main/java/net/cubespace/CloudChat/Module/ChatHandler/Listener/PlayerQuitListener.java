@@ -9,6 +9,8 @@ import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
+import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
@@ -44,8 +46,12 @@ public class PlayerQuitListener implements Listener {
             String message = MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerQuit, channel, playerDatabase);
             Sender sender = new Sender(event.getPlayer().getName(), channel, playerDatabase);
 
+            ClickEvent clickEvent1 = new ClickEvent();
+            clickEvent1.setAction(ClickAction.RUN_COMMAND);
+            clickEvent1.setValue("/focus " + channel.Name);
+
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(message);
+            messageBuilder.setText(message).addEvent("focusChannel", clickEvent1);
 
             for(ProxiedPlayer player : inChannel) {
                 if(sent.contains(player)) continue;

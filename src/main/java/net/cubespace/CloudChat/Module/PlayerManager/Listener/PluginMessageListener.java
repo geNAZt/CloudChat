@@ -31,10 +31,7 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onAffixMessage(AffixMessage affixMessage){
         ProxiedPlayer player = affixMessage.getSender().getBungeePlayer();
-        if(player == null) {
-            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
-            return;
-        }
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         if(playerDatabase == null) {
@@ -60,10 +57,7 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onWorldMessage(WorldMessage worldMessage){
         ProxiedPlayer player = worldMessage.getSender().getBungeePlayer();
-        if(player == null) {
-            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
-            return;
-        }
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
         if(worldMessage.getName() != null && worldMessage.getAlias() != null) {
             PlayerDatabase playerDatabase = playerManager.get(player.getName());
@@ -85,10 +79,7 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onAFKMessage(AFKMessage afkMessage){
         ProxiedPlayer player = afkMessage.getSender().getBungeePlayer();
-        if(player == null) {
-            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
-            return;
-        }
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         if(playerDatabase == null) {
@@ -111,10 +102,7 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onIgnoreMessage(IgnoreMessage ignoreMessage) {
         ProxiedPlayer player = ignoreMessage.getSender().getBungeePlayer();
-        if(player == null) {
-            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
-            return;
-        }
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         if(playerDatabase == null) {
@@ -128,10 +116,7 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onOutputMessage(OutputMessage outputMessage) {
         ProxiedPlayer player = outputMessage.getSender().getBungeePlayer();
-        if(player == null) {
-            plugin.getPluginLogger().error("Could not resolve ProxiedPlayer");
-            return;
-        }
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         if(playerDatabase == null) {

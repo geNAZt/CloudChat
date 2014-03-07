@@ -16,11 +16,11 @@ public class Messages extends Config {
     public String NoPermission = "&cYou don't have the Permission to use this Command";
 
 
-    public String PlayerJoin = "&8[&2%channel_short&8]&r %prefix%nick{click:playerMenu}%suffix&r joined the Server";
-    public String PlayerQuit = "&8[&2%channel_short&8]&r %prefix%nick%suffix&r left the Server";
+    public String PlayerJoin = "&8[&2%channel_short{click:focusChannel}&8]&r %prefix%nick{click:playerMenu}%suffix&r joined the Server";
+    public String PlayerQuit = "&8[&2%channel_short{click:focusChannel}&8]&r %prefix%nick%suffix&r left the Server";
 
-    public String PlayerGotAfk = "&8[&2%channel_short&8]&r %prefix%nick{click:playerMenu}%suffix&r is afk";
-    public String PlayerGotOutOfAfk = "&8[&2%channel_short&8]&r %prefix%nick{click:playerMenu}%suffix&r is not afk anymore";
+    public String PlayerGotAfk = "&8[&2%channel_short{click:focusChannel}&8]&r %prefix%nick{click:playerMenu}%suffix&r is afk";
+    public String PlayerGotOutOfAfk = "&8[&2%channel_short{click:focusChannel}&8]&r %prefix%nick{click:playerMenu}%suffix&r is not afk anymore";
 
     public String Complete_Player = "%prefix%nick%suffix&r";
 

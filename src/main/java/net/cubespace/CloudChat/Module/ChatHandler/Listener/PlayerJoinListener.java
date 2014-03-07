@@ -53,8 +53,12 @@ public class PlayerJoinListener implements Listener {
                 clickEvent.setAction(ClickAction.RUN_COMMAND);
                 clickEvent.setValue("/cc:playermenu " + event.getPlayer().getName());
 
+                ClickEvent clickEvent1 = new ClickEvent();
+                clickEvent1.setAction(ClickAction.RUN_COMMAND);
+                clickEvent1.setValue("/focus " + channel.Name);
+
                 MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.setText(message).addEvent("playerMenu", clickEvent);
+                messageBuilder.setText(message).addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
 
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender));
                 sent.add(player);

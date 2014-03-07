@@ -42,6 +42,8 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onTownyChatMessage(TownyChatMessage townyChatMessage) {
         ProxiedPlayer player = townyChatMessage.getSender().getBungeePlayer();
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
+
         Towny towny = plugin.getConfigManager().getConfig("towny");
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
 
@@ -74,6 +76,8 @@ public class PluginMessageListener implements PacketListener {
     @PacketHandler
     public void onFactionChatMessage(FactionChatMessage factionChatMessage){
         ProxiedPlayer player = factionChatMessage.getSender().getBungeePlayer();
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
+
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         Factions factions = plugin.getConfigManager().getConfig("factions");
 
@@ -128,7 +132,10 @@ public class PluginMessageListener implements PacketListener {
 
     @PacketHandler
     public void onSendChatMessage(SendChatMessage sendChatMessage) {
-        PlayerDatabase playerDatabase = playerManager.get(sendChatMessage.getSender().getName());
+        ProxiedPlayer player = sendChatMessage.getSender().getBungeePlayer();
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
+
+        PlayerDatabase playerDatabase = playerManager.get(player.getName());
         ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
         Sender sender = new Sender(sendChatMessage.getSender().getName(), channelDatabase, playerDatabase);
 
@@ -142,8 +149,8 @@ public class PluginMessageListener implements PacketListener {
         clickEvent.setAction(ClickAction.RUN_COMMAND);
         clickEvent.setValue("/cc:playermenu " + sendChatMessage.getSender().getName());
 
-        for(String player : sendChatMessage.getTo()) {
-            ProxiedPlayer proxyPlayer = plugin.getProxy().getPlayer(player);
+        for(String playerToSend : sendChatMessage.getTo()) {
+            ProxiedPlayer proxyPlayer = plugin.getProxy().getPlayer(playerToSend);
             if(proxyPlayer == null) continue;
 
             if(!channelManager.getAllJoinedChannels(proxyPlayer).contains(channelDatabase)) continue;

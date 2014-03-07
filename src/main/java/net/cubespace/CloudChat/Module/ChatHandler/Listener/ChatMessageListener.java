@@ -30,9 +30,13 @@ public class ChatMessageListener implements Listener {
         clickEvent.setAction(ClickAction.RUN_COMMAND);
         clickEvent.setValue("/cc:playermenu " + event.getSender().getNick());
 
+        ClickEvent clickEvent1 = new ClickEvent();
+        clickEvent1.setAction(ClickAction.RUN_COMMAND);
+        clickEvent1.setValue("/focus " + event.getSender().getChannel().Name);
+
         for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
+            messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
             messageBuilder.setText(event.getMessage());
             plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
         }

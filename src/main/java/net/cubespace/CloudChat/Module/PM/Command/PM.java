@@ -78,7 +78,7 @@ public class PM implements CLICommand {
         plugin.getAsyncEventBus().callEvent(event);
     }
 
-    @Command(command = "togglepm", arguments = 1)
+    @Command(command = "togglepm", arguments = 0)
     public void togglepmCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
 

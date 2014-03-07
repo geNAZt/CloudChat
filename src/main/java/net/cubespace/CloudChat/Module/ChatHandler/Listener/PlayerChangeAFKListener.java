@@ -46,8 +46,12 @@ public class PlayerChangeAFKListener implements Listener {
             clickEvent.setAction(ClickAction.RUN_COMMAND);
             clickEvent.setValue("/cc:playermenu " + event.getPlayer().getName());
 
+            ClickEvent clickEvent1 = new ClickEvent();
+            clickEvent1.setAction(ClickAction.RUN_COMMAND);
+            clickEvent1.setValue("/focus " + channel.Name);
+
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
+            messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
 
             if(event.isAfk()) {
                 messageBuilder.setText(MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotAfk, channel, playerDatabase));
