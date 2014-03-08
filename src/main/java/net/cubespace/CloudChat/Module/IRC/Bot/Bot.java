@@ -212,7 +212,7 @@ public class Bot extends PircBot implements Runnable {
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         plugin.getPluginLogger().debug("Got IRC Message from " + channel + ": " + message);
 
-        relayMessage(sender, channel, IrcToMCFormat.translateString(message), true);
+        relayMessage(sender, channel, IrcToMCFormat.translateString(message));
     }
 
     /**
@@ -227,7 +227,7 @@ public class Bot extends PircBot implements Runnable {
     protected void onAction(String sender, String login, String hostname, String target, String action) {
         if(ircConfig.Relay_Action) {
             plugin.getPluginLogger().debug("Relaying a Action from IRC: " + sender + " " + action);
-            relayMessage(sender, target, ircConfig.Relay_ActionPrefix + sender + " " + IrcToMCFormat.translateString(action), false);
+            relayMessage(sender, target, ircConfig.Relay_ActionPrefix + sender + " " + IrcToMCFormat.translateString(action));
         }
     }
 
@@ -254,7 +254,7 @@ public class Bot extends PircBot implements Runnable {
         if(ircConfig.Relay_Join) {
             if(!sender.equals(ircConfig.Name)) {
                 plugin.getPluginLogger().debug("Adding user " + sender + " to the IRC User list for Channel " + channel);
-                relayMessage(sender, channel, ircConfig.Relay_JoinMessage, false);
+                relayMessage(sender, channel, ircConfig.Relay_JoinMessage);
             } else {
                 plugin.getPluginLogger().info("Bot joined " + channel);
             }
@@ -322,7 +322,7 @@ public class Bot extends PircBot implements Runnable {
             List<String> joinedChannels = ircManager.getJoinedChannels(oldNick);
 
             for(String channel : joinedChannels) {
-                relayMessage(oldNick, channel, NickchangeFormatter.format(ircConfig.Relay_NickchangeMessage, oldNick, newNick), false);
+                relayMessage(oldNick, channel, NickchangeFormatter.format(ircConfig.Relay_NickchangeMessage, oldNick, newNick));
                 ircManager.addJoinedChannel(newNick, channel);
             }
 
@@ -346,7 +346,7 @@ public class Bot extends PircBot implements Runnable {
             plugin.getPluginLogger().debug("IRC User " + sourceNick + " disconnected");
 
             for(String channel : ircManager.getJoinedChannels(sourceNick))
-                relayMessage(sourceNick, channel, ircConfig.Relay_QuitMessage, false);
+                relayMessage(sourceNick, channel, ircConfig.Relay_QuitMessage);
         }
 
         ircManager.removeJoinedChannels(sourceNick);
@@ -381,7 +381,7 @@ public class Bot extends PircBot implements Runnable {
         }
     }
 
-    private void relayMessage(String sender, String channel, String message, boolean useChannelFormat) {
+    private void relayMessage(String sender, String channel, String message) {
         plugin.getPluginLogger().debug("Got a new relay Message from IRC: " + sender + ": " + message);
 
         //Get the Group of the user
@@ -408,13 +408,7 @@ public class Bot extends PircBot implements Runnable {
                     ircDatabase.Nick = ircConfig.IngameName + sender;
 
                     Sender sender1 = new Sender("IRC", channelDatabase, ircDatabase);
-
-                    String sendMessage = message;
-                    if(useChannelFormat) {
-                        sendMessage = ircConfig.Relay_Message.replace("%message", message);
-                    }
-
-                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender1, sendMessage));
+                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender1, message));
                 }
             }
         }
