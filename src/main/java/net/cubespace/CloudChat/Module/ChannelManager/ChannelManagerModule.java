@@ -11,6 +11,7 @@ import net.cubespace.CloudChat.Module.ChannelManager.Command.CreateChannel;
 import net.cubespace.CloudChat.Module.ChannelManager.Command.Invite;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PermissionChangedListener;
+import net.cubespace.CloudChat.Module.ChannelManager.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.ChannelManager.Listener.PlayerSendMessageListener;
 import net.cubespace.lib.Module.Module;
@@ -30,6 +31,7 @@ public class ChannelManagerModule extends Module {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         //Register the Listener
+        plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
         plugin.getAsyncEventBus().addListener(this, new PlayerQuitListener(plugin));
         plugin.getAsyncEventBus().addListener(this, new AsyncChatListener(plugin));
         plugin.getAsyncEventBus().addListener(this, new PermissionChangedListener(plugin));
