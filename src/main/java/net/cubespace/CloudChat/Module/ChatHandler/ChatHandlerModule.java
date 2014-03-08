@@ -8,8 +8,8 @@ import net.cubespace.CloudChat.Module.ChatHandler.Command.Broadcast;
 import net.cubespace.CloudChat.Module.ChatHandler.Command.Clearchat;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.ChatMessageListener;
+import net.cubespace.CloudChat.Module.ChatHandler.Listener.PermissionLoadedListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerChangeAFKListener;
-import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PluginMessageListener;
@@ -48,7 +48,7 @@ public class ChatHandlerModule extends Module {
 
         //Register the Listener
         if(config.Announce_PlayerJoin)
-            plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
+            plugin.getAsyncEventBus().addListener(this, new PermissionLoadedListener(plugin));
 
         if(config.Announce_PlayerQuit)
             plugin.getAsyncEventBus().addListener(this, new PlayerQuitListener(plugin));

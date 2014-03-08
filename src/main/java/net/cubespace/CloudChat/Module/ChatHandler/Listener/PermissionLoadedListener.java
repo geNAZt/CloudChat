@@ -1,7 +1,6 @@
 package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 
 import net.cubespace.CloudChat.Config.Messages;
-import net.cubespace.CloudChat.Event.PlayerJoinEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
@@ -16,6 +15,8 @@ import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
+import net.cubespace.lib.Permission.Event.PermissionLoadedEvent;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -23,35 +24,36 @@ import java.util.ArrayList;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
-public class PlayerJoinListener implements Listener {
+public class PermissionLoadedListener implements Listener {
     private CubespacePlugin plugin;
     private PlayerManager playerManager;
     private ChannelManager channelManager;
 
-    public PlayerJoinListener(CubespacePlugin plugin) {
+    public PermissionLoadedListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if(plugin.getPermissionManager().has(event.getPlayer(), "cloudchat.bypass.announce.join")) return;
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerJoin(PermissionLoadedEvent event) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(event.getPlayer());
+        if(plugin.getPermissionManager().has(player, "cloudchat.bypass.announce.join")) return;
 
-        PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
+        PlayerDatabase playerDatabase = playerManager.get(event.getPlayer());
         ArrayList<ProxiedPlayer> sent = new ArrayList<>();
 
-        for(ChannelDatabase channel : channelManager.getAllJoinedChannels(event.getPlayer())) {
+        for(ChannelDatabase channel : channelManager.getAllJoinedChannels(player)) {
             ArrayList<ProxiedPlayer> inChannel = channelManager.getAllInChannel(channel);
             String message = MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerJoin, channel, playerDatabase);
-            Sender sender = new Sender(event.getPlayer().getName(), channel, playerDatabase);
+            Sender sender = new Sender(event.getPlayer(), channel, playerDatabase);
 
-            for(ProxiedPlayer player : inChannel) {
-                if(sent.contains(player)) continue;
+            for(ProxiedPlayer playerIn : inChannel) {
+                if(sent.contains(playerIn)) continue;
 
                 ClickEvent clickEvent = new ClickEvent();
                 clickEvent.setAction(ClickAction.RUN_COMMAND);
-                clickEvent.setValue("/cc:playermenu " + event.getPlayer().getName());
+                clickEvent.setValue("/cc:playermenu " + event.getPlayer());
 
                 ClickEvent clickEvent1 = new ClickEvent();
                 clickEvent1.setAction(ClickAction.RUN_COMMAND);
@@ -60,8 +62,8 @@ public class PlayerJoinListener implements Listener {
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(message).addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
 
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender));
-                sent.add(player);
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(playerIn, messageBuilder, sender));
+                sent.add(playerIn);
             }
         }
 
