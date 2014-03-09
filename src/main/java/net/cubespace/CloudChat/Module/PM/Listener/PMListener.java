@@ -79,7 +79,7 @@ public class PMListener implements Listener {
 
 
                 for (Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
-                    if (playerDatabase.getValue().Spy && !sen.equals(playerDatabase) && !rec.equals(playerDatabase)) {
+                    if (playerDatabase.getValue().Spy && !sen.getName().equals(playerDatabase.getValue().Realname) && !rec.getName().equals(playerDatabase.getValue().Realname)) {
                         messageBuilder2.send(plugin.getProxy().getPlayer(playerDatabase.getKey()));
                     }
                 }
