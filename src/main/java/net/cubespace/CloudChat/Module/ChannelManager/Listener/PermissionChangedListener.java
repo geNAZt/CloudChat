@@ -30,7 +30,7 @@ public class PermissionChangedListener {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPermissionChanged(PermissionChangedEvent event) {
         ProxiedPlayer player = plugin.getProxy().getPlayer(event.getPlayer());
 

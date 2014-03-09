@@ -26,7 +26,7 @@ public class PermissionChangedListener {
         this.ircModule = ircModule;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPermissionChanged(PermissionChangedEvent event) {
         ProxiedPlayer player = plugin.getProxy().getPlayer(event.getPlayer());
 

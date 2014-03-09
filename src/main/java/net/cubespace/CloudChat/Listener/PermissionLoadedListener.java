@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Listener;
 import net.cubespace.CloudChat.CloudChatPlugin;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Event.PlayerJoinEvent;
+import net.cubespace.CloudChat.Util.Permissions;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
@@ -13,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 07.01.14 21:49
  */
 public class PermissionLoadedListener implements Listener {
     private CloudChatPlugin plugin;
@@ -31,6 +31,10 @@ public class PermissionLoadedListener implements Listener {
                 ProxiedPlayer player = plugin.getProxy().getPlayer(event.getPlayer());
 
                 if (player == null) return;
+
+                // Check for Permission containers
+                Permissions.attachPermissionContainers(player);
+
                 plugin.getAsyncEventBus().callEvent(new PlayerJoinEvent(player));
             }
         }, 1 + (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);

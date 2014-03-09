@@ -7,15 +7,18 @@ import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Config.IRCPermissions;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Config.PermissionContainers;
 import net.cubespace.CloudChat.Config.Spam;
 import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Config.Twitter;
 import net.cubespace.CloudChat.Listener.ChatListener;
+import net.cubespace.CloudChat.Listener.PermissionChangedListener;
 import net.cubespace.CloudChat.Listener.PermissionLoadedListener;
 import net.cubespace.CloudChat.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Listener.ServerConnectedListener;
 import net.cubespace.CloudChat.Util.AutoComplete;
+import net.cubespace.CloudChat.Util.Permissions;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
 import net.cubespace.lib.Module.ModuleDescription;
@@ -25,7 +28,6 @@ import java.util.HashSet;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 24.11.13 18:02
  */
 public class CloudChatPlugin extends CubespacePlugin {
     @Override
@@ -48,6 +50,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("messages", new Messages(this));
         getConfigManager().initConfig("commandAliases", commandAliases);
         getConfigManager().initConfig("towny", new Towny(this));
+        getConfigManager().initConfig("permissionContainers", new PermissionContainers(this));
 
         //Keep track of new Commands
         if (!commandAliases.BaseCommands.containsKey("channels"))
@@ -58,6 +61,7 @@ public class CloudChatPlugin extends CubespacePlugin {
 
         //Static init
         AutoComplete.init(this);
+        Permissions.init(this);
 
         //Load the Modules
         getModuleManager().registerModule(new ModuleDescription("ChannelManager", "net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
@@ -88,6 +92,7 @@ public class CloudChatPlugin extends CubespacePlugin {
 
         //Register the Listeners
         getAsyncEventBus().addListener(null, new PermissionLoadedListener(this));
+        getAsyncEventBus().addListener(null, new PermissionChangedListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerQuitListener(this));
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new ServerConnectedListener(this));
