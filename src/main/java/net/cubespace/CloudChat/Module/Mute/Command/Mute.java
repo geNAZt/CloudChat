@@ -56,7 +56,7 @@ public class Mute implements CLICommand {
         muteModule.getMuteManager().addPlayerMute(sender.getName(), player.getName());
 
         MessageBuilder messageBuilder = new MessageBuilder();
-        messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_Success.replace("%player", player.getName()))).send(sender);
+        messageBuilder.setText(FontFormat.translateString(messages.Command_Mute_Success.replace("%player", player.getName()).replace("%nick", player.getDisplayName()))).send(sender);
 
         plugin.getPluginLogger().info(sender.getName() + " muted " + player.getName());
     }
@@ -79,7 +79,7 @@ public class Mute implements CLICommand {
         ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
         if (player == null) {
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Unmute_OfflinePlayer.replace("%player", args[0]))).send(sender);
 
             return;
         }
@@ -100,7 +100,7 @@ public class Mute implements CLICommand {
         ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
         if (player == null) {
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
+            messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Mute_OfflinePlayer.replace("%player", args[0]))).send(sender);
             return;
         }
 
@@ -125,7 +125,7 @@ public class Mute implements CLICommand {
         ProxiedPlayer player = NicknameParser.getPlayer(plugin, args[0]);
         if (player == null) {
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_OfflinePlayer.replace("%player", player.getName()))).send(sender);
+            messageBuilder.setText(FontFormat.translateString(messages.Command_CC_Unmute_OfflinePlayer.replace("%player", args[0]))).send(sender);
             return;
         }
 

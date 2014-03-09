@@ -149,10 +149,7 @@ public class Messages extends Config {
     public String Message_NoIrcNick = "&cYou can not send PMs to IRC";
     public String Message_IrcNickNotOnline = "&cThis IRC Nick is not online";
 
-    public String Playermenu_Prefix = "%prefix%nick%suffix&8:&r ";
-    public String Playermenu_Unmute = "&a&nUnmute{click:unMute}&r | ";
-    public String Playermenu_Mute = "&c&nMute{click:mute}&r | ";
-    public String Playermenu_Message = "&6&nMessage{click:message}";
+    public String Playermenu_Complete = "%prefix%nick%suffix&8:&r {permission:cloudchat.command.mute; status:unmuted; message:&c&nMute[click]&r | ; command:/mute %player}{permission:cloudchat.command.unmute; status:muted; message:&a&nUnmute[click]&r | ; command:/unmute %player}{permission:cloudchat.command.msg; message:&6&nMessage[click]; mode: suggest; command:/msg %player}";
 
     public String Command_Realname_OfflinePlayer = "&cYou can not get the real Name of offline Players";
     public String Command_Realname_Success = "&6The Realname of %nick is &a%realname";
