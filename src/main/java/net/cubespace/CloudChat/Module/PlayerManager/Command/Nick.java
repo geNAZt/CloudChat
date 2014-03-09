@@ -61,7 +61,7 @@ public class Nick implements CLICommand {
                 messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_ResetNick)).send(sender);
 
                 playerDatabase.Nick = playerDatabase.Realname;
-                player.setDisplayName(playerDatabase.Realname);
+                player.setDisplayName(FontFormat.translateString(playerDatabase.Realname));
             } else {
                 //Fire the correct Event to check if this is ok
                 plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(player, playerDatabase.Nick, args[1]));
@@ -74,7 +74,7 @@ public class Nick implements CLICommand {
                 messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_ResetNick)).send(sender);
 
                 playerDatabase.Nick = playerDatabase.Realname;
-                ((ProxiedPlayer) sender).setDisplayName(playerDatabase.Realname);
+                ((ProxiedPlayer) sender).setDisplayName(FontFormat.translateString(playerDatabase.Realname));
             } else {
                 //Fire the correct Event to check if this is ok
                 plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(sender, playerDatabase.Nick, args[0]));

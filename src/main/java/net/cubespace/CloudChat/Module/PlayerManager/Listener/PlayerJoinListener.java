@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Module.PlayerManager.Listener;
 
 import net.cubespace.CloudChat.Event.PlayerJoinEvent;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
@@ -24,6 +25,6 @@ public class PlayerJoinListener implements Listener {
             playerManager.load(event.getPlayer().getName());
         }
 
-        event.getPlayer().setDisplayName(playerManager.get(event.getPlayer().getName()).Nick);
+        event.getPlayer().setDisplayName(FontFormat.translateString(playerManager.get(event.getPlayer().getName()).Nick));
     }
 }

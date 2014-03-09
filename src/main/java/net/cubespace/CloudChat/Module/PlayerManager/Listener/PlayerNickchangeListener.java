@@ -29,7 +29,7 @@ public class PlayerNickchangeListener implements Listener {
 
         plugin.getPluginLogger().info(event.getSender().getName() + " changed its nick to " + event.getNewNick());
         playerManager.get(event.getSender().getName()).Nick = event.getNewNick();
-        ((ProxiedPlayer) event.getSender()).setDisplayName(event.getNewNick());
+        ((ProxiedPlayer) event.getSender()).setDisplayName(FontFormat.translateString(event.getNewNick()));
 
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_ChangedNick.replace("%nick", event.getNewNick()))).send(event.getSender());
