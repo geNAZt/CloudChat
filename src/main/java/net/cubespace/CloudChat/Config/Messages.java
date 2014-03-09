@@ -55,7 +55,8 @@ public class Messages extends Config {
     public String Command_Channel_ListChannel_Player = "%prefix%nick%suffix&r";
 
     public String Command_Channel_List_Header = "&cPlayers currently online";
-    public String Command_Channel_List_Player = "%prefix%nick%suffix&r";
+    public String Command_Channel_List_Player = "%afk%prefix%nick%suffix&r";
+    public String Command_Channel_List_AFK = "&8[&cAFK&8]&r ";
 
     public String Command_Channel_Create_AlreadyExists = "&cThis channel already exists";
     public String Command_Channel_Create_ErrorInSave = "&cThere was an error in the creation of your Channel. Please report this to a Admin";

@@ -220,7 +220,7 @@ public class Channels implements CLICommand {
         while(playerIterator.hasNext()) {
             ProxiedPlayer player = playerIterator.next();
             PlayerDatabase playerDatabase = playerManager.get(player.getName());
-            sb.append(MessageFormat.format(messages.Command_Channel_List_Player, null, playerDatabase));
+            sb.append(MessageFormat.format(messages.Command_Channel_List_Player.replace("%afk", (playerDatabase.AFK) ? messages.Command_Channel_List_AFK : ""), null, playerDatabase));
 
             if(playerIterator.hasNext()) {
                 sb.append(", ");
