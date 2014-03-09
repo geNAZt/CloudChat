@@ -75,6 +75,8 @@ public class PMListener implements Listener {
                 messageBuilder2.setText(FontFormat.translateString(messages.Message_Spy.
                         replace("%receiver", receiver).
                         replace("%sender", sender).
+                        replace("%rec_server", rec.getServer().getInfo().getName()).
+                        replace("%sen_server", sen.getServer().getInfo().getName()).
                         replace("%message", message)));
 
 
