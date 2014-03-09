@@ -124,7 +124,7 @@ public class ChannelManager implements IManager {
 
         try {
             faction.save();
-            loadedChannels.put(channel, faction);
+            loadedChannels.put(channel.toLowerCase(), faction);
         } catch (Exception e) {
             channelManagerModule.getModuleLogger().error("Could not create Faction channel", e);
             throw new RuntimeException();
@@ -140,7 +140,7 @@ public class ChannelManager implements IManager {
 
         try {
             towny.save();
-            loadedChannels.put(channel, towny);
+            loadedChannels.put(channel.toLowerCase(), towny);
         } catch (Exception e) {
             channelManagerModule.getModuleLogger().error("Could not create Towny channel", e);
             throw new RuntimeException();
@@ -158,8 +158,8 @@ public class ChannelManager implements IManager {
         HashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new HashMap<>();
         for(Map.Entry<ChannelDatabase, ArrayList<ProxiedPlayer>> playersInChannel : new HashMap<>(this.playerInChannel).entrySet()) {
             for(String channelName : loadedChannels.keySet()) {
-                if(playersInChannel.getKey().Name.toLowerCase().equals(channelName)) {
-                    playerInChannel.put(loadedChannels.get(channelName), playersInChannel.getValue());
+                if(playersInChannel.getKey().Name.toLowerCase().equals(channelName.toLowerCase())) {
+                    playerInChannel.put(loadedChannels.get(channelName.toLowerCase()), playersInChannel.getValue());
                 }
             }
         }
@@ -172,8 +172,8 @@ public class ChannelManager implements IManager {
 
             for(String channelName : loadedChannels.keySet()) {
                 for(ChannelDatabase channelDatabase : playersJoinedChannels.getValue()) {
-                    if(channelDatabase.Name.toLowerCase().equals(channelName)) {
-                        joinedChannels.get(playersJoinedChannels.getKey()).add(loadedChannels.get(channelName));
+                    if(channelDatabase.Name.toLowerCase().equals(channelName.toLowerCase())) {
+                        joinedChannels.get(playersJoinedChannels.getKey()).add(loadedChannels.get(channelName.toLowerCase()));
                     }
                 }
             }
