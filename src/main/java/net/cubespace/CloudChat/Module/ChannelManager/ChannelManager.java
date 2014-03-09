@@ -2,8 +2,10 @@ package net.cubespace.CloudChat.Module.ChannelManager;
 
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Manager.IManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -226,6 +228,7 @@ public class ChannelManager implements IManager {
             return false;
         }
 
+        Messages messages = plugin.getConfigManager().getConfig("messages");
         channelManagerModule.getModuleLogger().info(player.getName() + " tried to join Channel " + channel.Name);
 
         //Check if Player is in the playerJoinedChannels list
@@ -235,15 +238,19 @@ public class ChannelManager implements IManager {
         }
 
         //Check if Player has enough Space in their List (Maximum Channels)
-        if(playerJoinedChannels.get(player).size() == ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter && !plugin.getPermissionManager().has(player, "cloudchat.ignore.maxchannel")) {
-            player.sendMessage("You cant join this Channel. You are already in the maximum Amount of Channels");
+        if(playerJoinedChannels.get(player).size() + 1 > ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter && !plugin.getPermissionManager().has(player, "cloudchat.ignore.maxchannel")) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(messages.Channels_MaximumAmount).send(player);
+
             channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
             return false;
         }
 
         //Check if the Player has the Permission to join
         if(!channel.Forced && !plugin.getPermissionManager().has(player, "cloudchat.channel." + channel.Name.toLowerCase())) {
-            player.sendMessage("You cant join this Channel. You don't have enough Permissions");
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(messages.Channels_NotEnoughPermission).send(player);
+
             channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to missing Permission of joining Channel " + channel.Name);
             return false;
         }

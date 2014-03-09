@@ -26,6 +26,9 @@ public class Messages extends Config {
 
     public String PM_Blocked = "&cYou can't send PMs to this Player";
 
+    public String Channels_MaximumAmount = "&cYou cant join this Channel. You are already in the maximum Amount of Channels";
+    public String Channels_NotEnoughPermission = "&cYou cant join this Channel. You don't have enough Permissions";
+
     public String Command_CC_Report_On = "&6Reporting has been enabled and the Report will be saved to %file. Type &c/cc:report&6 off to stop or it will automaticly stop after &a10&6 Minutes";
     public String Command_CC_Report_Off = "&6Reporting is now &aoff";
 
