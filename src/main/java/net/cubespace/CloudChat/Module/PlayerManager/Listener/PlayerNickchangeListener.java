@@ -9,6 +9,7 @@ import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -28,6 +29,7 @@ public class PlayerNickchangeListener implements Listener {
 
         plugin.getPluginLogger().info(event.getSender().getName() + " changed its nick to " + event.getNewNick());
         playerManager.get(event.getSender().getName()).Nick = event.getNewNick();
+        ((ProxiedPlayer) event.getSender()).setDisplayName(event.getNewNick());
 
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_ChangedNick.replace("%nick", event.getNewNick()))).send(event.getSender());

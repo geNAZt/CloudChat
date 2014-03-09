@@ -20,7 +20,10 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         //Load the Player
-        if(!playerManager.isLoaded(event.getPlayer().getName()))
+        if(!playerManager.isLoaded(event.getPlayer().getName())) {
             playerManager.load(event.getPlayer().getName());
+        }
+
+        event.getPlayer().setDisplayName(playerManager.get(event.getPlayer().getName()).Nick);
     }
 }
