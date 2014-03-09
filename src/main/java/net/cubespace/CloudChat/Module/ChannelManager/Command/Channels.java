@@ -250,7 +250,7 @@ public class Channels implements CLICommand {
         Iterable<String> iterable = Iterables.transform(Iterables.filter(channelManager.getChannels(), new Predicate<ChannelDatabase>() {
             @Override
             public boolean apply(ChannelDatabase database) {
-                return plugin.getPermissionManager().has(sender, "cloudchat.channel." + database.Name);
+                return plugin.getPermissionManager().has(sender, "cloudchat.channel." + database.Name.toLowerCase());
             }
         }), new Function<ChannelDatabase, String>() {
             @Override
