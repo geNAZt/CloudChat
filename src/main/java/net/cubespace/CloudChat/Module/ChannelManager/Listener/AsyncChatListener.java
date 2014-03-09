@@ -1,18 +1,23 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Event.CheckCommandEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
+import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -50,12 +55,33 @@ public class AsyncChatListener {
         if(event.isCommand()) {
             String[] cmd = event.getMessage().split(" ");
 
-            if(cmd.length == 1) {
-                return true;
-            }
+            if (cmd.length == 0) return false;
 
             String selectedChannel = cmd[0].substring(1, cmd[0].length());
             ChannelDatabase channelDatabase = channelManager.getViaShortOrName(selectedChannel);
+
+            // Focus
+            if(cmd.length == 1) {
+                Messages messages = plugin.getConfigManager().getConfig("messages");
+                if(channelDatabase == null) {
+                    return false;
+                }
+
+                ArrayList<ProxiedPlayer> playersInChannel = channelManager.getAllInChannel(channelDatabase);
+                if(!playersInChannel.contains(event.getSender())) {
+                    MessageBuilder messageBuilder = new MessageBuilder();
+                    messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_NotIn)).send(event.getSender());
+
+                    return true;
+                }
+
+                playerManager.get(event.getSender().getName()).Focus = channelDatabase.Name.toLowerCase();
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", channelDatabase.Name))).send(event.getSender());
+                return true;
+            }
+
+            // Message
             if(channelDatabase != null) {
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
                     //Format the Message
