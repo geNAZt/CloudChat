@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Config;
 
+import net.cubespace.Yamler.Config.Comment;
 import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
 
@@ -21,4 +22,6 @@ public class Main extends Config {
     public boolean Announce_PlayerQuit = false;
     public ArrayList<String> DontHandleForServers = new ArrayList<>();
     public Integer DelayFor = 0;
+    @Comment("When you set this over 0 it will ask the CloudChatBukkit to reload the Permissions every x Minutes")
+    public Integer AskForNewPermissionsEvery = 0;
 }
