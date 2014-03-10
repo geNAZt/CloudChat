@@ -15,6 +15,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Listener.PlayerSendMessageList
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.PluginMessageListener;
 import net.cubespace.PluginMessages.ChatMessage;
 import net.cubespace.PluginMessages.FactionChatMessage;
+import net.cubespace.PluginMessages.LocalPlayersRequest;
 import net.cubespace.PluginMessages.SendChatMessage;
 import net.cubespace.PluginMessages.TownyChatMessage;
 import net.cubespace.lib.Module.Module;
@@ -63,6 +64,7 @@ public class ChatHandlerModule extends Module {
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, SendChatMessage.class);
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, ChatMessage.class);
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, TownyChatMessage.class);
+        plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, LocalPlayersRequest.class);
         plugin.getPluginMessageManager("CloudChat").addListenerToRegister(this, new PluginMessageListener(plugin));
     }
 

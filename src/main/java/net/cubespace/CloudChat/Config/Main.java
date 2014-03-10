@@ -1,11 +1,10 @@
 package net.cubespace.CloudChat.Config;
 
+import java.io.File;
+import java.util.ArrayList;
 import net.cubespace.Yamler.Config.Comment;
 import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class Main extends Config {
     public Main(CubespacePlugin plugin) {
@@ -17,6 +16,10 @@ public class Main extends Config {
     public String Global = "global";
     public Boolean PrivateMode = false;
     public String NicknamePrefix = "";
+    //JR start
+    public boolean LocalChat = false;
+    public Integer LocalRange = 0;
+    //JR end
     public ArrayList<String> DoNotBind = new ArrayList<>();
     public boolean Announce_PlayerJoin = false;
     public boolean Announce_PlayerQuit = false;

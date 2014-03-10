@@ -22,6 +22,7 @@ import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -78,6 +79,8 @@ public class PluginMessageListener implements PacketListener {
         ProxiedPlayer player = factionChatMessage.getSender().getBungeePlayer();
         if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
+
+        
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         Factions factions = plugin.getConfigManager().getConfig("factions");
 
@@ -135,6 +138,7 @@ public class PluginMessageListener implements PacketListener {
         ProxiedPlayer player = sendChatMessage.getSender().getBungeePlayer();
         if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
+
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
         Sender sender = new Sender(sendChatMessage.getSender().getName(), channelDatabase, playerDatabase);
@@ -143,7 +147,22 @@ public class PluginMessageListener implements PacketListener {
         LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
         legacyMessageBuilder.setText(sendChatMessage.getMessage());
 
-        String message = MessageFormat.format(channelDatabase.Format.replace("%message", legacyMessageBuilder.getString()), channelDatabase, playerDatabase);
+
+        //JR start
+        // Not best way to do it, but will prevent dirty double formatting.
+        // You will probably want to do something a bit more clean.
+        String message;
+
+        if (ChatColor.stripColor(sendChatMessage.getMessage()).equalsIgnoreCase(sendChatMessage.getMessage()))
+        {
+            message = MessageFormat.format(channelDatabase.Format.replace("%message", legacyMessageBuilder.getString()), channelDatabase, playerDatabase);   
+        }
+        else
+        {
+            message = sendChatMessage.getMessage();
+        }
+        
+        //JR end
 
         ClickEvent clickEvent = new ClickEvent();
         clickEvent.setAction(ClickAction.RUN_COMMAND);

@@ -1,5 +1,10 @@
 package net.cubespace.CloudChat.Module.ChannelManager;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
@@ -9,12 +14,6 @@ import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Manager.IManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -237,13 +236,20 @@ public class ChannelManager implements IManager {
             playerJoinedChannels.put(player, new ArrayList<ChannelDatabase>());
         }
 
+        
         //Check if Player has enough Space in their List (Maximum Channels)
         if(playerJoinedChannels.get(player).size() + 1 > ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter && !plugin.getPermissionManager().has(player, "cloudchat.ignore.maxchannel")) {
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(messages.Channels_MaximumAmount).send(player);
+            //JR start
+            //Added sub-if just to make it easier on the PR
+            //Check if Player is NOT in the channel. If Player is in the channel do not try to pretend to reject it. Drama queen.
+            if (!playerInChannel.containsKey(channel) || !playerInChannel.get(channel).contains(player))
+            {
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(messages.Channels_MaximumAmount).send(player);
 
-            channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
-            return false;
+                channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
+                return false;
+            }
         }
 
         //Check if the Player has the Permission to join

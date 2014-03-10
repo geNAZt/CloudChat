@@ -1,11 +1,10 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Database;
 
-import net.cubespace.Yamler.Config.Config;
-import net.cubespace.lib.CubespacePlugin;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import net.cubespace.Yamler.Config.Config;
+import net.cubespace.lib.CubespacePlugin;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -27,6 +26,7 @@ public class ChannelDatabase extends Config {
     public Boolean Forced;
     public Boolean ForceIntoWhenPermission = false;
     public String Password = "";
+    public Boolean IsLocal = false;
     public Boolean FocusOnJoin = false;
     public ArrayList<String> CanInvite = new ArrayList<>();
     public HashMap<String, String> Formats = new HashMap<>();

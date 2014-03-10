@@ -26,7 +26,6 @@ public class AsyncChatListener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onAsynChat(AsyncChatEvent event) {
-        //Format the Message
         ChannelDatabase channelDatabase = channelManager.get(playerManager.get(event.getSender().getName()).Focus);
 
         Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
