@@ -23,8 +23,6 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        muteModule.getMuteManager().remove(event.getPlayer().getName());
-
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());
 
         if(playerDatabase == null) {
@@ -34,5 +32,7 @@ public class PlayerQuitListener implements Listener {
 
         playerDatabase.Muted = muteModule.getMuteManager().isGlobalMute(event.getPlayer().getName());
         playerDatabase.MutedFor = muteModule.getMuteManager().getRestTimeGlobalMute(event.getPlayer().getName());
+
+        muteModule.getMuteManager().remove(event.getPlayer().getName());
     }
 }
