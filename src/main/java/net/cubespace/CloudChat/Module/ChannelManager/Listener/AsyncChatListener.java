@@ -11,6 +11,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
+import net.cubespace.PluginMessages.LocalPlayersRequest;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
@@ -54,12 +55,11 @@ public class AsyncChatListener {
     public boolean onCheckCommand(CheckCommandEvent event) {
         if(event.isCommand()) {
             String[] cmd = event.getMessage().split(" ");
-
             if (cmd.length == 0) return false;
 
             String selectedChannel = cmd[0].substring(1, cmd[0].length());
             ChannelDatabase channelDatabase = channelManager.getViaShortOrName(selectedChannel);
-
+            
             // Focus
             if(cmd.length == 1) {
                 Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -86,11 +86,23 @@ public class AsyncChatListener {
 
             // Message
             if(channelDatabase != null) {
+
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
                     //Format the Message
                     String message = StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " ");
-                    Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
-                    plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
+
+                    //JR start
+                    if (channelDatabase.IsLocal) {
+                        plugin.getPluginMessageManager("CloudChat").sendPluginMessage(plugin.getProxy().getPlayer(event.getSender().getName()), new LocalPlayersRequest(message, channelDatabase.Name, channelDatabase.LocalRange));
+                    }
+                    else {
+                        Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
+                        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message, new ArrayList<String>(){{
+                            add("§ALL");
+                        }}
+                        ));
+                    }
+                    //JR end
 
                     event.setCancelParent(true);
                     return true;

@@ -12,6 +12,8 @@ import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.List;
+
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
@@ -34,11 +36,32 @@ public class ChatMessageListener implements Listener {
         clickEvent1.setAction(ClickAction.RUN_COMMAND);
         clickEvent1.setValue("/focus " + event.getSender().getChannel().Name);
 
-        for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
-            messageBuilder.setText(event.getMessage());
-            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
+        List<String> receiptens = event.getReceiptens();
+        if (receiptens.size() == 0) {
+            return;
+        }
+
+        if (receiptens.get(0).equals("§ALL")) {
+            for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
+                messageBuilder.setText(event.getMessage());
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
+            }
+        } else {
+            for(String playerName : receiptens) {
+                ProxiedPlayer player = plugin.getProxy().getPlayer(playerName);
+
+                if (player == null) {
+                    continue;
+                }
+
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
+                messageBuilder.setText(event.getMessage());
+
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
+            }
         }
 
         plugin.getPluginLogger().info(event.getMessage());

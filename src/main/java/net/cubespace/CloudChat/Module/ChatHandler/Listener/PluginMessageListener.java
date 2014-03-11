@@ -8,21 +8,20 @@ import net.cubespace.CloudChat.Event.AsyncChatEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
-import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
-import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.PluginMessages.ChatMessage;
 import net.cubespace.PluginMessages.FactionChatMessage;
-import net.cubespace.PluginMessages.SendChatMessage;
+import net.cubespace.PluginMessages.LocalPlayersResponse;
 import net.cubespace.PluginMessages.TownyChatMessage;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
-import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
-import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -62,14 +61,7 @@ public class PluginMessageListener implements PacketListener {
 
         if(channelDatabase != null) {
             Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-            String message = MessageFormat.format(channelDatabase.Format.replace("%message", townyChatMessage.getMessage()).replace("%nation", townyChatMessage.getNationName()).replace("%town", townyChatMessage.getTownName()), channelDatabase, playerDatabase);
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
-            messageBuilder.setText(message);
-            for(String playerToSend : townyChatMessage.getPlayers()) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
-            }
+            plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, townyChatMessage.getMessage(), townyChatMessage.getPlayers()));
         }
     }
 
@@ -85,15 +77,15 @@ public class PluginMessageListener implements PacketListener {
         clickEvent.setAction(ClickAction.RUN_COMMAND);
         clickEvent.setValue("/cc:playermenu " + factionChatMessage.getSender().getName());
 
+        List<String> receipents = new ArrayList<String>(){{
+            add("ALL");
+        }};
+
+        ChannelDatabase channelDatabase = null;
         if(factionChatMessage.getMode().equals("global")) {
-            ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
-            Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-
-            plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, factionChatMessage.getMessage()));
-
+            channelDatabase = channelManager.get(playerDatabase.Focus);
             plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
         } else {
-            ChannelDatabase channelDatabase = null;
             if(factionChatMessage.getMode().equals("faction")) {
                 channelDatabase = channelManager.get(factions.FactionChannel);
             }
@@ -115,54 +107,28 @@ public class PluginMessageListener implements PacketListener {
             }
 
             if(channelDatabase != null) {
-                Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
-                String message = MessageFormat.format(channelDatabase.Format.replace("%faction", factionChatMessage.getFactionName()).replace("%message", factionChatMessage.getMessage()), channelDatabase, playerDatabase);
-
-                MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.addEvent("playerMenu", clickEvent);
-                messageBuilder.setText(message);
-                for(String playerToSend : factionChatMessage.getPlayers()) {
-                    plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerToSend), messageBuilder, sender));
-                }
+                receipents = factionChatMessage.getPlayers();
 
                 plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+            } else {
+                return;
             }
         }
+
+        Sender sender = new Sender(player.getName(), channelDatabase, playerDatabase);
+        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, factionChatMessage.getMessage(), receipents));
     }
 
     @PacketHandler
-    public void onSendChatMessage(SendChatMessage sendChatMessage) {
-        ProxiedPlayer player = sendChatMessage.getSender().getBungeePlayer();
+    public void onLocalPlayersResponse(LocalPlayersResponse localPlayersResponse) {
+        ProxiedPlayer player = localPlayersResponse.getSender().getBungeePlayer();
         if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
-        ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
-        Sender sender = new Sender(sendChatMessage.getSender().getName(), channelDatabase, playerDatabase);
+        ChannelDatabase channelDatabase = channelManager.get(localPlayersResponse.getChannel());
+        Sender sender = new Sender(localPlayersResponse.getSender().getName(), channelDatabase, playerDatabase);
 
-        //Secure the message against click events
-        LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
-        legacyMessageBuilder.setText(sendChatMessage.getMessage());
-
-        String message = MessageFormat.format(channelDatabase.Format.replace("%message", legacyMessageBuilder.getString()), channelDatabase, playerDatabase);
-
-        ClickEvent clickEvent = new ClickEvent();
-        clickEvent.setAction(ClickAction.RUN_COMMAND);
-        clickEvent.setValue("/cc:playermenu " + sendChatMessage.getSender().getName());
-
-        for(String playerToSend : sendChatMessage.getTo()) {
-            ProxiedPlayer proxyPlayer = plugin.getProxy().getPlayer(playerToSend);
-            if(proxyPlayer == null) continue;
-
-            if(!channelManager.getAllJoinedChannels(proxyPlayer).contains(channelDatabase)) continue;
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent);
-            messageBuilder.setText(message);
-
-            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(proxyPlayer, messageBuilder, sender));
-        }
-
-        plugin.getPluginLogger().info(message);
+        plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, localPlayersResponse.getMessage(), localPlayersResponse.getTo()));
     }
 
     @PacketHandler

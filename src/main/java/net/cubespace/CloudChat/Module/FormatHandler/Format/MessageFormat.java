@@ -94,7 +94,7 @@ public class MessageFormat {
 
             //Channel formats
             if(!channel.Short.equals("")) {
-                output = output.replace("%channel_short", channel.Formats.get("channel_short").replace("%channel_short", channel.Short));
+                output = output.replace("%channel_short", channel.Formats.get("channel_short").replace("%channel_short", channel.Short.toUpperCase()));
             } else {
                 output = output.replace("%channel_short", "");
             }

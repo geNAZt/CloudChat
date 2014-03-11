@@ -230,20 +230,32 @@ public class ChannelManager implements IManager {
 
         Messages messages = plugin.getConfigManager().getConfig("messages");
         channelManagerModule.getModuleLogger().info(player.getName() + " tried to join Channel " + channel.Name);
-
+        
+        
+        //JR start
+        //Check if player is already in the channel
+        if (playerInChannel.containsKey(channel) && playerInChannel.get(channel).contains(player))
+        {
+            channelManagerModule.getModuleLogger().info("Player " + player.getName() + " is already in the Channel " + channel.Name);
+            return true;
+        }
+        //JR end
+        
+        
         //Check if Player is in the playerJoinedChannels list
         if(!playerJoinedChannels.containsKey(player)) {
             channelManagerModule.getModuleLogger().debug("Creating new empty playerJoinedChannels entry for Player " + player.getName());
             playerJoinedChannels.put(player, new ArrayList<ChannelDatabase>());
         }
 
+        
         //Check if Player has enough Space in their List (Maximum Channels)
         if(playerJoinedChannels.get(player).size() + 1 > ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter && !plugin.getPermissionManager().has(player, "cloudchat.ignore.maxchannel")) {
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(messages.Channels_MaximumAmount).send(player);
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(messages.Channels_MaximumAmount).send(player);
 
-            channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
-            return false;
+                channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
+                return false;
         }
 
         //Check if the Player has the Permission to join
@@ -271,9 +283,12 @@ public class ChannelManager implements IManager {
             channelManagerModule.getModuleLogger().info("Player " + player.getName() + " entered Channel " + channel.Name);
             return true;
         }
+        
+        //JR start
+        //Not exactly sure what scenario would cause to get to here. Might be wise to log it
+        //JR end
 
-        //Player already is in the Channel
-        channelManagerModule.getModuleLogger().info("Player " + player.getName() + " is already in the Channel " + channel.Name);
+        plugin.getPluginLogger().error("Unclear state. End of join Channel. Please report this with a report File");
         return true;
     }
 

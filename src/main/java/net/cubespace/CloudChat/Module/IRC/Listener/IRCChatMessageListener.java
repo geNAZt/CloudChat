@@ -1,8 +1,8 @@
 package net.cubespace.CloudChat.Module.IRC.Listener;
 
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
-import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
+import net.cubespace.CloudChat.Module.IRC.Event.IRCChatMessageEvent;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
@@ -25,7 +25,7 @@ public class IRCChatMessageListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onChatMessage(ChatMessageEvent event) {
+    public void onChatMessage(IRCChatMessageEvent event) {
         ClickEvent clickEvent1 = new ClickEvent();
         clickEvent1.setAction(ClickAction.RUN_COMMAND);
         clickEvent1.setValue("/focus " + event.getSender().getChannel().Name);
