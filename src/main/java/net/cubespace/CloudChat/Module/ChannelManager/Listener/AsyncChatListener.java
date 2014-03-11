@@ -72,12 +72,15 @@ public class AsyncChatListener {
                     MessageBuilder messageBuilder = new MessageBuilder();
                     messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_NotIn)).send(event.getSender());
 
+                    event.setCancelParent(true);
                     return true;
                 }
 
                 playerManager.get(event.getSender().getName()).Focus = channelDatabase.Name.toLowerCase();
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", channelDatabase.Name))).send(event.getSender());
+
+                event.setCancelParent(true);
                 return true;
             }
 
@@ -88,8 +91,8 @@ public class AsyncChatListener {
                     String message = StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " ");
                     Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
                     plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message));
-                    event.setCancelParent(true);
 
+                    event.setCancelParent(true);
                     return true;
                 }
             }
