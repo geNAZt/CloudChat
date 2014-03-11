@@ -229,7 +229,18 @@ public class ChannelManager implements IManager {
 
         Messages messages = plugin.getConfigManager().getConfig("messages");
         channelManagerModule.getModuleLogger().info(player.getName() + " tried to join Channel " + channel.Name);
-
+        
+        
+        //JR start
+        //Check if player is already in the channel
+        if (playerInChannel.containsKey(channel) && playerInChannel.get(channel).contains(player))
+        {
+            channelManagerModule.getModuleLogger().info("Player " + player.getName() + " is already in the Channel " + channel.Name);
+            return true;
+        }
+        //JR end
+        
+        
         //Check if Player is in the playerJoinedChannels list
         if(!playerJoinedChannels.containsKey(player)) {
             channelManagerModule.getModuleLogger().debug("Creating new empty playerJoinedChannels entry for Player " + player.getName());
@@ -239,17 +250,11 @@ public class ChannelManager implements IManager {
         
         //Check if Player has enough Space in their List (Maximum Channels)
         if(playerJoinedChannels.get(player).size() + 1 > ((Main) plugin.getConfigManager().getConfig("main")).MaxChannelsPerChatter && !plugin.getPermissionManager().has(player, "cloudchat.ignore.maxchannel")) {
-            //JR start
-            //Added sub-if just to make it easier on the PR
-            //Check if Player is NOT in the channel. If Player is in the channel do not try to pretend to reject it. Drama queen.
-            if (!playerInChannel.containsKey(channel) || !playerInChannel.get(channel).contains(player))
-            {
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(messages.Channels_MaximumAmount).send(player);
 
                 channelManagerModule.getModuleLogger().info(player.getName() + " got rejected due to maximum Amount of Channels of joining Channel " + channel.Name);
                 return false;
-            }
         }
 
         //Check if the Player has the Permission to join
@@ -277,9 +282,10 @@ public class ChannelManager implements IManager {
             channelManagerModule.getModuleLogger().info("Player " + player.getName() + " entered Channel " + channel.Name);
             return true;
         }
-
-        //Player already is in the Channel
-        channelManagerModule.getModuleLogger().info("Player " + player.getName() + " is already in the Channel " + channel.Name);
+        
+        //JR start
+        //Not exactly sure what scenario would cause to get to here. Might be wise to log it
+        //JR end
         return true;
     }
 

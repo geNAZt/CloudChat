@@ -27,6 +27,7 @@ public class ChannelDatabase extends Config {
     public Boolean ForceIntoWhenPermission = false;
     public String Password = "";
     public Boolean IsLocal = false;
+    public Integer LocalRange = 100;
     public Boolean FocusOnJoin = false;
     public ArrayList<String> CanInvite = new ArrayList<>();
     public HashMap<String, String> Formats = new HashMap<>();

@@ -15,14 +15,13 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.PluginMessages.ChatMessage;
 import net.cubespace.PluginMessages.FactionChatMessage;
-import net.cubespace.PluginMessages.SendChatMessage;
+import net.cubespace.PluginMessages.LocalPlayersResponse;
 import net.cubespace.PluginMessages.TownyChatMessage;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -134,41 +133,26 @@ public class PluginMessageListener implements PacketListener {
     }
 
     @PacketHandler
-    public void onSendChatMessage(SendChatMessage sendChatMessage) {
-        ProxiedPlayer player = sendChatMessage.getSender().getBungeePlayer();
+    public void onLocalPlayersResponse(LocalPlayersResponse localPlayersResponse) {
+        ProxiedPlayer player = localPlayersResponse.getSender().getBungeePlayer();
         if (player == null) return; // Race condition -> Player disconnected before the Message has come in
 
 
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
-        ChannelDatabase channelDatabase = channelManager.get(playerDatabase.Focus);
-        Sender sender = new Sender(sendChatMessage.getSender().getName(), channelDatabase, playerDatabase);
+        ChannelDatabase channelDatabase = channelManager.get(localPlayersResponse.getChannel());
+        Sender sender = new Sender(localPlayersResponse.getSender().getName(), channelDatabase, playerDatabase);
 
         //Secure the message against click events
         LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
-        legacyMessageBuilder.setText(sendChatMessage.getMessage());
+        legacyMessageBuilder.setText(localPlayersResponse.getMessage());
 
-
-        //JR start
-        // Not best way to do it, but will prevent dirty double formatting.
-        // You will probably want to do something a bit more clean.
-        String message;
-
-        if (ChatColor.stripColor(sendChatMessage.getMessage()).equalsIgnoreCase(sendChatMessage.getMessage()))
-        {
-            message = MessageFormat.format(channelDatabase.Format.replace("%message", legacyMessageBuilder.getString()), channelDatabase, playerDatabase);   
-        }
-        else
-        {
-            message = sendChatMessage.getMessage();
-        }
-        
-        //JR end
+        String message = MessageFormat.format(channelDatabase.Format.replace("%message", legacyMessageBuilder.getString()), channelDatabase, playerDatabase);   
 
         ClickEvent clickEvent = new ClickEvent();
         clickEvent.setAction(ClickAction.RUN_COMMAND);
-        clickEvent.setValue("/cc:playermenu " + sendChatMessage.getSender().getName());
+        clickEvent.setValue("/cc:playermenu " + localPlayersResponse.getSender().getName());
 
-        for(String playerToSend : sendChatMessage.getTo()) {
+        for(String playerToSend : localPlayersResponse.getTo()) {
             ProxiedPlayer proxyPlayer = plugin.getProxy().getPlayer(playerToSend);
             if(proxyPlayer == null) continue;
 

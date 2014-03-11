@@ -7,12 +7,14 @@ import java.io.IOException;
 
 public class LocalPlayersRequest extends StandardPacket {
     private String message;
+    private String channel;
     private Integer range;
 
     public LocalPlayersRequest() {}
 
-    public LocalPlayersRequest(String message, Integer range) {
+    public LocalPlayersRequest(String message, String channel, Integer range) {
         this.message = message;
+        this.channel = channel;
         this.range = range;
     }
 
@@ -23,10 +25,16 @@ public class LocalPlayersRequest extends StandardPacket {
     public String getMessage() {
         return message;
     }
+    
+    public String getChannel()
+    {
+        return channel;
+    }
 
     @Override
     protected void handle(DataInputStream dataInputStream) throws IOException {
         this.message = dataInputStream.readUTF();
+        this.channel = dataInputStream.readUTF();
         this.range = dataInputStream.readInt();
     }
 
@@ -34,6 +42,7 @@ public class LocalPlayersRequest extends StandardPacket {
     protected PacketWriter write() throws IOException {
         PacketWriter packetWriter = new PacketWriter(this);
         packetWriter.writeUTF(message);
+        packetWriter.writeUTF(channel);
         packetWriter.writeInt(range);
         
         return packetWriter;
