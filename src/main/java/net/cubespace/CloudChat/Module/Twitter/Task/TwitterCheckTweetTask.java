@@ -13,6 +13,7 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +66,9 @@ public class TwitterCheckTweetTask implements Runnable {
                                 ChannelDatabase channelDatabase = channelManager.get(channel);
                                 Sender sender1 = new Sender("Twitter", channelDatabase, twitterDatabase);
 
-                                ChatMessageEvent chatMessageEvent = new ChatMessageEvent(sender1, message);
+                                ChatMessageEvent chatMessageEvent = new ChatMessageEvent(sender1, message, new ArrayList<String>(){{
+                                    add("§ALL");
+                                }});
                                 plugin.getAsyncEventBus().callEvent(chatMessageEvent);
                             }
 
