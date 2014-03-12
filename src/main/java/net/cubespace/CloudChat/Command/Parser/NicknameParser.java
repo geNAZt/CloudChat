@@ -1,6 +1,7 @@
 package net.cubespace.CloudChat.Command.Parser;
 
 import net.cubespace.CloudChat.Config.Messages;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
@@ -22,7 +23,7 @@ public class NicknameParser {
         HashMap<String, PlayerDatabase> players = playerManager.getLoadedPlayers();
         ProxiedPlayer player = null;
         for(Map.Entry<String, PlayerDatabase> playerDatabaseEntry : players.entrySet()) {
-            if(MessageFormat.format(messages.Complete_Player, null, playerDatabaseEntry.getValue(), true).equals(tabCompleteString) || playerDatabaseEntry.getValue().Nick.equals(tabCompleteString)) {
+            if(MessageFormat.format(messages.Complete_Player, null, playerDatabaseEntry.getValue(), true).equals(tabCompleteString) || FontFormat.translateString(playerDatabaseEntry.getValue().Nick).equals(tabCompleteString)) {
                 player = plugin.getProxy().getPlayer(playerDatabaseEntry.getKey());
                 break;
             }

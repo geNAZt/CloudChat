@@ -3,6 +3,7 @@ package net.cubespace.CloudChat.Command.Binder;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.CubespacePlugin;
@@ -33,7 +34,7 @@ public class PlayerBinder extends Binder implements TabExecutor {
             @Override
             public String apply(ProxiedPlayer player) {
                 PlayerDatabase playerDatabase = playerManager.get(player.getName());
-                return playerDatabase.Nick;
+                return FontFormat.translateString(playerDatabase.Nick);
             }
         });
     }
