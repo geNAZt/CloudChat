@@ -1,8 +1,10 @@
 package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 
+import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
+import net.cubespace.lib.Chat.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
@@ -28,6 +30,16 @@ public class ChatMessageListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChatMessage(ChatMessageEvent event) {
+        Messages messages = plugin.getConfigManager().getConfig("messages");
+        ProxiedPlayer sendPlayer = plugin.getProxy().getPlayer(event.getSender().getPlayerDatabase().Realname);
+
+        if (sendPlayer != null && plugin.getPermissionManager().has(sendPlayer, "cloudchat.cannot.write." + event.getSender().getChannel().Name)) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Channels_PlayerCantWrite)).send(sendPlayer);
+
+            return;
+        }
+
         ClickEvent clickEvent = new ClickEvent();
         clickEvent.setAction(ClickAction.RUN_COMMAND);
         clickEvent.setValue("/cc:playermenu " + event.getSender().getNick());
