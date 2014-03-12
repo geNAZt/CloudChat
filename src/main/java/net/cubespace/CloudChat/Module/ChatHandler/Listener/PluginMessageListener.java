@@ -25,7 +25,6 @@ import java.util.List;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 02.01.14 04:09
  */
 public class PluginMessageListener implements PacketListener {
     private PlayerManager playerManager;
@@ -78,7 +77,7 @@ public class PluginMessageListener implements PacketListener {
         clickEvent.setValue("/cc:playermenu " + factionChatMessage.getSender().getName());
 
         List<String> receipents = new ArrayList<String>(){{
-            add("ALL");
+            add("§ALL");
         }};
 
         ChannelDatabase channelDatabase = null;
