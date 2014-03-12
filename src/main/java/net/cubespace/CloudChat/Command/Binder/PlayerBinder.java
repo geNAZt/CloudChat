@@ -34,7 +34,7 @@ public class PlayerBinder extends Binder implements TabExecutor {
             @Override
             public String apply(ProxiedPlayer player) {
                 PlayerDatabase playerDatabase = playerManager.get(player.getName());
-                return FontFormat.translateString(playerDatabase.Nick);
+                return FontFormat.stripColor(playerDatabase.Nick);
             }
         });
     }

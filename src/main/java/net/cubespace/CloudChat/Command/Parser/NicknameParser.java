@@ -23,7 +23,7 @@ public class NicknameParser {
         HashMap<String, PlayerDatabase> players = playerManager.getLoadedPlayers();
         ProxiedPlayer player = null;
         for(Map.Entry<String, PlayerDatabase> playerDatabaseEntry : players.entrySet()) {
-            if(MessageFormat.format(messages.Complete_Player, null, playerDatabaseEntry.getValue(), true).equals(tabCompleteString) || FontFormat.translateString(playerDatabaseEntry.getValue().Nick).equals(tabCompleteString)) {
+            if(MessageFormat.format(messages.Complete_Player, null, playerDatabaseEntry.getValue(), true).equals(tabCompleteString) || FontFormat.stripColor(playerDatabaseEntry.getValue().Nick).equals(tabCompleteString)) {
                 player = plugin.getProxy().getPlayer(playerDatabaseEntry.getKey());
                 break;
             }
