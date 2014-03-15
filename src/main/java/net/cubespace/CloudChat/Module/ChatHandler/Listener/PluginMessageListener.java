@@ -13,6 +13,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.PluginMessages.ChatMessage;
 import net.cubespace.PluginMessages.FactionChatMessage;
+import net.cubespace.PluginMessages.LocalPlayersRequest;
 import net.cubespace.PluginMessages.LocalPlayersResponse;
 import net.cubespace.PluginMessages.TownyChatMessage;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
@@ -83,7 +84,11 @@ public class PluginMessageListener implements PacketListener {
         ChannelDatabase channelDatabase = null;
         if(factionChatMessage.getMode().equals("global")) {
             channelDatabase = channelManager.get(playerDatabase.Focus);
-            plugin.getPluginLogger().debug("Got Faction Chat message for " + player.getName() + ": " + factionChatMessage.getMessage());
+
+            if (channelDatabase.IsLocal) {
+                plugin.getPluginMessageManager("CloudChat").sendPluginMessage(player, new LocalPlayersRequest(factionChatMessage.getMessage(), channelDatabase.Name, channelDatabase.LocalRange));
+                return;
+            }
         } else {
             if(factionChatMessage.getMode().equals("faction")) {
                 channelDatabase = channelManager.get(factions.FactionChannel);
