@@ -11,6 +11,7 @@ import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
+import net.cubespace.PluginMessages.AFKMessage;
 import net.cubespace.PluginMessages.LocalPlayersRequest;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
@@ -67,6 +68,10 @@ public class AsyncChatListener {
                     return false;
                 }
 
+                if(playerManager.get(event.getSender().getName()).AFK) {
+                    plugin.getPluginMessageManager("CloudChat").sendPluginMessage(event.getSender(), new AFKMessage(false));
+                }
+
                 ArrayList<ProxiedPlayer> playersInChannel = channelManager.getAllInChannel(channelDatabase);
                 if(!playersInChannel.contains(event.getSender())) {
                     MessageBuilder messageBuilder = new MessageBuilder();
@@ -88,14 +93,17 @@ public class AsyncChatListener {
             if(channelDatabase != null) {
 
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
+                    if(playerManager.get(event.getSender().getName()).AFK) {
+                        plugin.getPluginMessageManager("CloudChat").sendPluginMessage(event.getSender(), new AFKMessage(false));
+                    }
+
                     //Format the Message
                     String message = StringUtils.join(Arrays.copyOfRange(cmd, 1, cmd.length), " ");
 
                     //JR start
                     if (channelDatabase.IsLocal) {
                         plugin.getPluginMessageManager("CloudChat").sendPluginMessage(plugin.getProxy().getPlayer(event.getSender().getName()), new LocalPlayersRequest(message, channelDatabase.Name, channelDatabase.LocalRange));
-                    }
-                    else {
+                    } else {
                         Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
                         plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, message, new ArrayList<String>(){{
                             add("§ALL");
