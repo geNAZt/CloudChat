@@ -3,18 +3,22 @@ package net.cubespace.CloudChat.Module.PlayerManager.Listener;
 import net.cubespace.CloudChat.Event.PlayerJoinEvent;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.PluginMessages.SetNickMessage;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerJoinListener implements Listener {
+    private CubespacePlugin plugin;
     private PlayerManager playerManager;
 
     public PlayerJoinListener(CubespacePlugin plugin) {
+        this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
@@ -26,5 +30,6 @@ public class PlayerJoinListener implements Listener {
         }
 
         event.getPlayer().setDisplayName(FontFormat.translateString(playerManager.get(event.getPlayer().getName()).Nick));
+        plugin.getPluginMessageManager("CloudChat").sendPluginMessage(event.getPlayer(), new SetNickMessage(FontFormat.translateString(playerManager.get(event.getPlayer().getName()).Nick)));
     }
 }
