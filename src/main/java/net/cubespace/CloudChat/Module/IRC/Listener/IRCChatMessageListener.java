@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.IRC.Listener;
 
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
+import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
 import net.cubespace.CloudChat.Module.IRC.Event.IRCChatMessageEvent;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
@@ -30,10 +31,12 @@ public class IRCChatMessageListener implements Listener {
         clickEvent1.setAction(ClickAction.RUN_COMMAND);
         clickEvent1.setValue("/focus " + event.getSender().getChannel().Name);
 
+        String message = MessageFormat.format(event.getMessage(), event.getSender().getChannel(), event.getSender().getPlayerDatabase());
+
         for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.addEvent("focusChannel", clickEvent1);
-            messageBuilder.setText(event.getMessage());
+            messageBuilder.setText(message);
             plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
         }
 
