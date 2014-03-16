@@ -20,7 +20,7 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PostLoginEvent event) {
-        playerManager.load(event.getPlayer().getName());
+        playerManager.load(event.getPlayer());
         playerManager.get(event.getPlayer().getName()).Realname = event.getPlayer().getName();
     }
 }

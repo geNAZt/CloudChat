@@ -57,7 +57,7 @@ public class TwitterCheckTweetTask implements Runnable {
                     for (Status status3 : statusess) {
                         if(status3.getCreatedAt().after(lastTweet)) {
                             String message = config.Message.replace("%tweet", status3.getText());
-                            PlayerDatabase twitterDatabase = new PlayerDatabase(plugin, "IRC");
+                            PlayerDatabase twitterDatabase = new PlayerDatabase(plugin, "Twitter", "Twitter");
                             twitterDatabase.Nick = config.IngameName + " " + status3.getUser().getScreenName();
 
                             plugin.getPluginLogger().info("Found new Tweet: " + status3.getText());

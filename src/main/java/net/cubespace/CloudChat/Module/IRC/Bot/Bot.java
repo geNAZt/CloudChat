@@ -404,7 +404,7 @@ public class Bot extends PircBot implements Runnable {
             for(Map.Entry<String, String> channelEntry : ircConfig.Channels.entrySet()) {
                 if(channelEntry.getValue().split(" ")[0].equals(channel)) {
                     ChannelDatabase channelDatabase = channelManager.get(channelEntry.getKey());
-                    PlayerDatabase ircDatabase = new PlayerDatabase(plugin, "IRC");
+                    PlayerDatabase ircDatabase = new PlayerDatabase(plugin, "IRC", "IRC");
                     ircDatabase.Nick = ircConfig.IngameName + sender;
 
                     Sender sender1 = new Sender("IRC", channelDatabase, ircDatabase);

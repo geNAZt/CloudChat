@@ -24,4 +24,6 @@ public class Main extends Config {
     public Integer DelayFor = 0;
     @Comment("When you set this over 0 it will ask the CloudChatBukkit to reload the Permissions every x Minutes")
     public Integer AskForNewPermissionsEvery = 0;
+    @Comment("When you have a offline Server set this to true")
+    public Boolean OverwriteUUIDs = false;
 }

@@ -67,6 +67,12 @@ public class Mail implements CLICommand {
         }
 
         PlayerDatabase playerDatabase = playerManager.get(args[0]);
+        if (playerDatabase == null) {
+            MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Send_UnknownPlayer)).send(sender);
+            return;
+        }
+
         net.cubespace.CloudChat.Module.Mail.Database.Mail mail = new net.cubespace.CloudChat.Module.Mail.Database.Mail();
         mail.date = new Date();
         mail.sender = sender.getName();

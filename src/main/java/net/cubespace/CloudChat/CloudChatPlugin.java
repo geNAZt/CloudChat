@@ -11,6 +11,7 @@ import net.cubespace.CloudChat.Config.PermissionContainers;
 import net.cubespace.CloudChat.Config.Spam;
 import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Config.Twitter;
+import net.cubespace.CloudChat.Config.UUIDMappings;
 import net.cubespace.CloudChat.Listener.ChatListener;
 import net.cubespace.CloudChat.Listener.PermissionChangedListener;
 import net.cubespace.CloudChat.Listener.PermissionLoadedListener;
@@ -18,6 +19,7 @@ import net.cubespace.CloudChat.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Listener.ServerConnectedListener;
 import net.cubespace.CloudChat.Util.AutoComplete;
+import net.cubespace.CloudChat.Util.FeatureDetector;
 import net.cubespace.CloudChat.Util.Permissions;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Logger.Level;
@@ -51,6 +53,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("commandAliases", commandAliases);
         getConfigManager().initConfig("towny", new Towny(this));
         getConfigManager().initConfig("permissionContainers", new PermissionContainers(this));
+        getConfigManager().initConfig("uuidMappings", new UUIDMappings(this));
 
         //Keep track of new Commands
         if (!commandAliases.BaseCommands.containsKey("channels"))
@@ -60,6 +63,7 @@ public class CloudChatPlugin extends CubespacePlugin {
             commandAliases.BaseCommands.put("togglepm", "togglepm");
 
         //Static init
+        FeatureDetector.init(this);
         AutoComplete.init(this);
         Permissions.init(this);
 
