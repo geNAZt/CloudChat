@@ -2,6 +2,7 @@ package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
+import com.sun.jndi.url.ldaps.ldapsURLContextFactory;
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
@@ -22,6 +23,7 @@ import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -131,6 +133,20 @@ public class PluginMessageListener implements PacketListener {
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
         ChannelDatabase channelDatabase = channelManager.get(localPlayersResponse.getChannel());
         Sender sender = new Sender(localPlayersResponse.getSender().getName(), channelDatabase, playerDatabase);
+
+        // Check if all Local players are on the same Server as the Sender
+        String server = player.getServer().getInfo().getName();
+
+        Iterator<String> playerIterator = localPlayersResponse.getTo().iterator();
+        while(playerIterator.hasNext()) {
+            String playerStr = playerIterator.next();
+            ProxiedPlayer player1 = plugin.getProxy().getPlayer(playerStr);
+            if (player1 != null) {
+                if (!player1.getServer().getInfo().getName().equals(server)) {
+                    playerIterator.remove();
+                }
+            }
+        }
 
         plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, localPlayersResponse.getMessage(), localPlayersResponse.getTo()));
     }
