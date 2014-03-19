@@ -69,7 +69,7 @@ public class PluginMessageListener implements PacketListener {
             playerDatabase.WorldAlias = worldMessage.getAlias();
 
             //Get new Permissions
-            plugin.getPluginMessageManager("CubespaceLibrary").sendPluginMessage(player, new PermissionRequest(plugin.getPermissionManager().getPrefix()));
+            plugin.getPluginMessageManager(plugin.pluginChannel).sendPluginMessage(player, new PermissionRequest());
         }
 
         plugin.getPluginLogger().debug("Got new World Message for " + player.getName() + " - " + worldMessage.getName() + "/" + worldMessage.getAlias());

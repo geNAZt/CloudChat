@@ -38,7 +38,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getPluginLogger().setLogLevel(Level.INFO);
 
         //Load the Permission
-        getPermissionManager().setup("");
+        getPermissionManager().setup();
 
         //Load the Configs
         CommandAliases commandAliases = new CommandAliases(this);
