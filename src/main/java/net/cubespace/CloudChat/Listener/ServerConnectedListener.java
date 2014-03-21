@@ -30,17 +30,17 @@ public class ServerConnectedListener implements Listener {
                     return;
                 }
 
-                if (event.getPlayer().getServer() == null) {
+                if (event.getServer() == null) {
                     plugin.getPluginLogger().error("Got a ServerConnected Event without a Server (getPlayer().getServer() is null)");
                     return;
                 }
 
-                if (event.getPlayer().getServer().getInfo() == null) {
+                if (event.getServer().getInfo() == null) {
                     plugin.getPluginLogger().error("No Server informations loaded");
                     return;
                 }
 
-                plugin.getAsyncEventBus().callEvent(new ServerConnectEvent(event.getPlayer(), event.getPlayer().getServer().getInfo()));
+                plugin.getAsyncEventBus().callEvent(new ServerConnectEvent(event.getPlayer(), event.getServer().getInfo()));
             }
         }, (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);
     }

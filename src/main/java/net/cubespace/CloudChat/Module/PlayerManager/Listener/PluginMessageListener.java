@@ -50,6 +50,7 @@ public class PluginMessageListener implements PacketListener {
         playerDatabase.Faction = affixMessage.getFaction();
 
         //Get new Permissions
+        plugin.getPluginMessageManager(plugin.pluginChannel).sendPluginMessage(player, new PermissionRequest());
         plugin.getPluginLogger().debug("Got new Affix Message for " + player.getName() + " - " + affixMessage.getPrefix() + "/" + affixMessage.getSuffix());
     }
 
