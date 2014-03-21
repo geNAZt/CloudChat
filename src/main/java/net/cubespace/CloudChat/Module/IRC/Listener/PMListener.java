@@ -62,7 +62,7 @@ public class PMListener implements Listener {
 
             playerManager.get(sen.getName()).Reply = FontFormat.stripColor(config.IngameName) + ircNick;
             MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(messages.Message_Receiver.replace("%sender", config.IngameName + ircNick).replace("%message", event.getMessage().replace(ircNick + " ", "")));
+            messageBuilder.setText(FontFormat.translateString(messages.Message_Receiver.replace("%sender", config.IngameName + ircNick).replace("%message", event.getMessage().replace(ircNick + " ", ""))));
             messageBuilder.send(sen);
 
             plugin.getPluginLogger().info(event.getFrom() + " -> " + event.getTo() + ": " + event.getMessage().replace(ircNick + " ", ""));
@@ -94,7 +94,7 @@ public class PMListener implements Listener {
             //Check if sender can do this
             if(!plugin.getPermissionManager().has(sen, "cloudchat.pm.irc")) {
                 MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.setText(messages.Message_NoIrcNick);
+                messageBuilder.setText(FontFormat.translateString(messages.Message_NoIrcNick));
                 messageBuilder.send(sen);
 
                 return true;
@@ -121,7 +121,7 @@ public class PMListener implements Listener {
                 plugin.getPluginLogger().info(event.getFrom() + " -> " + event.getTo() + ": " + event.getMessage().replace(ircNick + " ", ""));
             } else {
                 MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.setText(messages.Message_IrcNickNotOnline);
+                messageBuilder.setText(FontFormat.translateString(messages.Message_IrcNickNotOnline));
                 messageBuilder.send(sen);
             }
 
