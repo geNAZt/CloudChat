@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -23,8 +24,8 @@ public class ChannelManager implements IManager {
     private CubespacePlugin plugin;
     private ChannelManagerModule channelManagerModule;
 
-    private HashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> playerJoinedChannels = new HashMap<>();
-    private HashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new HashMap<>();
+    private LinkedHashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> playerJoinedChannels = new LinkedHashMap<>();
+    private LinkedHashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new LinkedHashMap<>();
 
     private HashMap<String, ChannelDatabase> loadedChannels = new HashMap<>();
 
@@ -157,19 +158,19 @@ public class ChannelManager implements IManager {
         loadedChannels.clear();
         load();
 
-        HashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new HashMap<>();
-        for(Map.Entry<ChannelDatabase, ArrayList<ProxiedPlayer>> playersInChannel : new HashMap<>(this.playerInChannel).entrySet()) {
+        LinkedHashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> inChannel = new LinkedHashMap<>();
+        for(Map.Entry<ChannelDatabase, ArrayList<ProxiedPlayer>> inChannelEntry : new LinkedHashMap<>(this.playerInChannel).entrySet()) {
             for(String channelName : loadedChannels.keySet()) {
-                if(playersInChannel.getKey().Name.toLowerCase().equals(channelName.toLowerCase())) {
-                    playerInChannel.put(loadedChannels.get(channelName.toLowerCase()), playersInChannel.getValue());
+                if(inChannelEntry.getKey().Name.toLowerCase().equals(channelName.toLowerCase())) {
+                    playerInChannel.put(loadedChannels.get(channelName.toLowerCase()), inChannelEntry.getValue());
                 }
             }
         }
 
-        this.playerInChannel = playerInChannel;
+        this.playerInChannel = inChannel;
 
-        HashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> joinedChannels = new HashMap<>();
-        for(Map.Entry<ProxiedPlayer, ArrayList<ChannelDatabase>> playersJoinedChannels : new HashMap<>(this.playerJoinedChannels).entrySet()) {
+        LinkedHashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> joinedChannels = new LinkedHashMap<>();
+        for(Map.Entry<ProxiedPlayer, ArrayList<ChannelDatabase>> playersJoinedChannels : new LinkedHashMap<>(this.playerJoinedChannels).entrySet()) {
             joinedChannels.put(playersJoinedChannels.getKey(), new ArrayList<ChannelDatabase>());
 
             for(String channelName : loadedChannels.keySet()) {
@@ -229,14 +230,12 @@ public class ChannelManager implements IManager {
         }
 
         Messages messages = plugin.getConfigManager().getConfig("messages");
-        channelManagerModule.getModuleLogger().info(player.getName() + " tried to join Channel " + channel.Name);
-        
-        
+        channelManagerModule.getModuleLogger().debug(player.getName() + " tried to join Channel " + channel.Name);
+
         //JR start
         //Check if player is already in the channel
-        if (playerInChannel.containsKey(channel) && playerInChannel.get(channel).contains(player))
-        {
-            channelManagerModule.getModuleLogger().info("Player " + player.getName() + " is already in the Channel " + channel.Name);
+        if (playerInChannel.containsKey(channel) && playerInChannel.get(channel).contains(player)) {
+            channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " is already in the Channel " + channel.Name);
             return true;
         }
         //JR end

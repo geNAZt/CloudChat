@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 26.11.13 23:38
  */
 public class ServerConnectedListener implements Listener {
     private final CubespacePlugin plugin;
@@ -26,9 +25,23 @@ public class ServerConnectedListener implements Listener {
         plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
             @Override
             public void run() {
-                if (event.getPlayer() == null) return;
+                if (event.getPlayer() == null) {
+                    plugin.getPluginLogger().debug("Player race condition. Maybe the Player left.");
+                    return;
+                }
+
+                if (event.getPlayer().getServer() == null) {
+                    plugin.getPluginLogger().error("Got a ServerConnected Event without a Server (getPlayer().getServer() is null)");
+                    return;
+                }
+
+                if (event.getPlayer().getServer().getInfo() == null) {
+                    plugin.getPluginLogger().error("No Server informations loaded");
+                    return;
+                }
+
                 plugin.getAsyncEventBus().callEvent(new ServerConnectEvent(event.getPlayer(), event.getPlayer().getServer().getInfo()));
             }
-        }, 50 + (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);
+        }, (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);
     }
 }
