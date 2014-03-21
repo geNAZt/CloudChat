@@ -160,7 +160,11 @@ public class Bot extends PircBot implements Runnable {
     protected void onUserList(String channel, User[] users) {
         for(User user : users) {
             String nick;
-            if(user.getNick().startsWith("~") || user.getNick().startsWith("+") || user.getNick().startsWith("@")) {
+            if(user.getNick().startsWith("~") ||
+               user.getNick().startsWith("+") ||
+               user.getNick().startsWith("@") ||
+               user.getNick().startsWith("%") ||
+               user.getNick().startsWith("&")) {
                 nick = user.getNick().substring(1);
             } else {
                 nick = user.getNick();
