@@ -45,6 +45,7 @@ public class Bot extends PircBot implements Runnable {
     private IRCModule ircModule;
     private LinkedBlockingQueue<String> whoisQueue = new LinkedBlockingQueue<>();
     private boolean shutdown = false;
+    private boolean muted = false;
 
     public Bot(IRCModule ircModule, final CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -388,6 +389,11 @@ public class Bot extends PircBot implements Runnable {
     private void relayMessage(String sender, String channel, String message, boolean useChannelFormat) {
         plugin.getPluginLogger().debug("Got a new relay Message from IRC: " + sender + ": " + message);
 
+        if (muted) {
+            plugin.getPluginLogger().debug("But the IRC Bot is muted");
+            return;
+        }
+
         //Get the Group of the user
         IRCPermissionGroup group = ircManager.getPermissionManager().getGroup(sender);
         plugin.getPluginLogger().debug("IRC Group: " + group);
@@ -426,5 +432,9 @@ public class Bot extends PircBot implements Runnable {
 
     public IRCManager getIrcManager() {
         return ircManager;
+    }
+
+    public void setMuted(boolean muted) {
+        this.muted = muted;
     }
 }

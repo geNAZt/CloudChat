@@ -73,6 +73,8 @@ public class Messages extends Config {
     public String Command_CC_Reload_Success = "&6Reloaded all Channels and IRC Config";
 
     public String Command_IRC_Reconnect_Success = "&6The IRC Bot was reconnected";
+    public String Command_IRC_Mute_Success = "&6The IRC Bot has been muted";
+    public String Command_IRC_UnMute_Success = "&6The IRC Bot has been unmuted";
 
     public String IRC_Command_Message_NotEnoughPermission = "&c%nick: You have not enough Permissions to execute this";
     public String IRC_Command_Message_NotEnoughArguments = "&c%nick: Not enough Arguments to execute this";

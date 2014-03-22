@@ -37,4 +37,24 @@ public class IRC implements CLICommand {
             }
         }, 5, TimeUnit.SECONDS);
     }
+
+    @Command(command = "irc:mute", arguments = 0)
+    public void ircMuteCommand(final CommandSender sender, String[] args) {
+        final Messages messages = plugin.getConfigManager().getConfig("messages");
+
+        ircModule.getIrcBot().setMuted(true);
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_IRC_Mute_Success)).send(sender);
+    }
+
+    @Command(command = "irc:mute", arguments = 0)
+    public void ircUnmuteCommand(final CommandSender sender, String[] args) {
+        final Messages messages = plugin.getConfigManager().getConfig("messages");
+
+        ircModule.getIrcBot().setMuted(false);
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.setText(FontFormat.translateString(messages.Command_IRC_UnMute_Success)).send(sender);
+    }
 }

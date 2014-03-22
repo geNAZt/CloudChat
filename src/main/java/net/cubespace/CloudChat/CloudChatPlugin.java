@@ -63,6 +63,12 @@ public class CloudChatPlugin extends CubespacePlugin {
         if (!commandAliases.BaseCommands.containsKey("togglepm"))
             commandAliases.BaseCommands.put("togglepm", "togglepm");
 
+        if (!commandAliases.BaseCommands.containsKey("irc:mute"))
+            commandAliases.BaseCommands.put("irc:mute", "irc:mute");
+
+        if (!commandAliases.BaseCommands.containsKey("irc:unmute"))
+            commandAliases.BaseCommands.put("irc:unmute", "irc:unmute");
+
         //Static init
         FeatureDetector.init(this);
         AutoComplete.init(this);
