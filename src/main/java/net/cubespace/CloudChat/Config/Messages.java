@@ -168,6 +168,7 @@ public class Messages extends Config {
     public String Command_Clearchat_InvalidMode = "&cInvalid clear mode. Only can be 'player' or 'server'";
     public String Command_Clearchat_NoPermissionForOther = "&cYou can not clear Chat of other Players";
     public String Command_Clearchat_NoPermissionForServer = "&cYou can not clear Chat of Servers";
+    public String Command_Clearchat_NoPermissionForGlobal = "&cYou can not clear Chat of all Players";
     public String Command_Clearchat_NotEnoughArguments = "&cNot enough Arguments";
     public String Command_Clearchat_ChatCleared = "&6Chat was cleared";
     public String Command_Clearchat_PlayerOffline = "&cYou can not clear Chat from offline Players";

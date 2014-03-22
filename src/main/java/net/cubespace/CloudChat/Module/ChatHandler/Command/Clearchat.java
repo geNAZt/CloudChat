@@ -112,6 +112,23 @@ public class Clearchat implements CLICommand {
 
                     break;
 
+                case "global":
+                    if(!plugin.getPermissionManager().has(player, "cloudchat.command.clearchat.global")) {
+                        MessageBuilder messageBuilder3 = new MessageBuilder();
+                        messageBuilder3.setText(messages.Command_Clearchat_NoPermissionForGlobal).send(sender);
+                        return;
+                    }
+
+                    for(ProxiedPlayer player2 : plugin.getProxy().getPlayers()) {
+                        for(int i = 0; i < 30; i++) {
+                            PlayerDatabase playerDatabase1 = playerManager.get(player2.getName());
+                            Sender sender2 = new Sender(player.getName(), null, playerDatabase1);
+                            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player2, messageBuilder, sender2));
+                        }
+                    }
+
+                    break;
+
                 default:
                     MessageBuilder messageBuilder3 = new MessageBuilder();
                     messageBuilder3.setText(messages.Command_Clearchat_InvalidMode).send(sender);
