@@ -18,6 +18,7 @@ import net.cubespace.CloudChat.Listener.PermissionLoadedListener;
 import net.cubespace.CloudChat.Listener.PlayerJoinListener;
 import net.cubespace.CloudChat.Listener.PlayerQuitListener;
 import net.cubespace.CloudChat.Listener.ServerConnectedListener;
+import net.cubespace.CloudChat.Listener.TabCompleteListener;
 import net.cubespace.CloudChat.Util.AutoComplete;
 import net.cubespace.CloudChat.Util.FeatureDetector;
 import net.cubespace.CloudChat.Util.Permissions;
@@ -101,6 +102,10 @@ public class CloudChatPlugin extends CubespacePlugin {
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new ServerConnectedListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
+
+        if (FeatureDetector.canUseTabCompleteListener()) {
+            getProxy().getPluginManager().registerListener(this, new TabCompleteListener(this));
+        }
 
         super.onEnable();
     }

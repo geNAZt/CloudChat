@@ -9,6 +9,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  */
 public class FeatureDetector {
     private static boolean useUUID;
+    private static boolean useTabCompleteListener;
 
     public static void init(CubespacePlugin plugin) {
         try {
@@ -16,6 +17,13 @@ public class FeatureDetector {
             useUUID = !((Main) plugin.getConfigManager().getConfig("main")).OverwriteUUIDs;
         } catch (NoSuchMethodException e) {
             useUUID = false;
+        }
+
+        try {
+            Class.forName("net.md_5.bungee.api.event.TabCompleteEvent");
+            useTabCompleteListener = !((Main) plugin.getConfigManager().getConfig("main")).OverwriteTabComplete;
+        } catch (ClassNotFoundException e) {
+            useTabCompleteListener = false;
         }
     }
 
@@ -25,5 +33,13 @@ public class FeatureDetector {
      */
     public static boolean canUseUUID() {
         return useUUID;
+    }
+
+    /**
+     * Either or not this BungeeCord version has support for the TabComplete Event
+     * @return false => no support, true => support
+     */
+    public static boolean canUseTabCompleteListener() {
+        return useTabCompleteListener;
     }
 }

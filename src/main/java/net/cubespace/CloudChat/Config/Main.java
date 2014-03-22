@@ -26,4 +26,6 @@ public class Main extends Config {
     public Integer AskForNewPermissionsEvery = 0;
     @Comment("When you have a offline Server set this to true")
     public Boolean OverwriteUUIDs = false;
+    @Comment("When you want that Bukkit takes over control over the Tab Complete set this to true")
+    public Boolean OverwriteTabComplete = false;
 }

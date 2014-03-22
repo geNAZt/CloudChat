@@ -69,4 +69,8 @@ public class CloudChatCommandSender implements CommandSender {
     public void setPermission(String s, boolean b) {
 
     }
+
+    public Collection<String> getPermissions() {
+        return Collections.emptySet();
+    }
 }
