@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Module.ChatHandler.Command.Broadcast;
+import net.cubespace.CloudChat.Module.ChatHandler.Command.ChatSpy;
 import net.cubespace.CloudChat.Module.ChatHandler.Command.Clearchat;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.AsyncChatListener;
 import net.cubespace.CloudChat.Module.ChatHandler.Listener.ChatMessageListener;
@@ -47,6 +48,9 @@ public class ChatHandlerModule extends Module {
             plugin.getCommandExecutor().add(this, new Clearchat(plugin));
         }
 
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("chatspy"), Binder.class, commandAliases.ChatSpy.toArray(new String[0]));
+        plugin.getCommandExecutor().add(this, new ChatSpy(plugin));
+
         //Register the Listener
         if(config.Announce_PlayerJoin)
             plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
@@ -81,6 +85,8 @@ public class ChatHandlerModule extends Module {
         if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("clearchat"))) {
             plugin.getBindManager().unbind(commandAliases.BaseCommands.get("clearchat"));
         }
+
+        plugin.getBindManager().unbind(commandAliases.BaseCommands.get("chatspy"));
 
         plugin.getCommandExecutor().remove(this);
 

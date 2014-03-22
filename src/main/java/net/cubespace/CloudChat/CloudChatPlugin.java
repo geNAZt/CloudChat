@@ -69,14 +69,17 @@ public class CloudChatPlugin extends CubespacePlugin {
         if (!commandAliases.BaseCommands.containsKey("irc:unmute"))
             commandAliases.BaseCommands.put("irc:unmute", "irc:unmute");
 
+        if (!commandAliases.BaseCommands.containsKey("chatspy"))
+            commandAliases.BaseCommands.put("chatspy", "chatspy");
+
         //Static init
         FeatureDetector.init(this);
         AutoComplete.init(this);
         Permissions.init(this);
 
         //Load the Modules
-        getModuleManager().registerModule(new ModuleDescription("ChannelManager", "net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
         getModuleManager().registerModule(new ModuleDescription("PlayerManager", "net.cubespace.CloudChat.Module.PlayerManager.PlayerManagerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
+        getModuleManager().registerModule(new ModuleDescription("ChannelManager", "net.cubespace.CloudChat.Module.ChannelManager.ChannelManagerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
         getModuleManager().registerModule(new ModuleDescription("ChatHandler", "net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));
 
         getModuleManager().registerModule(new ModuleDescription("FormatHandler", "net.cubespace.CloudChat.Module.FormatHandler.FormatHandlerModule", "1.0.0", "geNAZt", new HashSet<String>(), null, null));

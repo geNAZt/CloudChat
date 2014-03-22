@@ -4,6 +4,8 @@ import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
+import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
+import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
@@ -14,7 +16,9 @@ import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -22,14 +26,16 @@ import java.util.List;
 public class ChatMessageListener implements Listener {
     private CubespacePlugin plugin;
     private ChannelManager channelManager;
+    private PlayerManager playerManager;
 
     public ChatMessageListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
+        this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onChatMessage(ChatMessageEvent event) {
+    public void onChatMessage(final ChatMessageEvent event) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
         ProxiedPlayer sendPlayer = plugin.getProxy().getPlayer(event.getSender().getPlayerDatabase().Realname);
 
@@ -48,19 +54,36 @@ public class ChatMessageListener implements Listener {
         clickEvent1.setAction(ClickAction.RUN_COMMAND);
         clickEvent1.setValue("/focus " + event.getSender().getChannel().Name);
 
-        List<String> receiptens = event.getReceiptens();
+        final List<String> receiptens = event.getReceiptens();
         if (receiptens.size() == 0) {
             return;
         }
 
         if (receiptens.get(0).equals("§ALL")) {
+            final MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
+            messageBuilder.setText(event.getMessage());
+
             for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
-                MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
-                messageBuilder.setText(event.getMessage());
+                //Let people spy
+                plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
+                            if (playerDatabase.getValue().ChatSpy && !channelManager.getAllInChannel(event.getSender().getChannel()).contains(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname))) {
+                                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname), messageBuilder, event.getSender()));
+                            }
+                        }
+                    }
+                });
+
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
             }
         } else {
+            final MessageBuilder messageBuilder = new MessageBuilder();
+            messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
+            messageBuilder.setText(event.getMessage());
+
             for(String playerName : receiptens) {
                 ProxiedPlayer player = plugin.getProxy().getPlayer(playerName);
 
@@ -68,9 +91,17 @@ public class ChatMessageListener implements Listener {
                     continue;
                 }
 
-                MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
-                messageBuilder.setText(event.getMessage());
+                //Let people spy
+                plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
+                            if (playerDatabase.getValue().ChatSpy && !receiptens.contains(playerDatabase.getValue().Realname)) {
+                                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname), messageBuilder, event.getSender()));
+                            }
+                        }
+                    }
+                });
 
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
             }

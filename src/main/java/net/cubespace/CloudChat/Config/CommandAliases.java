@@ -77,4 +77,5 @@ public class CommandAliases extends Config {
     public ArrayList<String> TogglePM = new ArrayList<>();
     public ArrayList<String> IRCMute = new ArrayList<>();
     public ArrayList<String> IRCUnmute = new ArrayList<>();
+    public ArrayList<String> ChatSpy = new ArrayList<>();
 }
