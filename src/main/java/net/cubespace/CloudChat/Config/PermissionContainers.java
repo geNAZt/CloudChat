@@ -88,5 +88,41 @@ public class PermissionContainers extends Config {
         userContainer.Sub.add("cloudchat.command.invite");
         userContainer.Sub.add("cloudchat.command.togglepm");
         add(userContainer);
+
+        /**
+         * BungeeSuiteChat Permissions (only for the usage of migration)
+         */
+        PermissionContainer bungeeSuiteUserContainer = new PermissionContainer();
+        bungeeSuiteUserContainer.Access = "bungeesuite.chat.user";
+        bungeeSuiteUserContainer.Sub.add("cloudchat.rank.user");
+        bungeeSuiteUserContainer.Sub.add("cloudchat.channel.global");
+        add(bungeeSuiteUserContainer);
+
+        PermissionContainer bungeeSuiteModContainer = new PermissionContainer();
+        bungeeSuiteModContainer.Access = "bungeesuite.chat.mod";
+        bungeeSuiteModContainer.Sub.add("cloudchat.rank.moderator");
+        bungeeSuiteModContainer.Sub.add("cloudchat.channel.global");
+        bungeeSuiteModContainer.Sub.add("cloudchat.channel.staff");
+        add(bungeeSuiteModContainer);
+
+        PermissionContainer bungeeSuiteAdminContainer = new PermissionContainer();
+        bungeeSuiteAdminContainer.Access = "bungeesuite.chat.admin";
+        bungeeSuiteAdminContainer.Sub.add("cloudchat.rank.admin");
+        add(bungeeSuiteAdminContainer);
+
+        PermissionContainer bsUserContainer = new PermissionContainer();
+        bsUserContainer.Access = "bungeesuite.user";
+        bsUserContainer.Sub.add("bungeesuite.chat.user");
+        add(bsUserContainer);
+
+        PermissionContainer bsModContainer = new PermissionContainer();
+        bsModContainer.Access = "bungeesuite.mod";
+        bsModContainer.Sub.add("bungeesuite.chat.mod");
+        add(bsModContainer);
+
+        PermissionContainer bsAdminContainer = new PermissionContainer();
+        bsAdminContainer.Access = "bungeesuite.admin";
+        bsAdminContainer.Sub.add("bungeesuite.chat.admin");
+        add(bsAdminContainer);
     }};
 }

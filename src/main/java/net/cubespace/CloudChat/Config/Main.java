@@ -30,4 +30,6 @@ public class Main extends Config {
     public Boolean OverwriteTabComplete = false;
     @Comment("If you don't want the /<channelshort> Focus set this to false")
     public Boolean UseChannelShortFocus = true;
+    @Comment("Never alter this please")
+    public Boolean FirstStart = true;
 }

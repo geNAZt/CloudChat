@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.Manager.IManager;
@@ -78,6 +79,20 @@ public class ChannelManager implements IManager {
             }
         }
 
+        Main config = plugin.getConfigManager().getConfig("main");
+
+        //Check if the Staff channel is there
+        if (config.FirstStart) {
+            createStaffChannel();
+            config.FirstStart = false;
+
+            try {
+                config.save();
+            } catch (InvalidConfigurationException e) {
+                plugin.getPluginLogger().warn("Could not save FirstJoin state", e);
+            }
+        }
+
         //Check if the global Channel is there
         if(!loadedChannels.containsKey(((Main) plugin.getConfigManager().getConfig("main")).Global)) {
             generateBasicChannels();
@@ -146,6 +161,23 @@ public class ChannelManager implements IManager {
             loadedChannels.put(channel.toLowerCase(), towny);
         } catch (Exception e) {
             channelManagerModule.getModuleLogger().error("Could not create Towny channel", e);
+            throw new RuntimeException();
+        }
+    }
+
+    private void createStaffChannel() {
+        ChannelDatabase staff = new ChannelDatabase(plugin, "Staff");
+        staff.Short = "S";
+        staff.Name = "Staff";
+        staff.Format = "&8[&2%channel_short&8] &r%prefix%nick{click:playerMenu}%suffix&r: %message";
+        staff.Forced = false;
+        staff.ForceIntoWhenPermission = true;
+
+        try {
+            staff.save();
+            loadedChannels.put("staff", staff);
+        } catch (Exception e) {
+            channelManagerModule.getModuleLogger().error("Could not create Staff channel", e);
             throw new RuntimeException();
         }
     }
