@@ -28,4 +28,6 @@ public class Main extends Config {
     public Boolean OverwriteUUIDs = false;
     @Comment("When you want that Bukkit takes over control over the Tab Complete set this to true")
     public Boolean OverwriteTabComplete = false;
+    @Comment("If you don't want the /<channelshort> Focus set this to false")
+    public Boolean UseChannelShortFocus = true;
 }

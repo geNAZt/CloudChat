@@ -62,7 +62,7 @@ public class AsyncChatListener {
             ChannelDatabase channelDatabase = channelManager.getViaShortOrName(selectedChannel);
             
             // Focus
-            if(cmd.length == 1) {
+            if(cmd.length == 1 && ((Main) plugin.getConfigManager().getConfig("main")).UseChannelShortFocus) {
                 Messages messages = plugin.getConfigManager().getConfig("messages");
                 if(channelDatabase == null) {
                     return false;
@@ -91,7 +91,6 @@ public class AsyncChatListener {
 
             // Message
             if(channelDatabase != null) {
-
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
                     if(playerManager.get(event.getSender().getName()).AFK) {
                         plugin.getPluginMessageManager("CloudChat").sendPluginMessage(event.getSender(), new AFKMessage(false));
@@ -117,7 +116,7 @@ public class AsyncChatListener {
                 }
             }
 
-            return true;
+            return false;
         }
 
         return false;
