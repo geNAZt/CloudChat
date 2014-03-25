@@ -74,11 +74,7 @@ public class AsyncChatListener {
 
                 ArrayList<ProxiedPlayer> playersInChannel = channelManager.getAllInChannel(channelDatabase);
                 if(!playersInChannel.contains(event.getSender())) {
-                    MessageBuilder messageBuilder = new MessageBuilder();
-                    messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_NotIn)).send(event.getSender());
-
-                    event.setCancelParent(true);
-                    return true;
+                    return false;
                 }
 
                 playerManager.get(event.getSender().getName()).Focus = channelDatabase.Name.toLowerCase();
