@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Event.PlayerQuitEvent;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
+import net.cubespace.CloudChat.Module.ChatHandler.ChatHandlerModule;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.MessageFormat;
@@ -27,8 +28,9 @@ public class PlayerQuitListener implements Listener {
     private CubespacePlugin plugin;
     private PlayerManager playerManager;
     private ChannelManager channelManager;
+    private ChatHandlerModule chatHandlerModule;
 
-    public PlayerQuitListener(CubespacePlugin plugin) {
+    public PlayerQuitListener(CubespacePlugin plugin, ChatHandlerModule chatHandlerModule) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
@@ -62,5 +64,7 @@ public class PlayerQuitListener implements Listener {
         }
 
         sent.clear();
+
+        chatHandlerModule.getChatBuffer().removeBuffer(event.getPlayer().getName());
     }
 }

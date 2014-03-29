@@ -37,9 +37,7 @@ public class PlayerSendMessageListener implements Listener {
         if(playerDatabase.Output) {
             event.getMessage().send(event.getPlayer());
             chatHandlerModule.getModuleLogger().debug("Sending Message to the Player directly");
-        }
-
-        else {
+        } else {
             chatHandlerModule.getModuleLogger().debug("Sending Message to the ChatBuffer");
             chatHandlerModule.getChatBuffer().addToBuffer(event.getPlayer().getName(), event.getMessage());
         }

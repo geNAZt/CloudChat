@@ -56,7 +56,7 @@ public class ChatHandlerModule extends Module {
             plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
 
         if(config.Announce_PlayerQuit)
-            plugin.getAsyncEventBus().addListener(this, new PlayerQuitListener(plugin));
+            plugin.getAsyncEventBus().addListener(this, new PlayerQuitListener(plugin, this));
 
         plugin.getAsyncEventBus().addListener(this, new PlayerChangeAFKListener(plugin));
         plugin.getAsyncEventBus().addListener(this, new AsyncChatListener(plugin));
