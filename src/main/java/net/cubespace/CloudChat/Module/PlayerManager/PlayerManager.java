@@ -128,29 +128,31 @@ public class PlayerManager implements IManager {
         if (!loadedPlayers.containsKey(player)) {
             plugin.getPluginLogger().info("Loading PlayerDatabase for " + player);
 
-            // Check if there is a pre v7 Database
-            File check = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + player + ".yml");
-            if (check.exists()) {
-                String folder = storageKey.substring(0, 2);
+            if (storageKey.length() > 4) {
+                // Check if there is a pre v7 Database
+                File check = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + player + ".yml");
+                if (check.exists()) {
+                    String folder = storageKey.substring(0, 2);
 
-                File newFile = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + folder + File.separator + storageKey + ".yml");
+                    File newFile = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + folder + File.separator + storageKey + ".yml");
 
-                if (newFile.exists()) {
-                    newFile.delete();
-                }
-
-                try {
-                    if (!newFile.getParentFile().exists()) {
-                        newFile.getParentFile().mkdirs();
+                    if (newFile.exists()) {
+                        newFile.delete();
                     }
 
-                    Files.copy(check.toPath(), newFile.toPath());
+                    try {
+                        if (!newFile.getParentFile().exists()) {
+                            newFile.getParentFile().mkdirs();
+                        }
 
-                    if (!check.delete()) {
-                        check.deleteOnExit();
+                        Files.copy(check.toPath(), newFile.toPath());
+
+                        if (!check.delete()) {
+                            check.deleteOnExit();
+                        }
+                    } catch (IOException e) {
+                        plugin.getPluginLogger().error("Could not convert a PlayerDatabase", e);
                     }
-                } catch (IOException e) {
-                    plugin.getPluginLogger().error("Could not convert a PlayerDatabase", e);
                 }
             }
 

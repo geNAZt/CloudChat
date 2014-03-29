@@ -13,9 +13,14 @@ import java.util.ArrayList;
  */
 public class PlayerDatabase extends Config {
     public PlayerDatabase(CubespacePlugin plugin, String storageKey, String userName) {
-        String folder = storageKey.substring(0, 2);
+        if (storageKey.length() > 4) {
+            String folder = storageKey.substring(0, 2);
 
-        CONFIG_FILE = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + folder + File.separator + storageKey + ".yml");
+            CONFIG_FILE = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + folder + File.separator + storageKey + ".yml");
+        } else {
+            CONFIG_FILE = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + storageKey + ".yml");
+        }
+
         CONFIG_HEADER = new String[]{"User Database for " + userName};
 
         Nick = userName;
