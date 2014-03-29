@@ -6,6 +6,9 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.Yamler.Config.InvalidConfigurationException;
 import net.cubespace.lib.CubespacePlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
@@ -184,6 +187,11 @@ public class MessageFormat {
             //World things
             output = output.replace("%world_alias", playerDatabase.WorldAlias);
             output = output.replace("%world", playerDatabase.World);
+        }
+
+        // Le custom formats
+        for (Map.Entry<String, String> customFormatEntry : new HashMap<>(playerDatabase.CustomFormats).entrySet()) {
+            output = output.replace("%" + customFormatEntry.getKey(), customFormatEntry.getValue());
         }
 
         if(stipcolor)

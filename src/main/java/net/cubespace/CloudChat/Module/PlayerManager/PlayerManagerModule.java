@@ -15,6 +15,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.Listener.PluginMessageListen
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.ServerConnectListener;
 import net.cubespace.PluginMessages.AFKMessage;
 import net.cubespace.PluginMessages.AffixMessage;
+import net.cubespace.PluginMessages.CustomFormatMessage;
 import net.cubespace.PluginMessages.IgnoreMessage;
 import net.cubespace.PluginMessages.OutputMessage;
 import net.cubespace.PluginMessages.SetNickMessage;
@@ -67,6 +68,7 @@ public class PlayerManagerModule extends Module {
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, IgnoreMessage.class);
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, OutputMessage.class);
         plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, SetNickMessage.class);
+        plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, CustomFormatMessage.class);
 
         plugin.getPluginMessageManager("CloudChat").addListenerToRegister(this, new PluginMessageListener(plugin));
     }

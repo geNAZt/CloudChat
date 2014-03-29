@@ -8,6 +8,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.Event.PlayerChangeAFKEvent;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.PluginMessages.AFKMessage;
 import net.cubespace.PluginMessages.AffixMessage;
+import net.cubespace.PluginMessages.CustomFormatMessage;
 import net.cubespace.PluginMessages.IgnoreMessage;
 import net.cubespace.PluginMessages.OutputMessage;
 import net.cubespace.PluginMessages.PermissionRequest;
@@ -26,6 +27,20 @@ public class PluginMessageListener implements PacketListener {
     public PluginMessageListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.plugin = plugin;
+    }
+
+    @PacketHandler
+    public void onCustomFormatMessage(CustomFormatMessage customFormatMessage) {
+        ProxiedPlayer player = customFormatMessage.getSender().getBungeePlayer();
+        if (player == null) return; // Race condition -> Player disconnected before the Message has come in
+
+        PlayerDatabase playerDatabase = playerManager.get(player.getName());
+        if(playerDatabase == null) {
+            plugin.getPluginLogger().error("Could not get Player Database for " + player.getName());
+            return;
+        }
+
+        playerDatabase.CustomFormats.put(customFormatMessage.getFormat(), (customFormatMessage.getValue() == null) ? "" : customFormatMessage.getValue());
     }
 
     @PacketHandler

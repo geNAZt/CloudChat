@@ -7,6 +7,7 @@ import net.cubespace.lib.CubespacePlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -49,5 +50,6 @@ public class PlayerDatabase extends Config {
     public Integer MutedFor = 0;
     public Boolean Spy = false;
     public Boolean ChatSpy = false;
+    public HashMap<String, String> CustomFormats = new HashMap<>();
     public ArrayList<Mail> Mails = new ArrayList<>();
 }
