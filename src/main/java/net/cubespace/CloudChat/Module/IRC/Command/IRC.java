@@ -48,7 +48,7 @@ public class IRC implements CLICommand {
         messageBuilder.setText(FontFormat.translateString(messages.Command_IRC_Mute_Success)).send(sender);
     }
 
-    @Command(command = "irc:mute", arguments = 0)
+    @Command(command = "irc:unmute", arguments = 0)
     public void ircUnmuteCommand(final CommandSender sender, String[] args) {
         final Messages messages = plugin.getConfigManager().getConfig("messages");
 

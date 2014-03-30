@@ -15,7 +15,6 @@ public class Messages extends Config {
 
     public String NoPermission = "&cYou don't have the Permission to use this Command";
 
-
     public String PlayerJoin = "&8[&2%channel_short{click:focusChannel}&8]&r %prefix%nick{click:playerMenu}%suffix&r joined the Server";
     public String PlayerQuit = "&8[&2%channel_short{click:focusChannel}&8]&r %prefix%nick%suffix&r left the Server";
 
@@ -104,7 +103,6 @@ public class Messages extends Config {
 
     public String IRC_PmSessionChangedTo = "!!! %from you are now talking with %to !!!";
 
-    public String Command_Mail_Send_NotPlayer = "&cOnly Players can send mails";
     public String Command_Mail_Send_UnknownPlayer = "&cThis Player is not known. Can not send a Mail to it";
     public String Command_Mail_Send_Success = "&6Mail was sent";
 

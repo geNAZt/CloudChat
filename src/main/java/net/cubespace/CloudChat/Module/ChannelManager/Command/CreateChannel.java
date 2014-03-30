@@ -68,9 +68,10 @@ public class CreateChannel implements CLICommand {
         //Join the Channel
         channelManager.reload();
 
-        sender.setPermission("cloudchat.channel." + channelDatabase.Name, true);
-        if(sender instanceof ProxiedPlayer)
+        if(sender instanceof ProxiedPlayer) {
+            sender.setPermission("cloudchat.channel." + channelDatabase.Name, true);
             channelManager.join((ProxiedPlayer) sender, channelDatabase);
+        }
 
         MessageBuilder messageBuilder = new MessageBuilder();
         messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Create_CreatedChannel.replace("%channel", channelDatabase.Name).replace("%password", channelDatabase.Password))).send(sender);

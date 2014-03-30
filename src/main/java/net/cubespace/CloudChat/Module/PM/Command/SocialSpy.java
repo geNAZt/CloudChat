@@ -24,7 +24,6 @@ public class SocialSpy implements CLICommand {
     public void msgCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
 
-
         if(!(sender instanceof ProxiedPlayer)) {
             plugin.getPluginLogger().debug("But sender was not a Player");
 

@@ -6,6 +6,7 @@ import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.command.ConsoleCommandSender;
 
 public class Binder extends Command {
     protected String commandName;
@@ -20,7 +21,7 @@ public class Binder extends Command {
 
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
-        if(plugin.getPermissionManager().has(commandSender, "cloudchat.command.*") || plugin.getPermissionManager().has(commandSender, "cloudchat.command." + commandName.replace(":", "."))) {
+        if(commandSender instanceof ConsoleCommandSender || plugin.getPermissionManager().has(commandSender, "cloudchat.command.*") || plugin.getPermissionManager().has(commandSender, "cloudchat.command." + commandName.replace(":", "."))) {
             plugin.getCommandExecutor().onCommand(commandSender, commandName, strings);
         } else {
             MessageBuilder messageBuilder = new MessageBuilder();

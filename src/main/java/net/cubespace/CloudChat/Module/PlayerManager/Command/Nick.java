@@ -29,18 +29,8 @@ public class Nick implements CLICommand {
 
         plugin.getPluginLogger().debug("Got a Nickchange");
 
-        //Check if the Sender is a Player since we only can change Players Nicknames
-        if (!(sender instanceof ProxiedPlayer)) {
-            plugin.getPluginLogger().debug("But not from a Player");
-
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_NotPlayer)).send(sender);
-
-            return;
-        }
-
         if (args.length > 1) {
-            if (!plugin.getPermissionManager().has(sender, "cloudchat.command.nick.other")) {
+            if (sender instanceof ProxiedPlayer && !plugin.getPermissionManager().has(sender, "cloudchat.command.nick.other")) {
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_NoPermissionToChangeOther)).send(sender);
                 return;
@@ -67,6 +57,14 @@ public class Nick implements CLICommand {
                 plugin.getAsyncEventBus().callEvent(new PlayerNickchangeEvent(player, playerDatabase.Nick, args[1]));
             }
         } else {
+            //Check if the Sender is a Player since we only can change Players Nicknames
+            if (!(sender instanceof ProxiedPlayer)) {
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Nick_NotPlayer)).send(sender);
+
+                return;
+            }
+
             PlayerDatabase playerDatabase = ((PlayerManager) plugin.getManagerRegistry().getManager("playerManager")).get(sender.getName());
 
             if (args[0].equalsIgnoreCase("off")) {

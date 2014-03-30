@@ -44,13 +44,6 @@ public class Mail implements CLICommand {
     public void mailSendCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
 
-        //Check if the Mail comes from the Console
-        if(!(sender instanceof ProxiedPlayer)) {
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Send_NotPlayer)).send(sender);
-            return;
-        }
-
         boolean save = false;
 
         //Try to load the PlayerDatabase if not already loaded
