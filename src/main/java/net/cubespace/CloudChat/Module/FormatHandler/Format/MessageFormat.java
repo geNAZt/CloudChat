@@ -81,6 +81,11 @@ public class MessageFormat {
             save = true;
         }
 
+        if(!channelDatabase.Formats.containsKey("player")) {
+            channelDatabase.Formats.put("player", "%player");
+            save = true;
+        }
+
         if(save) {
             try {
                 channelDatabase.save();
@@ -167,6 +172,12 @@ public class MessageFormat {
             } else {
                 output = output.replace("%world", "");
             }
+
+            if(!playerDatabase.Realname.equals("")) {
+                output = output.replace("%player", channel.Formats.get("player").replace("%player", playerDatabase.Realname));
+            } else {
+                output = output.replace("%player", "");
+            }
         } else {
             String nick = playerDatabase.Nick;
             if (!playerDatabase.Nick.equals(playerDatabase.Realname)) {
@@ -180,6 +191,7 @@ public class MessageFormat {
             output = output.replace("%faction", playerDatabase.Faction);
             output = output.replace("%town", playerDatabase.Town);
             output = output.replace("%nation", playerDatabase.Nation);
+            output = output.replace("%player", playerDatabase.Realname);
 
             //Server things
             output = output.replace("%server", playerDatabase.Server);
