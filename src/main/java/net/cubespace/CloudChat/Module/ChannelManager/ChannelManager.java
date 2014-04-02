@@ -138,6 +138,7 @@ public class ChannelManager implements IManager {
         faction.Short = alias;
         faction.Name = channel;
         faction.Format = "&8[&2%channel_short&8] (%faction&8)&r%prefix%nick{click:playerMenu}%suffix&r: %message";
+        faction.SpyFormat = "&8[&4SPY&8] [&2%channel_short&8] (%faction&8)&r%prefix%nick{click:playerMenu}%suffix&r: %message";
         faction.Forced = false;
 
         try {
@@ -154,6 +155,7 @@ public class ChannelManager implements IManager {
         towny.Short = alias;
         towny.Name = channel;
         towny.Format = "&8[&2%channel_short&8] (%nation:%town&8)&r%prefix%nick{click:playerMenu}%suffix&r: %message";
+        towny.SpyFormat = "&8[&4SPY&8] [&2%channel_short&8] (%nation:%town&8)&r%prefix%nick{click:playerMenu}%suffix&r: %message";
         towny.Forced = false;
 
         try {
@@ -225,6 +227,7 @@ public class ChannelManager implements IManager {
         global.Short = ((Main) plugin.getConfigManager().getConfig("main")).Global.substring(0,1);
         global.Name = ((Main) plugin.getConfigManager().getConfig("main")).Global;
         global.Format = "&8[&2%channel_short&8] %prefix%nick{click:playerMenu}%suffix&r: %message";
+        global.SpyFormat = "&8[&4SPY&8] &8[&2%channel_short&8] %prefix%nick{click:playerMenu}%suffix&r: %message";
         global.Forced = true;
 
         try {

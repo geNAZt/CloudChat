@@ -4,7 +4,6 @@ import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
-import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
@@ -16,9 +15,7 @@ import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -65,18 +62,6 @@ public class ChatMessageListener implements Listener {
             messageBuilder.setText(event.getMessage());
 
             for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
-                //Let people spy
-                plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        for (Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
-                            if (playerDatabase.getValue().ChatSpy && !channelManager.getAllInChannel(event.getSender().getChannel()).contains(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname))) {
-                                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname), messageBuilder, event.getSender()));
-                            }
-                        }
-                    }
-                });
-
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
             }
         } else {
@@ -90,18 +75,6 @@ public class ChatMessageListener implements Listener {
                 if (player == null) {
                     continue;
                 }
-
-                //Let people spy
-                plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        for (Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
-                            if (playerDatabase.getValue().ChatSpy && !receiptens.contains(playerDatabase.getValue().Realname)) {
-                                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname), messageBuilder, event.getSender()));
-                            }
-                        }
-                    }
-                });
 
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
             }
