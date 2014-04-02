@@ -86,7 +86,7 @@ public class AsyncChatListener {
             }
 
             // Message
-            if(channelDatabase != null) {
+            if(cmd.length > 1 && channelDatabase != null) {
                 if(channelManager.getAllInChannel(channelDatabase).contains(event.getSender())) {
                     if(playerManager.get(event.getSender().getName()).AFK) {
                         plugin.getPluginMessageManager("CloudChat").sendPluginMessage(event.getSender(), new AFKMessage(false));
