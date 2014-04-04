@@ -193,10 +193,11 @@ public class ChannelManager implements IManager {
         load();
 
         LinkedHashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> inChannel = new LinkedHashMap<>();
+
         for(Map.Entry<ChannelDatabase, ArrayList<ProxiedPlayer>> inChannelEntry : new LinkedHashMap<>(this.playerInChannel).entrySet()) {
             for(String channelName : loadedChannels.keySet()) {
                 if(inChannelEntry.getKey().Name.toLowerCase().equals(channelName.toLowerCase())) {
-                    playerInChannel.put(loadedChannels.get(channelName.toLowerCase()), inChannelEntry.getValue());
+                    inChannel.put(loadedChannels.get(channelName.toLowerCase()), inChannelEntry.getValue());
                 }
             }
         }
