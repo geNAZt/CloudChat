@@ -2,8 +2,10 @@ package net.cubespace.PluginMessages;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketWriter;
 import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
+
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +39,9 @@ public class LocalPlayersResponse extends StandardPacket {
     protected void handle(DataInputStream dataInputStream) throws IOException {
         this.message = dataInputStream.readUTF();
         this.channel = dataInputStream.readUTF();
-        this.to = Arrays.asList(dataInputStream.readUTF().split("§"));
+
+        this.to = new ArrayList<>();
+        this.to.addAll(Arrays.asList(dataInputStream.readUTF().split("§")));
     }
 
     @Override
