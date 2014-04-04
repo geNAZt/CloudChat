@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
+import net.cubespace.CloudChat.Config.JoinOrder;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
@@ -15,6 +16,7 @@ import net.cubespace.lib.Permission.Event.PermissionChangedEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -55,12 +57,25 @@ public class PermissionChangedListener {
         channelManager.joinForcedChannels(player);
 
         boolean focusedNew = false;
+        HashSet<String> foundChannels = new HashSet<>();
         for (ChannelDatabase channelDatabase : new ArrayList<>(joinedChannels)) {
             if (channelDatabase.FocusOnJoin && !plugin.getPermissionManager().has(player, "cloudchat.ignore.focusonjoin")) {
-                playerDatabase.Focus = channelDatabase.Name.toLowerCase();
-                focusedNew = true;
-                break;
+                foundChannels.add(channelDatabase.Name);
             }
+        }
+
+        JoinOrder joinOrder = plugin.getConfigManager().getConfig("joinOrder");
+        if (joinOrder.JoinOrder.containsKey(player.getServer().getInfo().getName())) {
+            for (String channel : joinOrder.JoinOrder.get(player.getServer().getInfo().getName())) {
+                if (foundChannels.contains(channel))  {
+                    playerDatabase.Focus = channel.toLowerCase();
+                    focusedNew = true;
+                    break;
+                }
+            }
+        } else {
+            playerDatabase.Focus = foundChannels.iterator().next().toLowerCase();
+            focusedNew = true;
         }
 
         Messages messages = plugin.getConfigManager().getConfig("messages");

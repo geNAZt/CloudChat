@@ -5,6 +5,7 @@ import net.cubespace.CloudChat.Config.Database;
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.IRC;
 import net.cubespace.CloudChat.Config.IRCPermissions;
+import net.cubespace.CloudChat.Config.JoinOrder;
 import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Config.PermissionContainers;
@@ -55,6 +56,7 @@ public class CloudChatPlugin extends CubespacePlugin {
         getConfigManager().initConfig("towny", new Towny(this));
         getConfigManager().initConfig("permissionContainers", new PermissionContainers(this));
         getConfigManager().initConfig("uuidMappings", new UUIDMappings(this));
+        getConfigManager().initConfig("joinOrder", new JoinOrder(this));
 
         //Keep track of new Commands
         if (!commandAliases.BaseCommands.containsKey("channels"))
