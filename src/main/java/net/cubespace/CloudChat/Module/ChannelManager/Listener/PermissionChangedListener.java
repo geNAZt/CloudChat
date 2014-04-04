@@ -61,11 +61,6 @@ public class PermissionChangedListener {
                 focusedNew = true;
                 break;
             }
-
-            if (channelDatabase.Forced || channelDatabase.ForceIntoWhenPermission) {
-                playerDatabase.Focus = channelDatabase.Name.toLowerCase();
-                focusedNew = true;
-            }
         }
 
         Messages messages = plugin.getConfigManager().getConfig("messages");
