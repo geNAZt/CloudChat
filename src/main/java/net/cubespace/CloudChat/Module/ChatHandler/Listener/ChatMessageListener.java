@@ -8,6 +8,7 @@ import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
+import net.cubespace.lib.Chat.MessageBuilder.LegacyMessageBuilder;
 import net.cubespace.lib.Chat.MessageBuilder.MessageBuilder;
 import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
@@ -80,6 +81,8 @@ public class ChatMessageListener implements Listener {
             }
         }
 
-        plugin.getPluginLogger().info(event.getMessage());
+        LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
+        legacyMessageBuilder.setText(event.getMessage());
+        plugin.getPluginLogger().info(legacyMessageBuilder.getString());
     }
 }
