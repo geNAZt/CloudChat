@@ -79,9 +79,6 @@ public class PermissionChangedListener {
                 Main config = plugin.getConfigManager().getConfig("main");
                 plugin.getPluginLogger().warn("Falling back to the global Channel since there seems no FocusOnJoin Channels");
 
-                MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", config.Global))).send(player);
-
                 playerDatabase.Focus = config.Global;
             }
         }
