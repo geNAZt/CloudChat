@@ -42,6 +42,6 @@ public class ServerConnectedListener implements Listener {
 
                 plugin.getAsyncEventBus().callEvent(new ServerConnectEvent(event.getPlayer(), event.getServer().getInfo()));
             }
-        }, (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);
+        }, 1 + (((Main) plugin.getConfigManager().getConfig("main")).DelayFor * 1000), TimeUnit.MILLISECONDS);
     }
 }
