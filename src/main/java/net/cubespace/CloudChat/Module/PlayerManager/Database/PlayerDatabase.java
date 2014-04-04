@@ -50,6 +50,8 @@ public class PlayerDatabase extends Config {
     public Integer MutedFor = 0;
     public Boolean Spy = false;
     public Boolean ChatSpy = false;
+    public String Conversation_Request = "";
+    public String Conversation_Current = "";
     public HashMap<String, String> CustomFormats = new HashMap<>();
     public ArrayList<Mail> Mails = new ArrayList<>();
 }

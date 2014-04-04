@@ -9,6 +9,9 @@ import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Sender.Sender;
 import net.cubespace.CloudChat.Module.FormatHandler.Format.FontFormat;
+import net.cubespace.CloudChat.Module.PM.CancelReason;
+import net.cubespace.CloudChat.Module.PM.Event.ConversationCancelEvent;
+import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.CloudChat.Util.StringUtils;
 import net.cubespace.PluginMessages.AFKMessage;
@@ -77,7 +80,18 @@ public class AsyncChatListener {
                     return false;
                 }
 
-                playerManager.get(event.getSender().getName()).Focus = channelDatabase.Name.toLowerCase();
+                PlayerDatabase playerDatabase = playerManager.get(event.getSender().getName());
+                playerDatabase.Focus = channelDatabase.Name.toLowerCase();
+
+                if (!playerDatabase.Conversation_Current.equals("")) {
+                    PlayerDatabase other = playerManager.get(playerDatabase.Conversation_Current);
+                    ConversationCancelEvent conversationCancelEvent = new ConversationCancelEvent(playerDatabase.Realname, playerDatabase.Conversation_Current, CancelReason.PLAYER_CANCEL);
+                    plugin.getAsyncEventBus().callEvent(conversationCancelEvent);
+
+                    other.Conversation_Current = "";
+                    playerDatabase.Conversation_Current = "";
+                }
+
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", channelDatabase.Name))).send(event.getSender());
 

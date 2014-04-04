@@ -69,16 +69,16 @@ public class PlayerManager implements IManager {
     public void remove(ProxiedPlayer player) {
         plugin.getPluginLogger().debug("Removing PlayerDatabase for " + player);
 
-        if (loadedPlayers.containsKey(player)) {
+        if (loadedPlayers.containsKey(player.getName())) {
             plugin.getPluginLogger().info("Saving PlayerDatabase for " + player);
 
-            loadedPlayers.get(player).Reply = "";
+            loadedPlayers.get(player.getName()).Reply = "";
 
             //Get the Channels the Player is in
-            loadedPlayers.get(player).JoinedChannels = new ArrayList<>();
+            loadedPlayers.get(player.getName()).JoinedChannels = new ArrayList<>();
             ChannelManager channelManager = plugin.getManagerRegistry().getManager("channelManager");
             for (ChannelDatabase channelDatabase : channelManager.getAllJoinedChannels(player)) {
-                loadedPlayers.get(player).JoinedChannels.add(channelDatabase.Name);
+                loadedPlayers.get(player.getName()).JoinedChannels.add(channelDatabase.Name);
             }
 
             save(player.getName());
@@ -115,7 +115,7 @@ public class PlayerManager implements IManager {
     }
 
     public void load(ProxiedPlayer player) {
-        load((FeatureDetector.canUseUUID()) ? player.getUUID() : player.getName(), player.getName());
+        load((FeatureDetector.canUseUUID()) ? FeatureDetector.getUUID(player) : player.getName(), player.getName());
     }
 
     /**

@@ -181,4 +181,21 @@ public class Messages extends Config {
 
     public String Command_TogglePM_YouNowIgnore = "&6You now ignore PMs";
     public String Command_TogglePM_YouDontIgnore = "&6You don't ignore PMs";
+
+    public String Command_Conversation_NotPlayer = "&cOnly Players can use conversations";
+    public String Command_Conversation_SamePlayer = "&cYou can't start a conversation with yourself";
+    public String Command_Conversation_TargetIsOffline = "&cThe conversation target is offline";
+    public String Command_Conversation_NoTarget = "&cThe conversation target could not be found";
+    public String Command_Conversation_GotRequest = "&6You got a conversation request from &a%sender&6. Type &a/conversation accept&6 to accept, &a/conversation cancel&6 to cancel";
+    public String Command_Conversation_SendRequest = "&6The conversation request was sent.";
+    public String Command_Conversation_TargetLeft = "&cThe conversation target left the Server. Please try again when its online again";
+    public String Command_Conversation_RequestTimedOut = "&cThe conversation request timed out. Please try again later.";
+    public String Command_Conversation_SenderLeft = "&cThe conversation request sender is offline. Please try again when its online again";
+    public String Command_Conversation_NoRequest = "&cYou have no conversation request pending.";
+    public String Command_Conversation_AcceptedTarget = "&6You now started a conversation with &a%target";
+    public String Command_Conversation_AcceptedSender = "&6Your conversation was accepted";
+    public String Command_Conversation_PlayerCanceled = "&cThe conversation was left or the opposite has canceled the conversation";
+    public String Command_Conversation_NothingToCancel = "&cYou have no conversation to cancel";
+
+    public String Conversation_Format = "&7[&aConversation&7] %nick: %message";
 }

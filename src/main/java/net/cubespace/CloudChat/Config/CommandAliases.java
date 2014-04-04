@@ -48,6 +48,7 @@ public class CommandAliases extends Config {
         BaseCommands.put("clearchat", "clearchat");
         BaseCommands.put("channels", "channels");
         BaseCommands.put("togglepm", "togglepm");
+        BaseCommands.put("conversation", "conversation");
     }
 
     public HashMap<String, String> BaseCommands = new HashMap<>();
@@ -78,4 +79,5 @@ public class CommandAliases extends Config {
     public ArrayList<String> IRCMute = new ArrayList<>();
     public ArrayList<String> IRCUnmute = new ArrayList<>();
     public ArrayList<String> ChatSpy = new ArrayList<>();
+    public ArrayList<String> Conversation = new ArrayList<>();
 }

@@ -31,8 +31,7 @@ public class AsyncChatListener
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onAsynChat(AsyncChatEvent event)
-    {
+    public void onAsynChat(AsyncChatEvent event) {
         ChannelDatabase channelDatabase = channelManager.get(playerManager.get(event.getSender().getName()).Focus);
         //JR start
         if (channelDatabase.IsLocal) {

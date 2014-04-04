@@ -4,9 +4,13 @@ import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Module.PM.Command.Conversation;
 import net.cubespace.CloudChat.Module.PM.Command.PM;
 import net.cubespace.CloudChat.Module.PM.Command.SocialSpy;
+import net.cubespace.CloudChat.Module.PM.Listener.CheckCommandListener;
+import net.cubespace.CloudChat.Module.PM.Listener.ConversationListener;
 import net.cubespace.CloudChat.Module.PM.Listener.PMListener;
+import net.cubespace.CloudChat.Module.PM.Listener.PlayerQuitListener;
 import net.cubespace.lib.Module.Module;
 
 /**
@@ -39,9 +43,17 @@ public class PMModule extends Module {
             plugin.getBindManager().bind(commandAliases.BaseCommands.get("togglepm"), Binder.class, commandAliases.TogglePM.toArray(new String[0]));
         }
 
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("conversation"))) {
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("conversation"), Binder.class, commandAliases.Conversation.toArray(new String[0]));
+            plugin.getCommandExecutor().add(this, new Conversation(plugin));
+        }
+
         plugin.getCommandExecutor().add(this, new PM(plugin));
 
         plugin.getAsyncEventBus().addListener(this, new PMListener(plugin));
+        plugin.getAsyncEventBus().addListener(this, new ConversationListener(plugin));
+        plugin.getAsyncEventBus().addListener(this, new PlayerQuitListener(plugin));
+        plugin.getAsyncEventBus().addListener(this, new CheckCommandListener(plugin));
     }
 
     @Override
@@ -64,8 +76,11 @@ public class PMModule extends Module {
             plugin.getBindManager().unbind(commandAliases.BaseCommands.get("togglepm"));
         }
 
-        plugin.getCommandExecutor().remove(this);
+        if(plugin.getBindManager().isBound(commandAliases.BaseCommands.get("conversation"))) {
+            plugin.getBindManager().unbind(commandAliases.BaseCommands.get("conversation"));
+        }
 
+        plugin.getCommandExecutor().remove(this);
         plugin.getAsyncEventBus().removeListener(this);
     }
 }

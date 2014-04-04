@@ -32,4 +32,6 @@ public class Main extends Config {
     public Boolean UseChannelShortFocus = true;
     @Comment("Never alter this please")
     public Boolean FirstStart = true;
+    @Comment("Timeout after which Conversation requests should timeout (in seconds)")
+    public Integer ConversationTimeout = 10;
 }
