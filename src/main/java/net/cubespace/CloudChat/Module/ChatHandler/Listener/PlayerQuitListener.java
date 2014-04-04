@@ -34,6 +34,7 @@ public class PlayerQuitListener implements Listener {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
+        this.chatHandlerModule = chatHandlerModule;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
