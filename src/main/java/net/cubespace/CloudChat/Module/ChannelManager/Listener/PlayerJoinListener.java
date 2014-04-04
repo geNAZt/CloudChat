@@ -12,7 +12,6 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 15:50
  */
 public class PlayerJoinListener implements Listener {
     private CubespacePlugin plugin;
@@ -39,5 +38,7 @@ public class PlayerJoinListener implements Listener {
         if(!channelManager.exists(playerDatabase.Focus.toLowerCase())) {
             playerDatabase.Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global.toLowerCase();
         }
+
+
     }
 }

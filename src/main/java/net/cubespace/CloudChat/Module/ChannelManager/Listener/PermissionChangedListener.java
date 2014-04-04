@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Listener;
 
+import net.cubespace.CloudChat.Config.Main;
 import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChannelManager.Database.ChannelDatabase;
@@ -33,8 +34,8 @@ public class PermissionChangedListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPermissionChanged(PermissionChangedEvent event) {
         ProxiedPlayer player = plugin.getProxy().getPlayer(event.getPlayer());
-
         if(player == null) return;
+
         PlayerDatabase playerDatabase = playerManager.get(player.getName());
 
         //Check if Player still has permission for the Channels it is in
@@ -53,25 +54,36 @@ public class PermissionChangedListener {
 
         channelManager.joinForcedChannels(player);
 
-        boolean focusedNew = false;
-        for(ChannelDatabase channelDatabase : new ArrayList<>(joinedChannels)) {
-            if(channelDatabase.FocusOnJoin && !plugin.getPermissionManager().has(player, "cloudchat.ignore.focusonjoin")) {
-                playerDatabase.Focus = channelDatabase.Name.toLowerCase();
-                focusedNew = true;
-                break;
+        if (newFocus) {
+            boolean focusedNew = false;
+            for (ChannelDatabase channelDatabase : new ArrayList<>(joinedChannels)) {
+                if (channelDatabase.FocusOnJoin && !plugin.getPermissionManager().has(player, "cloudchat.ignore.focusonjoin")) {
+                    playerDatabase.Focus = channelDatabase.Name.toLowerCase();
+                    focusedNew = true;
+                    break;
+                }
+
+                if (channelDatabase.Forced || channelDatabase.ForceIntoWhenPermission) {
+                    playerDatabase.Focus = channelDatabase.Name.toLowerCase();
+                    focusedNew = true;
+                }
             }
 
-            if(newFocus && (channelDatabase.Forced || channelDatabase.ForceIntoWhenPermission)) {
-                playerDatabase.Focus = channelDatabase.Name.toLowerCase();
-                focusedNew = true;
-            }
-        }
-
-        if(focusedNew) {
             Messages messages = plugin.getConfigManager().getConfig("messages");
 
-            MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", playerDatabase.Focus))).send(player);
+            if (focusedNew) {
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", playerDatabase.Focus))).send(player);
+            } else {
+                // Focus the global Channel as fallback
+                Main config = plugin.getConfigManager().getConfig("main");
+                plugin.getPluginLogger().warn("Falling back to the global Channel since there seems no FocusOnJoin Channels");
+
+                MessageBuilder messageBuilder = new MessageBuilder();
+                messageBuilder.setText(FontFormat.translateString(messages.Command_Channel_Focus_FocusChannel.replace("%channel", config.Global))).send(player);
+
+                playerDatabase.Focus = config.Global;
+            }
         }
     }
 }
