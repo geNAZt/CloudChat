@@ -37,7 +37,12 @@ public class ChatMessageListener implements Listener {
         final LegacyMessageBuilder legacyMessageBuilder = new LegacyMessageBuilder();
         legacyMessageBuilder.setText(event.getMessage());
 
-        String message = event.getSender().getChannel().Format.replace("%message", legacyMessageBuilder.getString());
+        String message;
+        if (event.getSender().getChannel().GroupFormats.containsKey(event.getSender().getPlayerDatabase().Group)) {
+            message = event.getSender().getChannel().GroupFormats.get(event.getSender().getPlayerDatabase().Group).replace("%message", legacyMessageBuilder.getString());
+        } else {
+            message = event.getSender().getChannel().Format.replace("%message", legacyMessageBuilder.getString());
+        }
 
         //Let people spy
         plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {

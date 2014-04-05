@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Module.ChannelManager.Database;
 
+import net.cubespace.Yamler.Config.Comments;
 import net.cubespace.Yamler.Config.Config;
 import net.cubespace.lib.CubespacePlugin;
 
@@ -34,4 +35,10 @@ public class ChannelDatabase extends Config {
     public Boolean FocusOnJoin = false;
     public ArrayList<String> CanInvite = new ArrayList<>();
     public HashMap<String, String> Formats = new HashMap<>();
+    @Comments({
+        "This can be used to configure multiple Formats for different Permission groups",
+        "Please care that only Bukkit Groups work. The format is: key => groupname, value => format to use",
+        "When the Groupname of a Player is not found in here the default Format will be used"
+    })
+    public HashMap<String, String> GroupFormats = new HashMap<>();
 }

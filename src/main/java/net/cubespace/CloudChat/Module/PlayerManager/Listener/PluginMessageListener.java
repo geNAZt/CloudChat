@@ -63,6 +63,7 @@ public class PluginMessageListener implements PacketListener {
         playerDatabase.Town = affixMessage.getTown();
         playerDatabase.Nation = affixMessage.getNation();
         playerDatabase.Faction = affixMessage.getFaction();
+        playerDatabase.Group = affixMessage.getGroup();
 
         //Get new Permissions
         plugin.getPluginMessageManager(plugin.pluginChannel).sendPluginMessage(player, new PermissionRequest());

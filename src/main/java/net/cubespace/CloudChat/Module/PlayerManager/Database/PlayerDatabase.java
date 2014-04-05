@@ -41,6 +41,7 @@ public class PlayerDatabase extends Config {
     public String World = "";
     public String WorldAlias = "";
     public String Realname = "";
+    public String Group = "";
     public Boolean AFK = false;
     public Boolean IgnorePM = false;
     public String Server = "";

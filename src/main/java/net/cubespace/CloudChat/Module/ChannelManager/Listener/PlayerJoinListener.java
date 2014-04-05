@@ -38,7 +38,5 @@ public class PlayerJoinListener implements Listener {
         if(!channelManager.exists(playerDatabase.Focus.toLowerCase())) {
             playerDatabase.Focus = ((Main) plugin.getConfigManager().getConfig("main")).Global.toLowerCase();
         }
-
-
     }
 }

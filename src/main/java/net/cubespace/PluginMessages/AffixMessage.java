@@ -12,15 +12,17 @@ public class AffixMessage extends StandardPacket {
     private String town;
     private String nation;
     private String faction;
+    private String group;
 
     public AffixMessage() {}
 
-    public AffixMessage(String prefix, String suffix, String town, String nation, String faction) {
+    public AffixMessage(String prefix, String suffix, String town, String nation, String faction, String group) {
         this.prefix = prefix;
         this.suffix = suffix;
         this.town = town;
         this.nation = nation;
         this.faction = faction;
+        this.group = group;
     }
 
     public String getPrefix() {
@@ -43,6 +45,10 @@ public class AffixMessage extends StandardPacket {
         return faction;
     }
 
+    public String getGroup() {
+        return group;
+    }
+
     @Override
     protected void handle(DataInputStream dataInputStream) throws IOException {
         this.prefix = dataInputStream.readUTF();
@@ -50,6 +56,7 @@ public class AffixMessage extends StandardPacket {
         this.town = dataInputStream.readUTF();
         this.nation = dataInputStream.readUTF();
         this.faction = dataInputStream.readUTF();
+        this.group = dataInputStream.readUTF();
     }
 
     @Override
@@ -60,6 +67,7 @@ public class AffixMessage extends StandardPacket {
         packetWriter.writeUTF(town);
         packetWriter.writeUTF(nation);
         packetWriter.writeUTF(faction);
+        packetWriter.writeUTF(group);
         return packetWriter;
     }
 }
