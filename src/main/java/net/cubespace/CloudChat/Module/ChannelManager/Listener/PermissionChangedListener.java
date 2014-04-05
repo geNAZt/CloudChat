@@ -74,8 +74,10 @@ public class PermissionChangedListener {
                 }
             }
         } else {
-            playerDatabase.Focus = foundChannels.iterator().next().toLowerCase();
-            focusedNew = true;
+            if (foundChannels.size() > 0) {
+                playerDatabase.Focus = foundChannels.iterator().next().toLowerCase();
+                focusedNew = true;
+            }
         }
 
         Messages messages = plugin.getConfigManager().getConfig("messages");
