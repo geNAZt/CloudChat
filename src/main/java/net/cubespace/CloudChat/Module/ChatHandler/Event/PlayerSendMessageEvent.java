@@ -15,11 +15,13 @@ public class PlayerSendMessageEvent implements Event {
     private final WeakReference<ProxiedPlayer> player;
     private final MessageBuilder message;
     private final ISender sender;
+    private final String rawMessage;
 
-    public PlayerSendMessageEvent(ProxiedPlayer player, MessageBuilder message, ISender sender) {
+    public PlayerSendMessageEvent(ProxiedPlayer player, MessageBuilder message, ISender sender, String rawMessage) {
         this.player = new WeakReference<>(player);
         this.message = message;
         this.sender = sender;
+        this.rawMessage = rawMessage;
     }
 
     public ProxiedPlayer getPlayer() {
@@ -32,5 +34,9 @@ public class PlayerSendMessageEvent implements Event {
 
     public ISender getSender() {
         return sender;
+    }
+
+    public String getRawMessage() {
+        return rawMessage;
     }
 }

@@ -12,6 +12,7 @@ public class ChatMessageEvent implements Event {
     private final ISender sender;
     private String message;
     private List<String> receiptens;
+    private String rawMessage;
 
     public ChatMessageEvent(ISender sender, String message, List<String> receiptens) {
         this.sender = sender;
@@ -39,3 +40,4 @@ public class ChatMessageEvent implements Event {
         this.receiptens = receiptens;
     }
 }
+

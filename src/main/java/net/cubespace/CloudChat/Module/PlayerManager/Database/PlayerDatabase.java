@@ -8,6 +8,7 @@ import net.cubespace.lib.CubespacePlugin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -53,6 +54,13 @@ public class PlayerDatabase extends Config {
     public Boolean ChatSpy = false;
     public String Conversation_Request = "";
     public String Conversation_Current = "";
+    public Boolean Highlight = false;
+    public String HighlightColor = "&4&n";
+    public String HighlightSound = "GHAST_SHOOT";
+    public Boolean HighlightSoundEnabled = false;
+    public ArrayList<String> HighlightPattern = new ArrayList<>();
     public HashMap<String, String> CustomFormats = new HashMap<>();
     public ArrayList<Mail> Mails = new ArrayList<>();
+
+    public ArrayList<Pattern> PatternCache = new ArrayList<>();
 }

@@ -53,18 +53,21 @@ public class PlayerChangeAFKListener implements Listener {
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
 
+            String message;
             if(event.isAfk()) {
-                messageBuilder.setText(MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotAfk, channel, playerDatabase));
+                message = MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotAfk, channel, playerDatabase);
             } else {
-                messageBuilder.setText(MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotOutOfAfk, channel, playerDatabase));
+                message = MessageFormat.format(((Messages) plugin.getConfigManager().getConfig("messages")).PlayerGotOutOfAfk, channel, playerDatabase);
             }
+
+            messageBuilder.setText(message);
 
             Sender sender = new Sender(event.getPlayer().getName(), channel, playerDatabase);
 
             for(ProxiedPlayer player : inChannel) {
                 if(sent.contains(player)) continue;
 
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender, message));
                 sent.add(player);
             }
         }

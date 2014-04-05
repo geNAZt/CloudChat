@@ -4,6 +4,7 @@ import net.cubespace.CloudChat.Command.Binder.Binder;
 import net.cubespace.CloudChat.Command.Binder.PlayerBinder;
 import net.cubespace.CloudChat.Config.CommandAliases;
 import net.cubespace.CloudChat.Config.Main;
+import net.cubespace.CloudChat.Module.PlayerManager.Command.Highlight;
 import net.cubespace.CloudChat.Module.PlayerManager.Command.Nick;
 import net.cubespace.CloudChat.Module.PlayerManager.Command.Realname;
 import net.cubespace.CloudChat.Module.PlayerManager.Listener.AsyncChatListener;
@@ -51,6 +52,14 @@ public class PlayerManagerModule extends Module {
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Realname(plugin));
+        }
+
+        if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("highlight"))) {
+            //Register the correct Binder
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("highlight"), Binder.class, commandAliases.Highlight.toArray(new String[0]));
+
+            //Register this as a Command Handler
+            plugin.getCommandExecutor().add(this, new Highlight(plugin));
         }
 
         //Register the Listener

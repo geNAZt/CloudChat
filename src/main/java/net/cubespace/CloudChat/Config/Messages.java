@@ -198,4 +198,14 @@ public class Messages extends Config {
     public String Command_Conversation_NothingToCancel = "&cYou have no conversation to cancel";
 
     public String Conversation_Format = "&7[&aConversation&7] %nick: %message";
+
+    public String Command_Highlight_NotPlayer = "&cOnly Players can use highlight";
+    public String Command_Highlight_Enabled = "&6Highlight is enabled";
+    public String Command_Highlight_Disabled = "&6Highlight is disabled";
+    public String Command_Highlight_Sound_Enabled = "&6Highlight sound has been enabled";
+    public String Command_Highlight_Sound_Disabled = "&6Highlight sound has been disabled";
+    public String Command_Highlight_Sound_Changed = "&6Highlight sound was changed to &a%sound";
+    public String Command_Highlight_Header = "&6=== All Highlights you have configured ===";
+    public String Command_Highlight_Removed = "&6Highlight pattern was removed";
+    public String Command_Highlight_Added = "&6Highlight pattern was added";
 }

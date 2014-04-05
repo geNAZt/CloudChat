@@ -44,7 +44,7 @@ public class PMModule extends Module {
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("conversation"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("conversation"), Binder.class, commandAliases.Conversation.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("conversation"), PlayerBinder.class, commandAliases.Conversation.toArray(new String[0]));
             plugin.getCommandExecutor().add(this, new Conversation(plugin));
         }
 

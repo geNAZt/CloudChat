@@ -77,6 +77,9 @@ public class CloudChatPlugin extends CubespacePlugin {
         if (!commandAliases.BaseCommands.containsKey("conversation"))
             commandAliases.BaseCommands.put("conversation", "conversation");
 
+        if (!commandAliases.BaseCommands.containsKey("highlight"))
+            commandAliases.BaseCommands.put("highlight", "highlight");
+
         //Static init
         FeatureDetector.init(this);
         AutoComplete.init(this);

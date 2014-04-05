@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -80,6 +81,8 @@ public class PlayerManager implements IManager {
             for (ChannelDatabase channelDatabase : channelManager.getAllJoinedChannels(player)) {
                 loadedPlayers.get(player.getName()).JoinedChannels.add(channelDatabase.Name);
             }
+
+            loadedPlayers.get(player.getName()).PatternCache = new ArrayList<>();
 
             save(player.getName());
         }
@@ -212,6 +215,11 @@ public class PlayerManager implements IManager {
 
             try {
                 playerDatabase.init();
+
+                for (String pattern : playerDatabase.HighlightPattern) {
+                    playerDatabase.PatternCache.add(Pattern.compile(pattern));
+                }
+
                 loadedPlayers.put(player, playerDatabase);
             } catch (Exception e) {
                 plugin.getPluginLogger().error("Could not init PlayerDatabase for " + player, e);

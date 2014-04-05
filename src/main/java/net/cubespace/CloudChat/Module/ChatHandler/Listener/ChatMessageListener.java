@@ -63,7 +63,7 @@ public class ChatMessageListener implements Listener {
             messageBuilder.setText(event.getMessage());
 
             for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender(), event.getMessage()));
             }
         } else {
             final MessageBuilder messageBuilder = new MessageBuilder();
@@ -77,7 +77,7 @@ public class ChatMessageListener implements Listener {
                     continue;
                 }
 
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender(), event.getMessage()));
             }
         }
 

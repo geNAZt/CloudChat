@@ -59,7 +59,7 @@ public class PlayerQuitListener implements Listener {
             for(ProxiedPlayer player : inChannel) {
                 if(sent.contains(player)) continue;
 
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender, message));
                 sent.add(player);
             }
         }

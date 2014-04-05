@@ -60,7 +60,7 @@ public class PlayerJoinListener implements Listener {
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.setText(message).addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
 
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender, message));
                 sent.add(player);
             }
         }

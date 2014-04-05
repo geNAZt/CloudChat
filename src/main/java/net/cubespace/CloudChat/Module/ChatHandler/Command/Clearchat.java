@@ -47,7 +47,7 @@ public class Clearchat implements CLICommand {
 
             //Fire off some rounds of empty Messages :)
             for(int i = 0; i < 30; i++) {
-                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender1));
+                plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, sender1, ""));
             }
         } else {
             switch(args[0]) {
@@ -75,7 +75,7 @@ public class Clearchat implements CLICommand {
                     PlayerDatabase playerDatabase = playerManager.get(player.getName());
                     Sender sender1 = new Sender(player.getName(), null, playerDatabase);
                     for(int i = 0; i < 30; i++) {
-                        plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player1, messageBuilder, sender1));
+                        plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player1, messageBuilder, sender1, ""));
                     }
 
                     MessageBuilder messageBuilder2 = new MessageBuilder();
@@ -106,7 +106,7 @@ public class Clearchat implements CLICommand {
                         for(int i = 0; i < 30; i++) {
                             PlayerDatabase playerDatabase1 = playerManager.get(player2.getName());
                             Sender sender2 = new Sender(player.getName(), null, playerDatabase1);
-                            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player2, messageBuilder, sender2));
+                            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player2, messageBuilder, sender2, ""));
                         }
                     }
 
@@ -123,7 +123,7 @@ public class Clearchat implements CLICommand {
                         for(int i = 0; i < 30; i++) {
                             PlayerDatabase playerDatabase1 = playerManager.get(player2.getName());
                             Sender sender2 = new Sender(player.getName(), null, playerDatabase1);
-                            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player2, messageBuilder, sender2));
+                            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player2, messageBuilder, sender2, ""));
                         }
                     }
 

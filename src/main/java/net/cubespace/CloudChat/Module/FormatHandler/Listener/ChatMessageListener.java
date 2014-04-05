@@ -58,11 +58,13 @@ public class ChatMessageListener implements Listener {
 
                 MessageBuilder messageBuilder = new MessageBuilder();
                 messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
-                messageBuilder.setText(MessageFormat.format(event.getSender().getChannel().Format.replace("%message", legacyMessageBuilder.getString()), event.getSender().getChannel(), event.getSender().getPlayerDatabase()));
+
+                String message = MessageFormat.format(event.getSender().getChannel().Format.replace("%message", legacyMessageBuilder.getString()), event.getSender().getChannel(), event.getSender().getPlayerDatabase());
+                messageBuilder.setText(message);
 
                 for (Map.Entry<String, PlayerDatabase> playerDatabase : new HashMap<>(playerManager.getLoadedPlayers()).entrySet()) {
                     if (playerDatabase.getValue().ChatSpy && !channelManager.getAllInChannel(event.getSender().getChannel()).contains(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname))) {
-                        plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname), messageBuilder, event.getSender()));
+                        plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(plugin.getProxy().getPlayer(playerDatabase.getValue().Realname), messageBuilder, event.getSender(), message));
                     }
                 }
             }

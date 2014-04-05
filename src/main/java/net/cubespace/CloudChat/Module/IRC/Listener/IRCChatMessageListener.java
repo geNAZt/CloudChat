@@ -37,7 +37,7 @@ public class IRCChatMessageListener implements Listener {
             MessageBuilder messageBuilder = new MessageBuilder();
             messageBuilder.addEvent("focusChannel", clickEvent1);
             messageBuilder.setText(message);
-            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender()));
+            plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender(), message));
         }
 
         plugin.getPluginLogger().info(event.getMessage());
