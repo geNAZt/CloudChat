@@ -4,7 +4,6 @@ import net.cubespace.CloudChat.Config.Messages;
 import net.cubespace.CloudChat.Module.ChannelManager.ChannelManager;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.ChatMessageEvent;
 import net.cubespace.CloudChat.Module.ChatHandler.Event.PlayerSendMessageEvent;
-import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
 import net.cubespace.lib.Chat.FontFormat;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickAction;
 import net.cubespace.lib.Chat.MessageBuilder.ClickEvent.ClickEvent;
@@ -22,16 +21,15 @@ import java.util.List;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class ChatMessageListener implements Listener {
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
 
     public ChatMessageListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
-        this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChatMessage(final ChatMessageEvent event) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -57,19 +55,16 @@ public class ChatMessageListener implements Listener {
             return;
         }
 
-        if (receiptens.get(0).equals("§ALL")) {
-            final MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
-            messageBuilder.setText(event.getMessage());
+        final MessageBuilder messageBuilder = new MessageBuilder();
+        messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
+        messageBuilder.setText(event.getMessage());
 
+
+        if (receiptens.get(0).equals("§ALL")) {
             for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender(), event.getMessage()));
             }
         } else {
-            final MessageBuilder messageBuilder = new MessageBuilder();
-            messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
-            messageBuilder.setText(event.getMessage());
-
             for(String playerName : receiptens) {
                 ProxiedPlayer player = plugin.getProxy().getPlayer(playerName);
 

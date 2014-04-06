@@ -2,7 +2,6 @@ package net.cubespace.CloudChat.Module.ChatHandler.Listener;
 
 import com.iKeirNez.PluginMessageApiPlus.PacketHandler;
 import com.iKeirNez.PluginMessageApiPlus.PacketListener;
-import com.sun.jndi.url.ldaps.ldapsURLContextFactory;
 import net.cubespace.CloudChat.Config.Factions;
 import net.cubespace.CloudChat.Config.Towny;
 import net.cubespace.CloudChat.Event.AsyncChatEvent;
@@ -30,9 +29,9 @@ import java.util.List;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PluginMessageListener implements PacketListener {
-    private PlayerManager playerManager;
-    private ChannelManager channelManager;
-    private CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final ChannelManager channelManager;
+    private final CubespacePlugin plugin;
 
     public PluginMessageListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

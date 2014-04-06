@@ -18,9 +18,9 @@ import java.util.regex.Pattern;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerSendMessageListener implements Listener {
-    private PlayerManager playerManager;
-    private ChatHandlerModule chatHandlerModule;
-    private CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final ChatHandlerModule chatHandlerModule;
+    private final CubespacePlugin plugin;
 
     public PlayerSendMessageListener(ChatHandlerModule chatHandlerModule, CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

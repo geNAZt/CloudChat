@@ -11,8 +11,12 @@ public class Database extends Config {
         CONFIG_HEADER = new String[]{"Config for Database Logging"};
     }
 
+    @SuppressWarnings("CanBeFinal")
     public Boolean Enabled = false;
+    @SuppressWarnings("CanBeFinal")
     public String Url = "jdbc:sqlite:{DIR}RegionShop.db";
+    @SuppressWarnings("CanBeFinal")
     public String Username = "walrus";
+    @SuppressWarnings("CanBeFinal")
     public String Password = "bukkit";
 }

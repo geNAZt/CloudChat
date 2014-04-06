@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 00:34
  */
 public class Spam extends Config {
     public Spam(CubespacePlugin plugin) {
@@ -19,5 +18,6 @@ public class Spam extends Config {
         SpamRules.add(new SpamEntry());
     }
 
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<SpamEntry> SpamRules = new ArrayList<>();
 }

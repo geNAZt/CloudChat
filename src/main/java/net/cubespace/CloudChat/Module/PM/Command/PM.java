@@ -16,8 +16,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.Arrays;
 
 public class PM implements CLICommand {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public PM(CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -78,6 +78,7 @@ public class PM implements CLICommand {
         plugin.getAsyncEventBus().callEvent(event);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "togglepm", arguments = 0)
     public void togglepmCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

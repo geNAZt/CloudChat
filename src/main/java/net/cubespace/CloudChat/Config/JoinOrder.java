@@ -16,6 +16,7 @@ public class JoinOrder extends Config {
         CONFIG_FILE = new File(plugin.getDataFolder(), "joinOrder.yml");
     }
 
+    @SuppressWarnings("CanBeFinal")
     @Comments({
         "Key are the Server names out of the BungeeCord config",
         "The value is a List of Channel names which get checked from top to bottom",

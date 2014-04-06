@@ -28,9 +28,9 @@ import java.util.Iterator;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Channels implements CLICommand {
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
+    private final PlayerManager playerManager;
 
     public Channels(CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -273,9 +273,8 @@ public class Channels implements CLICommand {
             }
         });
 
-        Iterator<String> iterator = iterable.iterator();
-        while(iterator.hasNext()) {
-            messageBuilder.setText(FontFormat.translateString(messages.Command_Channels_Channel.replace("%channel", iterator.next()))).send(sender);
+        for (String channel : iterable) {
+            messageBuilder.setText(FontFormat.translateString(messages.Command_Channels_Channel.replace("%channel", channel))).send(sender);
         }
     }
 }

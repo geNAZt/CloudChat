@@ -10,9 +10,9 @@ import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Unmute implements Command {
-    private CubespacePlugin plugin;
-    private IRCModule ircModule;
-    private MuteManager muteManager;
+    private final CubespacePlugin plugin;
+    private final IRCModule ircModule;
+    private final MuteManager muteManager;
 
     public Unmute(IRCModule ircModule, CubespacePlugin pl) {
         plugin = pl;

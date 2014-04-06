@@ -36,14 +36,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Bot extends PircBot implements Runnable {
-    private CubespacePlugin plugin;
-    private CommandManager cmdManager;
+    private final CubespacePlugin plugin;
+    private final CommandManager cmdManager;
     private IRCManager ircManager;
-    private IRC ircConfig;
-    private ChannelManager channelManager;
-    private ScheduledTask botTask;
-    private IRCModule ircModule;
-    private LinkedBlockingQueue<String> whoisQueue = new LinkedBlockingQueue<>();
+    private final IRC ircConfig;
+    private final ChannelManager channelManager;
+    private final ScheduledTask botTask;
+    private final IRCModule ircModule;
+    private final LinkedBlockingQueue<String> whoisQueue = new LinkedBlockingQueue<>();
     private boolean shutdown = false;
     private boolean muted = false;
 
@@ -76,18 +76,18 @@ public class Bot extends PircBot implements Runnable {
             @Override
             public void run() {
                 try {
-                    while(true) {
+                    while (isConnected()) {
                         String nick = whoisQueue.take();
 
                         Thread.sleep(500);
 
-                        if(ircManager.isNickOnline(nick)) {
+                        if (ircManager.isNickOnline(nick)) {
                             sendRawLine("WHOIS " + nick);
                         }
 
                         Thread.sleep(500);
                     }
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     plugin.getPluginLogger().warn("Got interrupted in the Whois Checking Thread", e);
                 }
             }
@@ -109,21 +109,21 @@ public class Bot extends PircBot implements Runnable {
             throw new RuntimeException();
         }
 
-        if(ircConfig.Channels.size() == 0) {
+        if (ircConfig.Channels.size() == 0) {
             plugin.getPluginLogger().warn("IRC Bot has no channels to join to");
             disconnect();
             return;
         }
 
-        if(!ircConfig.Identify.equals("")) {
+        if (!ircConfig.Identify.equals("")) {
             identify(ircConfig.Identify);
         }
 
-        for(String channel : ircConfig.Channels.values()) {
-            if(!ircManager.botHasJoined(channel)) {
+        for (String channel : ircConfig.Channels.values()) {
+            if (!ircManager.botHasJoined(channel)) {
                 plugin.getPluginLogger().debug("Attempt to join Channel " + channel);
 
-                if(channel.contains(" ")) {
+                if (channel.contains(" ")) {
                     String[] split = channel.split(" ");
                     channel = split[0];
                     joinChannel(channel, split[1]);
@@ -145,7 +145,7 @@ public class Bot extends PircBot implements Runnable {
         shutdown = true;
 
         plugin.getPluginLogger().info("Shutting IRC Bot down");
-        for(String channel : ircManager.getBotJoinedChannels()) {
+        for (String channel : ircManager.getBotJoinedChannels()) {
             sendToChannel(ircConfig.LeaveMessage, channel);
         }
 
@@ -155,17 +155,18 @@ public class Bot extends PircBot implements Runnable {
 
     /**
      * If the Bot joins a new Channel he gets the Userlist from the IRC Network
+     *
      * @param channel Channel the bot joined
-     * @param users The Users inside the Channel
+     * @param users   The Users inside the Channel
      */
     protected void onUserList(String channel, User[] users) {
-        for(User user : users) {
+        for (User user : users) {
             String nick;
-            if(user.getNick().startsWith("~") ||
-               user.getNick().startsWith("+") ||
-               user.getNick().startsWith("@") ||
-               user.getNick().startsWith("%") ||
-               user.getNick().startsWith("&")) {
+            if (user.getNick().startsWith("~") ||
+                    user.getNick().startsWith("+") ||
+                    user.getNick().startsWith("@") ||
+                    user.getNick().startsWith("%") ||
+                    user.getNick().startsWith("&")) {
                 nick = user.getNick().substring(1);
             } else {
                 nick = user.getNick();
@@ -173,10 +174,10 @@ public class Bot extends PircBot implements Runnable {
 
             plugin.getPluginLogger().debug("Adding user " + nick + " to the IRC User list for Channel " + channel);
 
-            if(!ircManager.isNickOnline(nick)) {
+            if (!ircManager.isNickOnline(nick)) {
                 ircManager.newPMSession(nick);
 
-                if(!ircManager.isResolving(nick)) {
+                if (!ircManager.isResolving(nick)) {
                     ircManager.addWhoIsResolver(nick, new WhoisResolver());
                     whoisQueue.add(user.getNick());
                 }
@@ -186,13 +187,8 @@ public class Bot extends PircBot implements Runnable {
         }
     }
 
-    /**
-     *
-     * @param message
-     * @param channel
-     */
     public synchronized void sendToChannel(String message, String channel) {
-        if(channel.contains(" ")) {
+        if (channel.contains(" ")) {
             channel = channel.split(" ")[0];
         }
 
@@ -205,50 +201,24 @@ public class Bot extends PircBot implements Runnable {
         ircManager.newWhoisLine(code, response);
     }
 
-    /**
-     * If a IRC Message comes in relay it into the Minecraft Chat
-     *
-     * @param channel
-     * @param sender
-     * @param login
-     * @param hostname
-     * @param message
-     */
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         plugin.getPluginLogger().debug("Got IRC Message from " + channel + ": " + message);
 
         relayMessage(sender, channel, IrcToMCFormat.translateString(message), true);
     }
 
-    /**
-     * If a User does a ACTION in IRC check if we relay it into Minecraft
-     *
-     * @param sender
-     * @param login
-     * @param hostname
-     * @param target
-     * @param action
-     */
     protected void onAction(String sender, String login, String hostname, String target, String action) {
-        if(ircConfig.Relay_Action) {
+        if (ircConfig.Relay_Action) {
             plugin.getPluginLogger().debug("Relaying a Action from IRC: " + sender + " " + action);
             relayMessage(sender, target, ircConfig.Relay_ActionPrefix + sender + " " + IrcToMCFormat.translateString(action), false);
         }
     }
 
-    /**
-     * When a new User joins a Channel this method gets called
-     *
-     * @param channel
-     * @param sender
-     * @param login
-     * @param hostname
-     */
     protected void onJoin(String channel, String sender, String login, String hostname) {
-        if(!ircManager.isNickOnline(sender)) {
+        if (!ircManager.isNickOnline(sender)) {
             ircManager.newPMSession(sender);
 
-            if(!ircManager.isResolving(sender)) {
+            if (!ircManager.isResolving(sender)) {
                 ircManager.addWhoIsResolver(sender, new WhoisResolver());
                 whoisQueue.add(sender);
             }
@@ -256,8 +226,8 @@ public class Bot extends PircBot implements Runnable {
 
         ircManager.addJoinedChannel(sender, channel);
 
-        if(ircConfig.Relay_Join) {
-            if(!sender.equals(ircConfig.Name)) {
+        if (ircConfig.Relay_Join) {
+            if (!sender.equals(ircConfig.Name)) {
                 plugin.getPluginLogger().debug("Adding user " + sender + " to the IRC User list for Channel " + channel);
                 relayMessage(sender, channel, ircConfig.Relay_JoinMessage, false);
             } else {
@@ -267,7 +237,7 @@ public class Bot extends PircBot implements Runnable {
     }
 
     public void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
-        if(recipientNick.equals(ircConfig.Name)) {
+        if (recipientNick.equals(ircConfig.Name)) {
             plugin.getPluginLogger().warn("We got kicked out of a Channel " + channel + " by " + kickerNick + "(" + reason + ")");
             ircManager.removeBotJoinedChannel(channel);
             ircManager.removeChannel(channel);
@@ -275,7 +245,7 @@ public class Bot extends PircBot implements Runnable {
         } else {
             ircManager.removeChannelFromNick(recipientNick, channel);
 
-            if(!ircManager.isNickOnline(recipientNick)) {
+            if (!ircManager.isNickOnline(recipientNick)) {
                 ircManager.removePMSession(recipientNick);
                 ircManager.removeWhois(recipientNick);
                 ircManager.removeScmdSessions(recipientNick);
@@ -294,7 +264,7 @@ public class Bot extends PircBot implements Runnable {
                 plugin.getPluginLogger().info("Trying to reconnect to IRC");
                 tries++;
 
-                if(tries < 5) {
+                if (tries < 5) {
                     reconnect();
                 } else {
                     plugin.getPluginLogger().warn("Maximum of 5 Tries reached. Hard reset of the Bot");
@@ -322,17 +292,17 @@ public class Bot extends PircBot implements Runnable {
     }
 
     protected void onNickChange(String oldNick, String login, String hostname, String newNick) {
-        if(ircConfig.Relay_Nickchange) {
+        if (ircConfig.Relay_Nickchange) {
             plugin.getPluginLogger().debug("IRC Nick changed from " + oldNick + " to " + newNick);
             List<String> joinedChannels = ircManager.getJoinedChannels(oldNick);
 
-            for(String channel : joinedChannels) {
+            for (String channel : joinedChannels) {
                 relayMessage(oldNick, channel, NickchangeFormatter.format(ircConfig.Relay_NickchangeMessage, oldNick, newNick), false);
                 ircManager.addJoinedChannel(newNick, channel);
             }
 
             ircManager.removeJoinedChannels(oldNick);
-            if(!ircManager.moveWhois(oldNick, newNick)) {
+            if (!ircManager.moveWhois(oldNick, newNick)) {
                 ircManager.addWhoIsResolver(newNick, new WhoisResolver());
                 whoisQueue.add(newNick);
             }
@@ -340,17 +310,17 @@ public class Bot extends PircBot implements Runnable {
             ircManager.removePMSession(oldNick);
             ircManager.newPMSession(newNick);
 
-            if(ircManager.hasScmdSessions(oldNick)) {
+            if (ircManager.hasScmdSessions(oldNick)) {
                 ircManager.moveScmdSessions(oldNick, newNick);
             }
         }
     }
 
     protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason) {
-        if(ircConfig.Relay_Quit) {
+        if (ircConfig.Relay_Quit) {
             plugin.getPluginLogger().debug("IRC User " + sourceNick + " disconnected");
 
-            for(String channel : ircManager.getJoinedChannels(sourceNick))
+            for (String channel : ircManager.getJoinedChannels(sourceNick))
                 relayMessage(sourceNick, channel, ircConfig.Relay_QuitMessage, false);
         }
 
@@ -369,14 +339,14 @@ public class Bot extends PircBot implements Runnable {
         ircSender.setRawNick(sender);
 
         //Check if Whois is resolved
-        if(!ircManager.isResolving(sender)) {
+        if (!ircManager.isResolving(sender)) {
             ircManager.addWhoIsResolver(sender, new WhoisResolver());
             whoisQueue.add(sender);
         }
 
-        if(!cmdManager.dispatchCommand(ircSender, message)) {
+        if (!cmdManager.dispatchCommand(ircSender, message)) {
             //This can only be used as PM Channel
-            if(ircManager.hasPmSession(sender) && !ircManager.getPmSession(sender).getTo().equals("")) {
+            if (ircManager.hasPmSession(sender) && !ircManager.getPmSession(sender).getTo().equals("")) {
                 PMSession pmSession = ircManager.getPmSession(sender);
                 PMEvent pmEvent = new PMEvent(ircConfig.IngameName + " " + sender, pmSession.getTo(), message);
                 plugin.getAsyncEventBus().callEvent(pmEvent);
@@ -409,10 +379,10 @@ public class Bot extends PircBot implements Runnable {
         ircSender.setRawNick(sender);
         plugin.getPluginLogger().debug("IRC Sender: " + ircSender.getNick());
 
-        if(!cmdManager.dispatchCommand(ircSender, message)) {
+        if (!cmdManager.dispatchCommand(ircSender, message)) {
             plugin.getPluginLogger().debug("Message is not a Command");
-            for(Map.Entry<String, String> channelEntry : ircConfig.Channels.entrySet()) {
-                if(channelEntry.getValue().split(" ")[0].equals(channel)) {
+            for (Map.Entry<String, String> channelEntry : ircConfig.Channels.entrySet()) {
+                if (channelEntry.getValue().split(" ")[0].equals(channel)) {
                     ChannelDatabase channelDatabase = channelManager.get(channelEntry.getKey());
                     PlayerDatabase ircDatabase = new PlayerDatabase(plugin, "IRC", "IRC");
                     ircDatabase.Nick = ircConfig.IngameName + sender;
@@ -420,7 +390,7 @@ public class Bot extends PircBot implements Runnable {
                     Sender sender1 = new Sender("IRC", channelDatabase, ircDatabase);
 
                     String sendMessage = message;
-                    if(useChannelFormat) {
+                    if (useChannelFormat) {
                         sendMessage = ircConfig.Relay_Message.replace("%message", message);
                     }
 

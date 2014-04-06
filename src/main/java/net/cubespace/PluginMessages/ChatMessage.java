@@ -8,7 +8,6 @@ import java.io.IOException;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 13.01.14 23:36
  */
 public class ChatMessage extends StandardPacket {
     private String message;

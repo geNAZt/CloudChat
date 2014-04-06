@@ -15,14 +15,15 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class ChatSpy implements CLICommand {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public ChatSpy(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "chatspy", arguments = 0)
     public void chatSpyCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

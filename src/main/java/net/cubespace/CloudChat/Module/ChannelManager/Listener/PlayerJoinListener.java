@@ -14,9 +14,9 @@ import net.cubespace.lib.EventBus.Listener;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerJoinListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
-    private ChannelManager channelManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final ChannelManager channelManager;
 
     public PlayerJoinListener(CubespacePlugin plugin) {
         this.plugin = plugin;

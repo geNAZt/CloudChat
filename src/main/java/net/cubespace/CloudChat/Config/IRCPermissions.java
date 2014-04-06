@@ -31,6 +31,8 @@ public class IRCPermissions extends Config {
         Users.put("IAmOnlyForDemo", ircPermissionUser);
     }
 
+    @SuppressWarnings("CanBeFinal")
     public HashMap<String, IRCPermissionGroup> Groups = new HashMap<>();
+    @SuppressWarnings("CanBeFinal")
     public HashMap<String, IRCPermissionUser> Users = new HashMap<>();
 }

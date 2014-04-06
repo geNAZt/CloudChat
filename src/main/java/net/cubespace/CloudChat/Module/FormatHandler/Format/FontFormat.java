@@ -1,11 +1,9 @@
 package net.cubespace.CloudChat.Module.FormatHandler.Format;
 
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.11.13 21:47
  */
 public enum FontFormat {
     BLACK("0"),

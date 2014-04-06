@@ -10,11 +10,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 01:00
  */
 public class ChatMessageListener implements Listener {
-    private CubespacePlugin plugin;
-    private SpamModule spamModule;
+    private final CubespacePlugin plugin;
+    private final SpamModule spamModule;
 
     public ChatMessageListener(SpamModule spamModule, CubespacePlugin plugin) {
         this.spamModule = spamModule;

@@ -7,10 +7,9 @@ import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 11.01.14 11:40
  */
 public class ChatBuffer {
-    private HashMap<String, ArrayList<MessageBuilder>> chatBuffer = new HashMap<>();
+    private final HashMap<String, ArrayList<MessageBuilder>> chatBuffer = new HashMap<>();
 
     public void addToBuffer(String buffer, MessageBuilder message) {
         if(!chatBuffer.containsKey(buffer)) {

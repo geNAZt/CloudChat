@@ -18,8 +18,8 @@ import net.md_5.bungee.event.EventPriority;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class TabCompleteListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public TabCompleteListener(CubespacePlugin plugin) {
         this.plugin = plugin;

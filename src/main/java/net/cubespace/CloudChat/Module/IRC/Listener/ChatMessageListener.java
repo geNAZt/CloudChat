@@ -10,11 +10,10 @@ import net.cubespace.lib.EventBus.EventPriority;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 20:25
  */
 public class ChatMessageListener {
-    private IRCModule ircModule;
-    private IRC config;
+    private final IRCModule ircModule;
+    private final IRC config;
 
     public ChatMessageListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.ircModule = ircModule;

@@ -9,8 +9,8 @@ import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Message implements Command {
-    private CubespacePlugin plugin;
-    private IRCModule ircModule;
+    private final CubespacePlugin plugin;
+    private final IRCModule ircModule;
 
     public Message(IRCModule ircModule, CubespacePlugin pl) {
         plugin = pl;

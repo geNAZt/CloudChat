@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 00:37
  */
 public class SpamModule extends Module {
     private SpamManager spamManager;

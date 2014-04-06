@@ -11,7 +11,7 @@ import net.cubespace.lib.EventBus.Listener;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerChangeAFKListener implements Listener {
-    private PlayerManager playerManager;
+    private final PlayerManager playerManager;
 
     public PlayerChangeAFKListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

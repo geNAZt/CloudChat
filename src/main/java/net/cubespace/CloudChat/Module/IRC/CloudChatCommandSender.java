@@ -8,11 +8,10 @@ import java.util.Collections;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 11.01.14 01:02
  */
 public class CloudChatCommandSender implements CommandSender {
-    private IRCModule ircModule;
-    private IRCSender sender;
+    private final IRCModule ircModule;
+    private final IRCSender sender;
 
     public CloudChatCommandSender(IRCModule ircModule, IRCSender sender) {
         this.ircModule = ircModule;

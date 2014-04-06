@@ -12,14 +12,15 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class SocialSpy implements CLICommand {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public SocialSpy(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "socialspy", arguments = 0)
     public void msgCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

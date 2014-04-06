@@ -18,13 +18,12 @@ import java.util.regex.Pattern;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 07.01.14 20:30
  */
 public class Playermenu implements CLICommand {
-    private CubespacePlugin plugin;
-    private MuteManager muteManager;
-    private PlayerManager playerManager;
-    private Pattern pattern = Pattern.compile("\\{(.*?)\\}", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+    private final CubespacePlugin plugin;
+    private final MuteManager muteManager;
+    private final PlayerManager playerManager;
+    private final Pattern pattern = Pattern.compile("\\{(.*?)\\}", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
     public Playermenu(CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -32,6 +31,7 @@ public class Playermenu implements CLICommand {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
     }
 
+    @SuppressWarnings("unused")
     @Command(command = "cc:playermenu", arguments = 1)
     public void playerMenuCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

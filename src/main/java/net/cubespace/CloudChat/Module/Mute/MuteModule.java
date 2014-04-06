@@ -29,10 +29,10 @@ public class MuteModule extends Module {
     public void onEnable() {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("mute"), PlayerBinder.class, commandAliases.Mute.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("unmute"), PlayerBinder.class, commandAliases.Unmute.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:mute"), PlayerBinder.class, commandAliases.CCMute.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:unmute"), PlayerBinder.class, commandAliases.CCUnmute.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("mute"), PlayerBinder.class, commandAliases.Mute.toArray(new String[commandAliases.Mute.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("unmute"), PlayerBinder.class, commandAliases.Unmute.toArray(new String[commandAliases.Unmute.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:mute"), PlayerBinder.class, commandAliases.CCMute.toArray(new String[commandAliases.CCMute.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:unmute"), PlayerBinder.class, commandAliases.CCUnmute.toArray(new String[commandAliases.CCUnmute.size()]));
 
         plugin.getCommandExecutor().add(this, new Mute(this, plugin));
 

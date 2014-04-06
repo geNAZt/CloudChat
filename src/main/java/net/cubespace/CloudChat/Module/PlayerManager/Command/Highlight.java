@@ -18,14 +18,15 @@ import java.util.regex.Pattern;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Highlight implements CLICommand {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public Highlight(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "highlight on", arguments = 0)
     public void highlightOn(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -43,6 +44,7 @@ public class Highlight implements CLICommand {
         messageBuilder.setText(FontFormat.translateString(messages.Command_Highlight_Enabled)).send(sender);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "highlight off", arguments = 0)
     public void highlightOf(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -60,6 +62,7 @@ public class Highlight implements CLICommand {
         messageBuilder.setText(FontFormat.translateString(messages.Command_Highlight_Disabled)).send(sender);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "highlight sound on", arguments = 0)
     public void highlightSoundOn(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -77,6 +80,7 @@ public class Highlight implements CLICommand {
         messageBuilder.setText(FontFormat.translateString(messages.Command_Highlight_Sound_Enabled)).send(sender);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "highlight sound off", arguments = 0)
     public void highlightSoundOff(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -111,6 +115,7 @@ public class Highlight implements CLICommand {
         messageBuilder.setText(FontFormat.translateString(messages.Command_Highlight_Sound_Changed.replace("%sound", args[0]))).send(sender);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "highlight list", arguments = 0)
     public void highlightList(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

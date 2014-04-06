@@ -55,11 +55,11 @@ public class PlayerDatabase extends Config {
     public String Conversation_Request = "";
     public String Conversation_Current = "";
     public Boolean Highlight = false;
-    public String HighlightColor = "&4&n";
+    public final String HighlightColor = "&4&n";
     public String HighlightSound = "GHAST_SHOOT";
     public Boolean HighlightSoundEnabled = false;
-    public ArrayList<String> HighlightPattern = new ArrayList<>();
-    public HashMap<String, String> CustomFormats = new HashMap<>();
+    public final ArrayList<String> HighlightPattern = new ArrayList<>();
+    public final HashMap<String, String> CustomFormats = new HashMap<>();
     public ArrayList<Mail> Mails = new ArrayList<>();
 
     public ArrayList<Pattern> PatternCache = new ArrayList<>();

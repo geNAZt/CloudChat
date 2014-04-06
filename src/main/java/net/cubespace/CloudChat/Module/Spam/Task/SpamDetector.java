@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class SpamDetector implements Runnable {
-    private CubespacePlugin plugin;
-    private SpamModule spamModule;
-    private MuteManager muteManager;
+    private final CubespacePlugin plugin;
+    private final SpamModule spamModule;
+    private final MuteManager muteManager;
 
     public SpamDetector(SpamModule spamModule, CubespacePlugin plugin) {
         this.spamModule = spamModule;
@@ -25,6 +25,7 @@ public class SpamDetector implements Runnable {
         this.muteManager = plugin.getManagerRegistry().getManager("muteManager");
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void run() {
         //Get all Spam Players

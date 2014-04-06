@@ -6,6 +6,7 @@ import com.iKeirNez.PluginMessageApiPlus.StandardPacket;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+@SuppressWarnings("SameParameterValue")
 public class AFKMessage extends StandardPacket {
     private boolean afk;
 

@@ -8,6 +8,7 @@ import net.cubespace.lib.Module.Module;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("WeakerAccess")
 public class FormatHandlerModule extends Module {
     @Override
     public void onLoad() {

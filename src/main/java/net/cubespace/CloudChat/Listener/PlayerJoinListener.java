@@ -9,7 +9,6 @@ import net.md_5.bungee.event.EventPriority;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 26.11.13 23:38
  */
 public class PlayerJoinListener implements Listener {
     private final PlayerManager playerManager;

@@ -4,9 +4,6 @@ import org.jibble.pircbot.Colors;
 
 import java.util.HashMap;
 
-/**
- * Created by Fabian on 29.11.13.
- */
 public enum MCToIrcFormat {
     BLACK("0"),
     DARK_BLUE("1"),

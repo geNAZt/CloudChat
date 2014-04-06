@@ -5,21 +5,18 @@ import com.iKeirNez.PluginMessageApiPlus.PacketListener;
 import net.cubespace.CloudChat.Module.IRC.IRCModule;
 import net.cubespace.CloudChat.Module.IRC.ScmdSession;
 import net.cubespace.PluginMessages.RespondScmdMessage;
-import net.cubespace.lib.CubespacePlugin;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 02.01.14 04:09
  */
 public class PluginMessageListener implements PacketListener {
-    private IRCModule ircModule;
-    private CubespacePlugin plugin;
+    private final IRCModule ircModule;
 
-    public PluginMessageListener(IRCModule ircModule, CubespacePlugin plugin) {
+    public PluginMessageListener(IRCModule ircModule) {
         this.ircModule = ircModule;
-        this.plugin = plugin;
     }
 
+    @SuppressWarnings("unused")
     @PacketHandler
     public void onRespondScmd(RespondScmdMessage respondScmdMessage) {
         //Get the SCMD Session

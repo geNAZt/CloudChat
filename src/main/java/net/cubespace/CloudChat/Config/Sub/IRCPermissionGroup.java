@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class IRCPermissionGroup extends Config {
     public int Rank = 0;
     public ArrayList<String> Permissions = new ArrayList<>();
-    public ArrayList<String> Inherits = new ArrayList<>();
-    public String prefix = "";
-    public String suffix = "";
+    public final ArrayList<String> Inherits = new ArrayList<>();
+    public final String prefix = "";
+    public final String suffix = "";
 }

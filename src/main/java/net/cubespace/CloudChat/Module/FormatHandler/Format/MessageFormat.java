@@ -89,7 +89,9 @@ public class MessageFormat {
         if(save) {
             try {
                 channelDatabase.save();
-            } catch (InvalidConfigurationException e) { }
+            } catch (InvalidConfigurationException e) {
+                plugin.getPluginLogger().warn("Could not save new custom formats.");
+            }
         }
     }
 

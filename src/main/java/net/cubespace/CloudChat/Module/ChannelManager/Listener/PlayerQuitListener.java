@@ -9,10 +9,9 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 15:50
  */
 public class PlayerQuitListener implements Listener {
-    private ChannelManager channelManager;
+    private final ChannelManager channelManager;
 
     public PlayerQuitListener(CubespacePlugin plugin) {
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");

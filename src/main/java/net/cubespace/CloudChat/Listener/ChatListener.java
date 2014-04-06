@@ -9,7 +9,7 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
 public class ChatListener implements Listener {
-    private CloudChatPlugin plugin;
+    private final CloudChatPlugin plugin;
 
     public ChatListener(CloudChatPlugin plugin) {
         this.plugin = plugin;

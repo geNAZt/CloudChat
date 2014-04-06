@@ -9,8 +9,8 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.command.ConsoleCommandSender;
 
 public class Binder extends Command {
-    protected String commandName;
-    protected CubespacePlugin plugin;
+    private final String commandName;
+    final CubespacePlugin plugin;
 
     public Binder(CubespacePlugin plugin, String name, String... aliases) {
         super(name, null, aliases);

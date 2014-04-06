@@ -21,8 +21,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PluginMessageListener implements PacketListener {
-    private PlayerManager playerManager;
-    private CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final CubespacePlugin plugin;
 
     public PluginMessageListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

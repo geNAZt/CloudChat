@@ -13,7 +13,6 @@ import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 04.01.14 00:24
  */
 public class PermissionManager {
     private class SortGroup implements Comparator<IRCPermissionGroup> {
@@ -23,11 +22,11 @@ public class PermissionManager {
         }
     }
 
-    private CubespacePlugin plugin;
-    private IRCManager ircManager;
+    private final CubespacePlugin plugin;
+    private final IRCManager ircManager;
 
     //Loaded Auth permissions
-    private HashMap<String, PermissionEntry> loadedPermisisons = new HashMap<>();
+    private final HashMap<String, PermissionEntry> loadedPermisisons = new HashMap<>();
 
     public PermissionManager(IRCManager ircManager, CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -182,6 +181,7 @@ public class PermissionManager {
         loadedPermisisons.remove(nickname);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean has(String nickname, String permission) {
         return loadedPermisisons.containsKey(nickname) && loadedPermisisons.get(nickname).getPermissions().contains(permission);
     }

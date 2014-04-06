@@ -5,8 +5,9 @@ import java.util.LinkedHashMap;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("SameParameterValue")
 public class StringUtils {
-    private static LinkedHashMap<Character, Integer> timeMultiplier = new LinkedHashMap<Character, Integer>() {{
+    private static final LinkedHashMap<Character, Integer> timeMultiplier = new LinkedHashMap<Character, Integer>() {{
         put('d', 86400);
         put('h', 3600);
         put('m', 60);

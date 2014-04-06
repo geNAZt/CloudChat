@@ -8,14 +8,13 @@ import net.cubespace.lib.CubespacePlugin;
 import net.cubespace.lib.EventBus.EventHandler;
 import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerJoinListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public PlayerJoinListener(CubespacePlugin plugin) {
         this.plugin = plugin;

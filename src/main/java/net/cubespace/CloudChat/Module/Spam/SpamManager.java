@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class SpamManager implements IManager {
-    private CubespacePlugin plugin;
-    private HashMap<String, HashMap<SpamEntry, SpamCounter>> playerSpamCounter = new HashMap<>();
+    private final CubespacePlugin plugin;
+    private final HashMap<String, HashMap<SpamEntry, SpamCounter>> playerSpamCounter = new HashMap<>();
 
     public SpamManager(CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -65,6 +65,7 @@ public class SpamManager implements IManager {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public synchronized void removeOneMessage(ProxiedPlayer player, SpamEntry spamEntry) {
         if(!playerSpamCounter.containsKey(player.getName())) return;
 

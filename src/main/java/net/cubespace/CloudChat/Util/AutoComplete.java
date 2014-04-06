@@ -5,7 +5,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 00:25
  */
 public class AutoComplete {
     private static CloudChatPlugin plugin;

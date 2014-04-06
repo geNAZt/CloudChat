@@ -52,34 +52,63 @@ public class CommandAliases extends Config {
         BaseCommands.put("highlight", "highlight");
     }
 
+    @SuppressWarnings("CanBeFinal")
     public HashMap<String, String> BaseCommands = new HashMap<>();
 
-    public ArrayList<String> Msg = new ArrayList<String>();
-    public ArrayList<String> Reply = new ArrayList<String>();
-    public ArrayList<String> Nick = new ArrayList<String>();
-    public ArrayList<String> Realname = new ArrayList<String>();
-    public ArrayList<String> Mute = new ArrayList<String>();
-    public ArrayList<String> Unmute = new ArrayList<String>();
-    public ArrayList<String> CCMute = new ArrayList<String>();
-    public ArrayList<String> CCUnmute = new ArrayList<String>();
-    public ArrayList<String> Mail = new ArrayList<String>();
-    public ArrayList<String> IRCReconnect = new ArrayList<String>();
-    public ArrayList<String> CCReload = new ArrayList<String>();
-    public ArrayList<String> CCReport = new ArrayList<String>();
-    public ArrayList<String> Broadcast = new ArrayList<String>();
-    public ArrayList<String> Join = new ArrayList<String>();
-    public ArrayList<String> Leave = new ArrayList<String>();
-    public ArrayList<String> Createchannel = new ArrayList<String>();
-    public ArrayList<String> Invite = new ArrayList<String>();
-    public ArrayList<String> Focus = new ArrayList<String>();
-    public ArrayList<String> List = new ArrayList<String>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Msg = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Reply = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Nick = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Realname = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Mute = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Unmute = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> CCMute = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> CCUnmute = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Mail = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> IRCReconnect = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> CCReload = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> CCReport = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Broadcast = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Join = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Leave = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Createchannel = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Invite = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Focus = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> List = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> Socialspy = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> Clearchat = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> Channels = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> TogglePM = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> IRCMute = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> IRCUnmute = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> ChatSpy = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> Conversation = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<String> Highlight = new ArrayList<>();
 }

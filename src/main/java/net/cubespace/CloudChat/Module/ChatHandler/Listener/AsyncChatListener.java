@@ -16,15 +16,12 @@ import java.util.ArrayList;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
-public class AsyncChatListener
-{
+public class AsyncChatListener {
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
+    private final PlayerManager playerManager;
 
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
-    private PlayerManager playerManager;
-
-    public AsyncChatListener(CubespacePlugin plugin)
-    {
+    public AsyncChatListener(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
@@ -33,12 +30,12 @@ public class AsyncChatListener
     @EventHandler(priority = EventPriority.LOWEST)
     public void onAsynChat(AsyncChatEvent event) {
         ChannelDatabase channelDatabase = channelManager.get(playerManager.get(event.getSender().getName()).Focus);
-        //JR start
+
         if (channelDatabase.IsLocal) {
             plugin.getPluginMessageManager("CloudChat").sendPluginMessage(plugin.getProxy().getPlayer(event.getSender().getName()), new LocalPlayersRequest(event.getMessage(), channelDatabase.Name, channelDatabase.LocalRange));
             return;
         }
-        //JR end
+
         Sender sender = new Sender(event.getSender().getName(), channelDatabase, playerManager.get(event.getSender().getName()));
 
         plugin.getAsyncEventBus().callEvent(new ChatMessageEvent(sender, event.getMessage(), new ArrayList<String>(){{

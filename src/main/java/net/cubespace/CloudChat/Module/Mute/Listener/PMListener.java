@@ -8,10 +8,9 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 03.01.14 21:46
  */
 public class PMListener implements Listener {
-    private MuteModule muteModule;
+    private final MuteModule muteModule;
 
     public PMListener(MuteModule muteModule) {
         this.muteModule = muteModule;

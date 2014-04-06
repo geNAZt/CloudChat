@@ -5,12 +5,11 @@ import net.cubespace.CloudChat.Module.IRC.Format.MCToIrcFormat;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 04.01.14 12:49
  */
 public class PMSession {
-    private String from;
+    private final String from;
     private String to = "";
-    private IRCModule ircModule;
+    private final IRCModule ircModule;
 
     public PMSession(IRCModule ircModule, String from) {
         this.from = from;

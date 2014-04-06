@@ -24,9 +24,9 @@ import java.util.ArrayList;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerChangeAFKListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
-    private ChannelManager channelManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final ChannelManager channelManager;
 
     public PlayerChangeAFKListener(CubespacePlugin plugin) {
         this.plugin = plugin;

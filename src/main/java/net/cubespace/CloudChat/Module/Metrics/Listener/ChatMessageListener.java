@@ -21,13 +21,13 @@ public class ChatMessageListener {
     }
 
     public static Integer getIrcMessageCount() {
-        Integer tempIrc = new Integer(ircMessageCount.intValue());
+        Integer tempIrc = ircMessageCount;
         ircMessageCount = 0;
         return tempIrc;
     }
 
     public static Integer getIngameMessageCount() {
-        Integer tempIngame = new Integer(ingameMessageCount.intValue());
+        Integer tempIngame = ingameMessageCount;
         ingameMessageCount = 0;
         return tempIngame;
     }

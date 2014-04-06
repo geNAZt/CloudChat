@@ -7,6 +7,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  * @date Last changed: 13.01.14 23:27
  */
+@SuppressWarnings("ALL")
 public class CheckCommandEvent implements Event {
     private final ProxiedPlayer sender;
     private String message;

@@ -17,7 +17,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Nick implements CLICommand {
-    private CubespacePlugin plugin;
+    private final CubespacePlugin plugin;
 
     public Nick(CubespacePlugin plugin) {
         this.plugin = plugin;

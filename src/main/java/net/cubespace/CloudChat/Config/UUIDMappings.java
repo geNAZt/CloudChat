@@ -12,6 +12,8 @@ public class UUIDMappings extends Config {
         CONFIG_HEADER = new String[]{"Never change this File !!!"};
     }
 
+    @SuppressWarnings("CanBeFinal")
     public HashMap<String, String> NameToUUID = new HashMap<>();
+    @SuppressWarnings("CanBeFinal")
     public HashMap<String, String> UUIDToName = new HashMap<>();
 }

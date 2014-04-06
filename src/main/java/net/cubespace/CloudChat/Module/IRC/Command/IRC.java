@@ -13,14 +13,15 @@ import net.md_5.bungee.api.CommandSender;
 import java.util.concurrent.TimeUnit;
 
 public class IRC implements CLICommand {
-    private CubespacePlugin plugin;
-    private IRCModule ircModule;
+    private final CubespacePlugin plugin;
+    private final IRCModule ircModule;
 
     public IRC(IRCModule ircModule, CubespacePlugin plugin) {
         this.plugin = plugin;
         this.ircModule = ircModule;
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "irc:reconnect", arguments = 0)
     public void ircReconnectCommand(final CommandSender sender, String[] args) {
         final Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -38,6 +39,7 @@ public class IRC implements CLICommand {
         }, 5, TimeUnit.SECONDS);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "irc:mute", arguments = 0)
     public void ircMuteCommand(final CommandSender sender, String[] args) {
         final Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -48,6 +50,7 @@ public class IRC implements CLICommand {
         messageBuilder.setText(FontFormat.translateString(messages.Command_IRC_Mute_Success)).send(sender);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "irc:unmute", arguments = 0)
     public void ircUnmuteCommand(final CommandSender sender, String[] args) {
         final Messages messages = plugin.getConfigManager().getConfig("messages");

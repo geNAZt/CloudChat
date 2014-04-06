@@ -4,12 +4,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import net.cubespace.CloudChat.Module.PlayerManager.PlayerManager;
+import net.cubespace.CloudChat.Util.EmptyIterable;
 import net.cubespace.lib.CubespacePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.TabExecutor;
-
-import java.util.Collections;
 
 public class JoinedChannelBinder extends Binder implements TabExecutor {
     public JoinedChannelBinder(CubespacePlugin plugin, String name, String... aliases) {
@@ -22,7 +21,8 @@ public class JoinedChannelBinder extends Binder implements TabExecutor {
 
         final String lastArg = ( args.length > 0 ) ? args[args.length - 1] : "";
 
-        if(!(commandSender instanceof ProxiedPlayer)) return Collections.EMPTY_LIST;
+        if(!(commandSender instanceof ProxiedPlayer)) return new EmptyIterable<>();
+
         ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
         return Iterables.transform(Iterables.filter(playerManager.get(player.getName()).JoinedChannels, new Predicate<String>() {

@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PermissionLoadedListener implements Listener {
-    private CloudChatPlugin plugin;
+    private final CloudChatPlugin plugin;
 
     public PermissionLoadedListener(CloudChatPlugin plugin) {
         this.plugin = plugin;

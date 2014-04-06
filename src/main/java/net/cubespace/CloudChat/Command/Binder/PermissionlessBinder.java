@@ -5,8 +5,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 
 public class PermissionlessBinder extends Command {
-    protected String commandName;
-    protected CubespacePlugin plugin;
+    private final String commandName;
+    private final CubespacePlugin plugin;
 
     public PermissionlessBinder(CubespacePlugin plugin, String name, String... aliases) {
         super(name, null, aliases);

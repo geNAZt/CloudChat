@@ -5,7 +5,6 @@ import net.cubespace.lib.EventBus.Event;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:21
  */
 public class IRCChatMessageEvent implements Event {
     private final ISender sender;

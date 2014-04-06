@@ -19,6 +19,7 @@ import net.cubespace.lib.Module.Module;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("WeakerAccess")
 public class ChannelManagerModule extends Module {
     @Override
     public void onLoad() {
@@ -38,15 +39,15 @@ public class ChannelManagerModule extends Module {
         plugin.getAsyncEventBus().addListener(this, new PlayerSendMessageListener(plugin));
 
         //Register Commands
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("join"), ChannelBinder.class, commandAliases.Join.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("channels"), ChannelBinder.class, commandAliases.Channels.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("leave"), JoinedChannelBinder.class, commandAliases.Leave.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("createchannel"), Binder.class, commandAliases.Createchannel.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("invite"), PlayerBinder.class, commandAliases.Invite.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("focus"), JoinedChannelBinder.class, commandAliases.Focus.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("join"), ChannelBinder.class, commandAliases.Join.toArray(new String[commandAliases.Join.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("channels"), ChannelBinder.class, commandAliases.Channels.toArray(new String[commandAliases.Channels.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("leave"), JoinedChannelBinder.class, commandAliases.Leave.toArray(new String[commandAliases.Leave.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("createchannel"), Binder.class, commandAliases.Createchannel.toArray(new String[commandAliases.Createchannel.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("invite"), PlayerBinder.class, commandAliases.Invite.toArray(new String[commandAliases.Invite.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("focus"), JoinedChannelBinder.class, commandAliases.Focus.toArray(new String[commandAliases.Focus.size()]));
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("list"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("list"), Binder.class, commandAliases.List.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("list"), Binder.class, commandAliases.List.toArray(new String[commandAliases.Focus.size()]));
         }
 
         plugin.getCommandExecutor().add(this, new Channels(plugin));

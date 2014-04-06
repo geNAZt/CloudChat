@@ -11,10 +11,9 @@ import java.util.Date;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:19
  */
 public class ChatMessageListener implements Listener {
-    private LoggingModule loggingModule;
+    private final LoggingModule loggingModule;
 
     public ChatMessageListener(LoggingModule module) {
         this.loggingModule = module;

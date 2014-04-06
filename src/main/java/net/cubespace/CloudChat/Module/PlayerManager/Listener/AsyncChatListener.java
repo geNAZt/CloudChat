@@ -9,10 +9,9 @@ import net.cubespace.lib.EventBus.EventPriority;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:22
  */
 public class AsyncChatListener {
-    private PlayerManager playerManager;
+    private final PlayerManager playerManager;
 
     public AsyncChatListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

@@ -58,14 +58,14 @@ public class IRCModule extends Module {
             plugin.getAsyncEventBus().addListener(this, new PMListener(this, plugin));
             plugin.getAsyncEventBus().addListener(this, new IRCChatMessageListener(plugin));
 
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("irc:reconnect"), Binder.class, commandAliases.IRCReconnect.toArray(new String[0]));
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("irc:mute"), Binder.class, commandAliases.IRCMute.toArray(new String[0]));
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("irc:unmute"), Binder.class, commandAliases.IRCUnmute.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("irc:reconnect"), Binder.class, commandAliases.IRCReconnect.toArray(new String[commandAliases.IRCReconnect.size()]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("irc:mute"), Binder.class, commandAliases.IRCMute.toArray(new String[commandAliases.IRCMute.size()]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("irc:unmute"), Binder.class, commandAliases.IRCUnmute.toArray(new String[commandAliases.IRCUnmute.size()]));
             plugin.getCommandExecutor().add(this, new net.cubespace.CloudChat.Module.IRC.Command.IRC(this, plugin));
 
             plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, DispatchScmdMessage.class);
             plugin.getPluginMessageManager("CloudChat").addPacketToRegister(this, RespondScmdMessage.class);
-            plugin.getPluginMessageManager("CloudChat").addListenerToRegister(this, new PluginMessageListener(this, plugin));
+            plugin.getPluginMessageManager("CloudChat").addListenerToRegister(this, new PluginMessageListener(this));
         }
     }
 

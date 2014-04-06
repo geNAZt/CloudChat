@@ -29,9 +29,9 @@ import java.util.Arrays;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class AsyncChatListener {
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
+    private final PlayerManager playerManager;
 
     public AsyncChatListener(CubespacePlugin plugin) {
         this.plugin = plugin;

@@ -19,8 +19,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Conversation implements CLICommand {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public Conversation(CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -46,6 +46,7 @@ public class Conversation implements CLICommand {
         plugin.getAsyncEventBus().callEvent(conversationRequestEvent);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "conversation accept", arguments = 0)
     public void conversationAccept(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -73,6 +74,7 @@ public class Conversation implements CLICommand {
         plugin.getAsyncEventBus().callEvent(conversationAcceptEvent);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "conversation cancel", arguments = 0)
     public void conversationCancel(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

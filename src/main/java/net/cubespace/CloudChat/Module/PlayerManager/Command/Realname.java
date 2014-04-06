@@ -12,10 +12,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.11.13 13:13
  */
 public class Realname implements CLICommand {
-    private CubespacePlugin plugin;
+    private final CubespacePlugin plugin;
 
     public Realname(CubespacePlugin plugin) {
         this.plugin = plugin;

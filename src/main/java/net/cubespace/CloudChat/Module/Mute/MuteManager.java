@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class MuteManager implements IManager {
-    private HashMap<String, ArrayList<String>> playerMute = new HashMap<>();
-    private HashMap<String, Integer> globalMute = new HashMap<>();
+    private final HashMap<String, ArrayList<String>> playerMute = new HashMap<>();
+    private final HashMap<String, Integer> globalMute = new HashMap<>();
 
     public MuteManager(CubespacePlugin plugin) {
         plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {

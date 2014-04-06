@@ -8,7 +8,6 @@ import java.io.IOException;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 13:05
  */
 public class DispatchScmdMessage extends StandardPacket {
     private String command;

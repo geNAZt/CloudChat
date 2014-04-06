@@ -25,10 +25,10 @@ import java.util.ArrayList;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerQuitListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
-    private ChannelManager channelManager;
-    private ChatHandlerModule chatHandlerModule;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final ChannelManager channelManager;
+    private final ChatHandlerModule chatHandlerModule;
 
     public PlayerQuitListener(CubespacePlugin plugin, ChatHandlerModule chatHandlerModule) {
         this.plugin = plugin;

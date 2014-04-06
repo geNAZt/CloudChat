@@ -5,7 +5,6 @@ import net.md_5.bungee.api.CommandSender;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:37
  */
 public class PlayerNickchangeEvent implements Event {
     private final CommandSender sender;

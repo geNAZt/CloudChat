@@ -16,6 +16,7 @@ import net.cubespace.lib.Module.Module;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class PMModule extends Module {
     @Override
     public void onLoad() {
@@ -27,24 +28,24 @@ public class PMModule extends Module {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("msg"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("msg"), PlayerBinder.class, commandAliases.Msg.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("msg"), PlayerBinder.class, commandAliases.Msg.toArray(new String[commandAliases.Msg.size()]));
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("reply"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("reply"), Binder.class, commandAliases.Reply.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("reply"), Binder.class, commandAliases.Reply.toArray(new String[commandAliases.Reply.size()]));
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("socialspy"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("socialspy"), Binder.class, commandAliases.Socialspy.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("socialspy"), Binder.class, commandAliases.Socialspy.toArray(new String[commandAliases.Socialspy.size()]));
             plugin.getCommandExecutor().add(this, new SocialSpy(plugin));
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("togglepm"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("togglepm"), Binder.class, commandAliases.TogglePM.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("togglepm"), Binder.class, commandAliases.TogglePM.toArray(new String[commandAliases.TogglePM.size()]));
         }
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("conversation"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("conversation"), PlayerBinder.class, commandAliases.Conversation.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("conversation"), PlayerBinder.class, commandAliases.Conversation.toArray(new String[commandAliases.Conversation.size()]));
             plugin.getCommandExecutor().add(this, new Conversation(plugin));
         }
 

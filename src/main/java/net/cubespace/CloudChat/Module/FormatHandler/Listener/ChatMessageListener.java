@@ -22,9 +22,9 @@ import java.util.Map;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class ChatMessageListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
-    private ChannelManager channelManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final ChannelManager channelManager;
 
     public ChatMessageListener(CubespacePlugin plugin) {
         this.plugin = plugin;

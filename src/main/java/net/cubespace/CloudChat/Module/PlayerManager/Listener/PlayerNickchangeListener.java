@@ -16,8 +16,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerNickchangeListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public PlayerNickchangeListener(CubespacePlugin plugin) {
         this.plugin = plugin;

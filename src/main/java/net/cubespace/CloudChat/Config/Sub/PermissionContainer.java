@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 public class PermissionContainer extends Config {
     public String Access;
-    public ArrayList<String> Sub = new ArrayList<>();
+    public final ArrayList<String> Sub = new ArrayList<>();
 }

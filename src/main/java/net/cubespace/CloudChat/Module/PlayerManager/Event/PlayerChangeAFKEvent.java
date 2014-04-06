@@ -5,7 +5,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 01.01.14 21:34
  */
 public class PlayerChangeAFKEvent implements Event {
     private final ProxiedPlayer player;

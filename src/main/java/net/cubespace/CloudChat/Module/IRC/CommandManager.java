@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class CommandManager {
-    private HashMap<String, Command> executors = new HashMap<String, Command>();
-    private CubespacePlugin plugin;
+    private final HashMap<String, Command> executors = new HashMap<>();
+    private final CubespacePlugin plugin;
 
     public CommandManager(CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -20,6 +20,7 @@ public class CommandManager {
         executors.put(command, executor);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean dispatchCommand(IRCSender sender, String command) {
         IRC config = plugin.getConfigManager().getConfig("irc");
 

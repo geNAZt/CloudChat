@@ -13,6 +13,8 @@ public class Towny extends Config {
         CONFIG_FILE = new File(plugin.getDataFolder(), "towny.yml");
     }
 
+    @SuppressWarnings("CanBeFinal")
     public String TownChannel = "towny";
+    @SuppressWarnings("CanBeFinal")
     public String NationChannel = "townynation";
 }

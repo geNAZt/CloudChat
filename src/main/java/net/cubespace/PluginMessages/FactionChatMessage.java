@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -51,11 +52,9 @@ public class FactionChatMessage extends StandardPacket {
             this.players = null;
         } else {
             String[] playerSplit = players.split("§");
-            this.players = new ArrayList<String>();
+            this.players = new ArrayList<>();
 
-            for(String playerName : playerSplit) {
-                this.players.add(playerName);
-            }
+            Collections.addAll(this.players, playerSplit);
         }
 
         this.factionName = dataInputStream.readUTF();

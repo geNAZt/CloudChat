@@ -10,6 +10,7 @@ import net.cubespace.lib.Module.Module;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("WeakerAccess")
 public class MailModule extends Module {
     @Override
     public void onLoad() {
@@ -21,7 +22,7 @@ public class MailModule extends Module {
         CommandAliases commandAliases = plugin.getConfigManager().getConfig("commandAliases");
 
         if (!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("mail"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("mail"), PlayerNameBinder.class, commandAliases.Mail.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("mail"), PlayerNameBinder.class, commandAliases.Mail.toArray(new String[commandAliases.Mail.size()]));
             plugin.getCommandExecutor().add(this, new Mail(plugin));
             plugin.getAsyncEventBus().addListener(this, new PlayerJoinListener(plugin));
         }

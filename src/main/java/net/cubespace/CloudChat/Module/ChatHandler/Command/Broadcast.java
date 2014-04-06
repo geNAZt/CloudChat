@@ -14,12 +14,13 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Broadcast implements CLICommand {
-    private CubespacePlugin plugin;
+    private final CubespacePlugin plugin;
 
     public Broadcast(CubespacePlugin plugin) {
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "broadcast", arguments = 1)
     public void broadcastCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

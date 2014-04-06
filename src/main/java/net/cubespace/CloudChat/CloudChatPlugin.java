@@ -105,7 +105,9 @@ public class CloudChatPlugin extends CubespacePlugin {
 
         File moduleFolder = new File(getDataFolder(), "modules");
         if(!moduleFolder.exists()) {
-            moduleFolder.mkdirs();
+            if(!moduleFolder.mkdirs()) {
+                getPluginLogger().error("Could not create module Folder");
+            }
         }
 
         getModuleManager().detectModules(moduleFolder);

@@ -11,12 +11,14 @@ import net.cubespace.lib.EventBus.Listener;
 public class PMListener implements Listener {
     private static Integer amountOfPms = 0;
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static int getPMs() {
-        Integer tempPMs = new Integer(amountOfPms.intValue());
+        Integer tempPMs = amountOfPms;
         amountOfPms = 0;
         return tempPMs;
     }
 
+    @SuppressWarnings("UnusedParameters")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPM(PMEvent event) {
         amountOfPms++;

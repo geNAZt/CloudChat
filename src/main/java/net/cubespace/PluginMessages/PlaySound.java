@@ -10,7 +10,7 @@ import java.io.IOException;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlaySound extends StandardPacket {
-    public String sound;
+    private String sound;
 
     public PlaySound() { }
 

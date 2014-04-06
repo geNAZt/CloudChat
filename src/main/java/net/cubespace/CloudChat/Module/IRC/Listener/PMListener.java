@@ -16,12 +16,11 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 03.01.14 21:46
  */
 public class PMListener implements Listener {
-    private CubespacePlugin plugin;
-    private IRCModule ircModule;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final IRCModule ircModule;
+    private final PlayerManager playerManager;
 
     public PMListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.plugin = plugin;

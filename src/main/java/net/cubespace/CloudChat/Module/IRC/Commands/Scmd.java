@@ -13,8 +13,8 @@ import net.md_5.bungee.api.config.ServerInfo;
 import java.util.Arrays;
 
 public class Scmd implements Command {
-    private CubespacePlugin plugin;
-    private IRCModule ircModule;
+    private final CubespacePlugin plugin;
+    private final IRCModule ircModule;
 
     public Scmd(IRCModule ircModule, CubespacePlugin pl) {
         plugin = pl;

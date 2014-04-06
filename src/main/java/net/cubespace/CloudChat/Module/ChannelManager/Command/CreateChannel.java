@@ -16,8 +16,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class CreateChannel implements CLICommand {
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
 
     public CreateChannel(CubespacePlugin plugin) {
         this.plugin = plugin;

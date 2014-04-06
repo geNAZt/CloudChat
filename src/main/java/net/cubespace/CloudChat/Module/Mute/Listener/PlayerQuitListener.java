@@ -13,8 +13,8 @@ import net.cubespace.lib.EventBus.Listener;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerQuitListener implements Listener {
-    private MuteModule muteModule;
-    private PlayerManager playerManager;
+    private final MuteModule muteModule;
+    private final PlayerManager playerManager;
 
     public PlayerQuitListener(MuteModule muteModule, CubespacePlugin plugin) {
         this.muteModule = muteModule;

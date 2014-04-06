@@ -12,6 +12,7 @@ import java.io.IOException;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("WeakerAccess")
 public class MetricsModule extends Module {
     @Override
     public void onLoad() {

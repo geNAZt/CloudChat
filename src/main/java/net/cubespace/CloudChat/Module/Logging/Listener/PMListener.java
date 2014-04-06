@@ -11,10 +11,9 @@ import java.util.Date;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 03.01.14 21:46
  */
 public class PMListener implements Listener {
-    private LoggingModule loggingModule;
+    private final LoggingModule loggingModule;
 
     public PMListener(LoggingModule module) {
         this.loggingModule = module;

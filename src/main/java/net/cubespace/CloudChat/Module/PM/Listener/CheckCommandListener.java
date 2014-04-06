@@ -13,8 +13,8 @@ import net.cubespace.lib.EventBus.Listener;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class CheckCommandListener implements Listener {
-    private PlayerManager playerManager;
-    private CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final CubespacePlugin plugin;
 
     public CheckCommandListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

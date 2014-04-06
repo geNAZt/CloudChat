@@ -2,13 +2,12 @@ package net.cubespace.CloudChat.Module.IRC;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 05.01.14 14:54
  */
 public class ScmdSession {
     private String nickname;
     private String channel;
-    private Integer id;
-    private String command;
+    private final Integer id;
+    private final String command;
     private Long lastResponse;
 
     public ScmdSession(String nickname, String channel, Integer id, String command) {

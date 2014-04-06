@@ -8,8 +8,8 @@ import net.cubespace.lib.EventBus.EventPriority;
 import net.cubespace.lib.EventBus.Listener;
 
 public class ServerConnectListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
 
     public ServerConnectListener(CubespacePlugin plugin) {
         this.plugin = plugin;

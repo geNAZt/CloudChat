@@ -9,7 +9,6 @@ import java.lang.ref.WeakReference;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 16:19
  */
 public class PlayerSendMessageEvent implements Event {
     private final WeakReference<ProxiedPlayer> player;

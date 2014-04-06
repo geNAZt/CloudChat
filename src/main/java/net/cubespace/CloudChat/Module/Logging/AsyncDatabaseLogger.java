@@ -1,5 +1,6 @@
 package net.cubespace.CloudChat.Module.Logging;
 
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import net.cubespace.CloudChat.Module.Logging.Entity.ChatMessage;
 import net.cubespace.CloudChat.Module.Logging.Entity.PrivateMessage;
@@ -12,13 +13,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:09
  */
 public class AsyncDatabaseLogger implements Listener {
-    private Database database;
-    private LinkedBlockingQueue<ChatMessage> chatMessages = new LinkedBlockingQueue<>(5000);
-    private LinkedBlockingQueue<PrivateMessage> privateMessages = new LinkedBlockingQueue<>(5000);
-    private CubespacePlugin plugin;
+    private final Database database;
+    private final LinkedBlockingQueue<ChatMessage> chatMessages = new LinkedBlockingQueue<>(5000);
+    private final LinkedBlockingQueue<PrivateMessage> privateMessages = new LinkedBlockingQueue<>(5000);
+    private final CubespacePlugin plugin;
     private long lastWarning = 0;
 
     public AsyncDatabaseLogger(final CubespacePlugin plugin) {
@@ -31,12 +31,16 @@ public class AsyncDatabaseLogger implements Listener {
             database.registerDAO(DaoManager.createDao(database.getConnectionSource(), PrivateMessage.class), PrivateMessage.class);
 
             plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+                @SuppressWarnings("unchecked")
                 @Override
                 public void run() {
                     try {
-                        while(true) {
+                        Dao dao = database.getDAO(ChatMessage.class);
+
+                        while(plugin.getProxy().getPluginManager().getPlugins().contains(plugin)) {
                             ChatMessage chatMessage = chatMessages.take();
-                            database.getDAO(ChatMessage.class).create(chatMessage);
+
+                            dao.create(chatMessage);
                             plugin.getPluginLogger().debug("Persisted Chat Message");
                         }
                     } catch(Exception e) {
@@ -47,12 +51,16 @@ public class AsyncDatabaseLogger implements Listener {
             });
 
             plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+                @SuppressWarnings("unchecked")
                 @Override
                 public void run() {
                     try {
-                        while(true) {
+                        Dao dao = database.getDAO(PrivateMessage.class);
+
+                        while(plugin.getProxy().getPluginManager().getPlugins().contains(plugin)) {
                             PrivateMessage privateMessage = privateMessages.take();
-                            database.getDAO(PrivateMessage.class).create(privateMessage);
+
+                            dao.create(privateMessage);
                             plugin.getPluginLogger().debug("Persisted Private Message");
                         }
                     } catch(Exception e) {

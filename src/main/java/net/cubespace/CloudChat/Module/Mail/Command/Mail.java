@@ -19,17 +19,17 @@ import java.util.Date;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 04.01.14 17:29
  */
 public class Mail implements CLICommand {
-    private PlayerManager playerManager;
-    private CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final CubespacePlugin plugin;
 
     public Mail(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "mail", arguments = 0)
     public void mailDefaultCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -84,6 +84,7 @@ public class Mail implements CLICommand {
         messageBuilder.setText(FontFormat.translateString(messages.Command_Mail_Send_Success)).send(sender);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "mail read", arguments = 0)
     public void mailReadCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");
@@ -107,6 +108,7 @@ public class Mail implements CLICommand {
         }
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Command(command = "mail clear", arguments = 0)
     public void mailClearCommand(CommandSender sender, String[] args) {
         Messages messages = plugin.getConfigManager().getConfig("messages");

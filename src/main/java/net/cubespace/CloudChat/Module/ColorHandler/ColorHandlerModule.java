@@ -7,6 +7,7 @@ import net.cubespace.lib.Module.Module;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("WeakerAccess")
 public class ColorHandlerModule extends Module {
     @Override
     public void onLoad() {

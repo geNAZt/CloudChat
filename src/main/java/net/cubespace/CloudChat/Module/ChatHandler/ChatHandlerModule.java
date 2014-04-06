@@ -40,16 +40,16 @@ public class ChatHandlerModule extends Module {
 
         //Register Command
         if(!config.DoNotBind.contains(commandAliases.BaseCommands.get("broadcast"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("broadcast"), Binder.class, commandAliases.Broadcast.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("broadcast"), Binder.class, commandAliases.Broadcast.toArray(new String[commandAliases.Broadcast.size()]));
             plugin.getCommandExecutor().add(this, new Broadcast(plugin));
         }
 
         if(!config.DoNotBind.contains(commandAliases.BaseCommands.get("clearchat"))) {
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("clearchat"), PlayerBinder.class, commandAliases.Clearchat.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("clearchat"), PlayerBinder.class, commandAliases.Clearchat.toArray(new String[commandAliases.Clearchat.size()]));
             plugin.getCommandExecutor().add(this, new Clearchat(plugin));
         }
 
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("chatspy"), Binder.class, commandAliases.ChatSpy.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("chatspy"), Binder.class, commandAliases.ChatSpy.toArray(new String[commandAliases.ChatSpy.size()]));
         plugin.getCommandExecutor().add(this, new ChatSpy(plugin));
 
         //Register the Listener

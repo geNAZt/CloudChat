@@ -7,7 +7,6 @@ import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:19
  */
 public class LoggingModule extends Module {
     private AsyncDatabaseLogger asyncDatabaseLogger;

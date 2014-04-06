@@ -14,16 +14,16 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 02.01.14 07:02
  */
 public class Admin implements CLICommand {
-    private CubespacePlugin plugin;
+    private final CubespacePlugin plugin;
     private ScheduledTask cancelTask;
 
     public Admin(CubespacePlugin plugin) {
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("unused")
     @Command(arguments = 1, command = "cc:report")
     public void onReportCommand(CommandSender sender, String[] args) {
         if(args[0].equals("on") && !plugin.getReportManager().isSessionOpen()) {

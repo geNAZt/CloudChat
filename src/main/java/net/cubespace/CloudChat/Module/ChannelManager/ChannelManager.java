@@ -22,13 +22,13 @@ import java.util.Map;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class ChannelManager implements IManager {
-    private CubespacePlugin plugin;
-    private ChannelManagerModule channelManagerModule;
+    private final CubespacePlugin plugin;
+    private final ChannelManagerModule channelManagerModule;
 
     private LinkedHashMap<ProxiedPlayer, ArrayList<ChannelDatabase>> playerJoinedChannels = new LinkedHashMap<>();
     private LinkedHashMap<ChannelDatabase, ArrayList<ProxiedPlayer>> playerInChannel = new LinkedHashMap<>();
 
-    private HashMap<String, ChannelDatabase> loadedChannels = new HashMap<>();
+    private final HashMap<String, ChannelDatabase> loadedChannels = new HashMap<>();
 
     public ChannelManager(CubespacePlugin plugin, ChannelManagerModule channelManagerModule) {
         channelManagerModule.getModuleLogger().debug("Creating new ChannelManager");
@@ -240,24 +240,11 @@ public class ChannelManager implements IManager {
         }
     }
 
-    /**
-     * Get the ChannelDatabase for the Channelname
-     *
-     * @param channel
-     * @return
-     */
     public ChannelDatabase get(String channel) {
         channelManagerModule.getModuleLogger().debug("Getting Channel " + channel);
         return loadedChannels.get(channel.toLowerCase());
     }
 
-    /**
-     * Try to join a Channel
-     *
-     * @param player
-     * @param channel
-     * @return
-     */
     public boolean join(ProxiedPlayer player, ChannelDatabase channel) {
         //The channel is not existent anymore (channels yml got deleted)
         if(channel == null) {
@@ -327,11 +314,6 @@ public class ChannelManager implements IManager {
         return true;
     }
 
-    /**
-     * Force the Player to join all Forced channels
-     *
-     * @param player
-     */
     public void joinForcedChannels(ProxiedPlayer player) {
         for(Map.Entry<String, ChannelDatabase> channelDatabaseEntry : loadedChannels.entrySet()) {
             if(channelDatabaseEntry.getValue().Forced) {
@@ -344,11 +326,6 @@ public class ChannelManager implements IManager {
         }
     }
 
-    /**
-     * Lets the Player leave all Channels he is in and removes him from the Cache
-     *
-     * @param player
-     */
     public void remove(ProxiedPlayer player) {
         channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " should get removed from all Channels");
 
@@ -365,12 +342,6 @@ public class ChannelManager implements IManager {
         playerJoinedChannels.remove(player);
     }
 
-    /**
-     * Lets the Player leave the Channel
-     *
-     * @param player
-     * @param channelDatabase
-     */
     public void leave(ProxiedPlayer player, ChannelDatabase channelDatabase) {
         channelManagerModule.getModuleLogger().debug("Player " + player.getName() + " wants to leave Channel " + channelDatabase.Name);
 
@@ -384,12 +355,7 @@ public class ChannelManager implements IManager {
         channelManagerModule.getModuleLogger().info("Player " + player.getName() + " left Channel " + channelDatabase.Name);
     }
 
-    /**
-     * Gets a Channel via its Alias
-     *
-     * @param chShort
-     * @return
-     */
+    @SuppressWarnings("WeakerAccess")
     public ChannelDatabase getViaShort(String chShort) {
         channelManagerModule.getModuleLogger().debug("Trying to get Channel for Short " + chShort);
 
@@ -404,12 +370,6 @@ public class ChannelManager implements IManager {
         return null;
     }
 
-    /**
-     * Get a Channel via its Name or via its Alias
-     *
-     * @param selectedChannel
-     * @return
-     */
     public ChannelDatabase getViaShortOrName(String selectedChannel) {
         channelManagerModule.getModuleLogger().debug("Searching for a Channel " + selectedChannel);
 
@@ -420,12 +380,6 @@ public class ChannelManager implements IManager {
         }
     }
 
-    /**
-     * Gets all Players currently logged into the Channel
-     *
-     * @param channelDatabase
-     * @return
-     */
     public ArrayList<ProxiedPlayer> getAllInChannel(ChannelDatabase channelDatabase) {
         channelManagerModule.getModuleLogger().debug("Getting list of all Players which are in Channel " + channelDatabase.Name);
 
@@ -435,12 +389,6 @@ public class ChannelManager implements IManager {
         return returnVal;
     }
 
-    /**
-     * Get all Channels a Player has logged into
-     *
-     * @param player
-     * @return
-     */
     public ArrayList<ChannelDatabase> getAllJoinedChannels(ProxiedPlayer player) {
         channelManagerModule.getModuleLogger().debug("Getting all channels where the Player is in. Player " + player.getName());
 
@@ -450,23 +398,12 @@ public class ChannelManager implements IManager {
         return returnVal;
     }
 
-    /**
-     * Get all loaded Channels
-     *
-     * @return
-     */
     public Collection<ChannelDatabase> getChannels() {
         channelManagerModule.getModuleLogger().debug("Getting all channels which are loaded");
 
         return loadedChannels.values();
     }
 
-    /**
-     * Check if a specific channel exists
-     *
-     * @param channel
-     * @return
-     */
     public boolean exists(String channel) {
         channelManagerModule.getModuleLogger().debug("Check if Channel " + channel + " exists");
 

@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("WeakerAccess")
 public class CloudChatModule extends Module {
     @Override
     public void onLoad() {
@@ -40,8 +41,8 @@ public class CloudChatModule extends Module {
         }
 
         //Bind Commands
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:reload"), Binder.class, commandAliases.CCReload.toArray(new String[0]));
-        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:report"), Binder.class, commandAliases.CCReport.toArray(new String[0]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:reload"), Binder.class, commandAliases.CCReload.toArray(new String[commandAliases.CCReload.size()]));
+        plugin.getBindManager().bind(commandAliases.BaseCommands.get("cc:report"), Binder.class, commandAliases.CCReport.toArray(new String[commandAliases.CCReport.size()]));
         plugin.getBindManager().bind("cc:playermenu", PermissionlessBinder.class);
 
         plugin.getCommandExecutor().add(this, new Reload(plugin));

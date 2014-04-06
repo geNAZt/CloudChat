@@ -21,9 +21,9 @@ import java.util.regex.Pattern;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerManager implements IManager {
-    private CubespacePlugin plugin;
+    private final CubespacePlugin plugin;
 
-    private HashMap<String, PlayerDatabase> loadedPlayers = new HashMap<>();
+    private final HashMap<String, PlayerDatabase> loadedPlayers = new HashMap<>();
     private boolean savingMappings = false;
 
     public PlayerManager(CubespacePlugin plugin) {
@@ -31,42 +31,21 @@ public class PlayerManager implements IManager {
         plugin.getPluginLogger().debug("Created new PlayerManager");
     }
 
-    /**
-     * Gets a PlayerDatabase for the Name given
-     *
-     * @param player
-     * @return
-     */
     public PlayerDatabase get(String player) {
         plugin.getPluginLogger().debug("Getting PlayerDatabase for " + player);
 
         return loadedPlayers.get(player);
     }
 
-    /**
-     * Check if a player is loaded
-     *
-     * @param player
-     * @return
-     */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isLoaded(String player) {
         return loadedPlayers.containsKey(player);
     }
 
-    /**
-     * Get all loaded Players
-     *
-     * @return
-     */
     public HashMap<String, PlayerDatabase> getLoadedPlayers() {
         return new HashMap<>(loadedPlayers);
     }
 
-    /**
-     * Removes the Player from the Cache and saves its AsyncDatabaseLogger
-     *
-     * @param player
-     */
     public void remove(ProxiedPlayer player) {
         plugin.getPluginLogger().debug("Removing PlayerDatabase for " + player);
 
@@ -88,11 +67,6 @@ public class PlayerManager implements IManager {
         }
     }
 
-    /**
-     * Save a PlayerDatabase and remove it from the Cache
-     *
-     * @param player
-     */
     public void save(String player) {
         try {
             loadedPlayers.get(player).save();
@@ -121,11 +95,7 @@ public class PlayerManager implements IManager {
         load((FeatureDetector.canUseUUID()) ? FeatureDetector.getUUID(player) : player.getName(), player.getName());
     }
 
-    /**
-     * Load a Player from the Filesystem in the Cache
-     *
-     * @param player
-     */
+    @SuppressWarnings("WeakerAccess")
     public void load(String storageKey, String player) {
         plugin.getPluginLogger().debug("Check for load of PlayerDatabase for " + player);
         if (!loadedPlayers.containsKey(player)) {
@@ -140,12 +110,16 @@ public class PlayerManager implements IManager {
                     File newFile = new File(plugin.getDataFolder(), "database" + File.separator + "users" + File.separator + folder + File.separator + storageKey + ".yml");
 
                     if (newFile.exists()) {
-                        newFile.delete();
+                        if (!newFile.delete()) {
+                            plugin.getPluginLogger().warn("Could not delete new Database but a old one was found. There is something wrong here");
+                        }
                     }
 
                     try {
                         if (!newFile.getParentFile().exists()) {
-                            newFile.getParentFile().mkdirs();
+                            if (!newFile.getParentFile().mkdirs()) {
+                                plugin.getPluginLogger().warn("Could not create StorageKey folder");
+                            }
                         }
 
                         Files.copy(check.toPath(), newFile.toPath());
@@ -228,12 +202,6 @@ public class PlayerManager implements IManager {
         }
     }
 
-    /**
-     * Check if there is a PlayerDatabase for this player
-     *
-     * @param player
-     * @return
-     */
     public boolean exists(String player) {
         String storageKey = player;
         if (FeatureDetector.canUseUUID()) {

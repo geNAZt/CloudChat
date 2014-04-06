@@ -20,12 +20,11 @@ import java.util.HashSet;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:22
  */
 public class PermissionChangedListener {
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
+    private final PlayerManager playerManager;
 
     public PermissionChangedListener(CubespacePlugin plugin) {
         this.plugin = plugin;

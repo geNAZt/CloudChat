@@ -5,10 +5,9 @@ import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 17:39
  */
 public class TwitterManager {
-    private HashMap<String, Date> lastTweet = new HashMap<>();
+    private final HashMap<String, Date> lastTweet = new HashMap<>();
 
     public boolean isRegistered(String user) {
         return lastTweet.containsKey(user);

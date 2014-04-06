@@ -19,6 +19,7 @@ public class PermissionContainers extends Config {
         };
     }
 
+    @SuppressWarnings("CanBeFinal")
     public ArrayList<PermissionContainer> PermissionContainers = new ArrayList<PermissionContainer>(){{
         /**
          * Access: cloudchat.rank.admin

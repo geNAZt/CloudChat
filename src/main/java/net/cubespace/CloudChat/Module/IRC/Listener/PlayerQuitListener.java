@@ -17,13 +17,12 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 15:50
  */
 public class PlayerQuitListener implements Listener {
-    private CubespacePlugin plugin;
-    private PlayerManager playerManager;
-    private ChannelManager channelManager;
-    private IRCModule ircModule;
+    private final CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final ChannelManager channelManager;
+    private final IRCModule ircModule;
 
     public PlayerQuitListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.plugin = plugin;
@@ -32,6 +31,7 @@ public class PlayerQuitListener implements Listener {
         this.ircModule = ircModule;
     }
 
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event) {
         PlayerDatabase playerDatabase = playerManager.get(event.getPlayer().getName());

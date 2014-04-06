@@ -7,9 +7,9 @@ import net.cubespace.CloudChat.Module.PlayerManager.Database.PlayerDatabase;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Sender implements ISender {
-    private String nick;
-    private ChannelDatabase channel;
-    private PlayerDatabase playerDatabase;
+    private final String nick;
+    private final ChannelDatabase channel;
+    private final PlayerDatabase playerDatabase;
 
     public Sender(String nick, ChannelDatabase channel, PlayerDatabase playerDatabase) {
         this.nick = nick;

@@ -16,8 +16,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Mute implements CLICommand {
-    private CubespacePlugin plugin;
-    private MuteModule muteModule;
+    private final CubespacePlugin plugin;
+    private final MuteModule muteModule;
 
     public Mute(MuteModule muteModule, CubespacePlugin plugin) {
         this.plugin = plugin;

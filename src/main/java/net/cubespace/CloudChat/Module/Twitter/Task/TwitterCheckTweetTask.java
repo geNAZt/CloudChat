@@ -19,12 +19,11 @@ import java.util.List;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 29.12.13 17:35
  */
 public class TwitterCheckTweetTask implements Runnable {
-    private TwitterModule twitterModule;
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
+    private final TwitterModule twitterModule;
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
 
     public TwitterCheckTweetTask(TwitterModule twitterModule, CubespacePlugin plugin) {
         this.twitterModule = twitterModule;
@@ -40,7 +39,7 @@ public class TwitterCheckTweetTask implements Runnable {
         Twitter config = plugin.getConfigManager().getConfig("twitter");
 
         try {
-            String[] srch = config.AccountToMonitor.toArray(new String[0]);
+            String[] srch = config.AccountToMonitor.toArray(new String[config.AccountToMonitor.size()]);
             ResponseList<User> users = twitter.lookupUsers(srch);
             for (User user : users) {
                 plugin.getPluginLogger().debug("Checking for new Tweets for " + user.getName());

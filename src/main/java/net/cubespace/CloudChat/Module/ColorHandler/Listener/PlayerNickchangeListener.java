@@ -9,10 +9,9 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:47
  */
 public class PlayerNickchangeListener implements Listener {
-    private CubespacePlugin plugin;
+    private final CubespacePlugin plugin;
 
     public PlayerNickchangeListener(CubespacePlugin plugin) {
         this.plugin = plugin;

@@ -16,8 +16,8 @@ import java.util.Map;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerQuitListener implements Listener {
-    private PlayerManager playerManager;
-    private CubespacePlugin plugin;
+    private final PlayerManager playerManager;
+    private final CubespacePlugin plugin;
 
     public PlayerQuitListener(CubespacePlugin plugin) {
         this.playerManager = plugin.getManagerRegistry().getManager("playerManager");

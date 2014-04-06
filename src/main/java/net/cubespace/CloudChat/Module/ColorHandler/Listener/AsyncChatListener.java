@@ -12,7 +12,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class AsyncChatListener {
-    private CubespacePlugin plugin;
+    private final CubespacePlugin plugin;
 
     public AsyncChatListener(CubespacePlugin plugin) {
         this.plugin = plugin;

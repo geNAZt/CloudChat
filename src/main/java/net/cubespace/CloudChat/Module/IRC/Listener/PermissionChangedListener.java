@@ -15,11 +15,11 @@ import java.util.Map;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:22
  */
+@SuppressWarnings("WeakerAccess")
 public class PermissionChangedListener {
-    private CubespacePlugin plugin;
-    private IRCModule ircModule;
+    private final CubespacePlugin plugin;
+    private final IRCModule ircModule;
 
     public PermissionChangedListener(IRCModule ircModule, CubespacePlugin plugin) {
         this.plugin = plugin;

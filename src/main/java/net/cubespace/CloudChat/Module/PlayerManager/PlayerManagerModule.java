@@ -25,8 +25,8 @@ import net.cubespace.lib.Module.Module;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 12:19
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class PlayerManagerModule extends Module {
     @Override
     public void onLoad() {
@@ -40,7 +40,7 @@ public class PlayerManagerModule extends Module {
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("nick"))) {
             //Register the correct Binder
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("nick"), Binder.class, commandAliases.Nick.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("nick"), Binder.class, commandAliases.Nick.toArray(new String[commandAliases.Nick.size()]));
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Nick(plugin));
@@ -48,7 +48,7 @@ public class PlayerManagerModule extends Module {
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("realname"))) {
             //Register the correct Binder
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("realname"), PlayerBinder.class, commandAliases.Realname.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("realname"), PlayerBinder.class, commandAliases.Realname.toArray(new String[commandAliases.Realname.size()]));
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Realname(plugin));
@@ -56,7 +56,7 @@ public class PlayerManagerModule extends Module {
 
         if(!((Main) plugin.getConfigManager().getConfig("main")).DoNotBind.contains(commandAliases.BaseCommands.get("highlight"))) {
             //Register the correct Binder
-            plugin.getBindManager().bind(commandAliases.BaseCommands.get("highlight"), Binder.class, commandAliases.Highlight.toArray(new String[0]));
+            plugin.getBindManager().bind(commandAliases.BaseCommands.get("highlight"), Binder.class, commandAliases.Highlight.toArray(new String[commandAliases.Highlight.size()]));
 
             //Register this as a Command Handler
             plugin.getCommandExecutor().add(this, new Highlight(plugin));

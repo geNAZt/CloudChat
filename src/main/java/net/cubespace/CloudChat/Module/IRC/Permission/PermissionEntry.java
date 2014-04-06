@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
+@SuppressWarnings("WeakerAccess")
 public class PermissionEntry {
     private IRCPermissionGroup primaryGroup;
     private ArrayList<String> permissions;

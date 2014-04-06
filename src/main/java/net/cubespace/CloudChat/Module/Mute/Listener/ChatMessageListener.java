@@ -9,10 +9,9 @@ import net.cubespace.lib.EventBus.Listener;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.12.13 22:34
  */
 public class ChatMessageListener implements Listener {
-    private MuteModule muteModule;
+    private final MuteModule muteModule;
 
     public ChatMessageListener(MuteModule muteModule) {
         this.muteModule = muteModule;

@@ -10,9 +10,14 @@ public class Factions extends Config {
         CONFIG_FILE = new File(plugin.getDataFolder(), "factions.yml");
     }
 
+    @SuppressWarnings("CanBeFinal")
     public String FactionChannel = "faction";
+    @SuppressWarnings("CanBeFinal")
     public String AllyChannel = "factionally";
+    @SuppressWarnings("CanBeFinal")
     public String AllyAndTruceChannel = "factionallyandtruce";
+    @SuppressWarnings("CanBeFinal")
     public String TruceChannel = "factiontruce";
+    @SuppressWarnings("CanBeFinal")
     public String EnemyChannel = "factionenemy";
 }

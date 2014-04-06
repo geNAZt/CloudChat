@@ -47,9 +47,10 @@ public class FeatureDetector {
      * Get the correct unique ID of a Player. This is a workaround since BungeeCord changed the way to access the UUID
      * in Build 878
      *
-     * @param proxiedPlayer
+     * @param proxiedPlayer The player from which we want to know the UUID
      * @return The UUID of the Player without "-"
      */
+    @SuppressWarnings("deprecation")
     public static String getUUID(ProxiedPlayer proxiedPlayer) {
         if (useNewUUID) {
             return proxiedPlayer.getUniqueId().toString().replaceAll("-", "");

@@ -13,9 +13,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.Collection;
 
 public class Players implements Command {
-    private CubespacePlugin plugin;
-    private IRCModule ircModule;
-    private PlayerManager playerManager;
+    private final CubespacePlugin plugin;
+    private final IRCModule ircModule;
+    private final PlayerManager playerManager;
 
     public Players(IRCModule ircModule, CubespacePlugin pl) {
         plugin = pl;

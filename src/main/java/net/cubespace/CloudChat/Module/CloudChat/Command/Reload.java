@@ -11,14 +11,15 @@ import net.md_5.bungee.api.CommandSender;
 
 
 public class Reload implements CLICommand {
-    private CubespacePlugin plugin;
-    private ChannelManager channelManager;
+    private final CubespacePlugin plugin;
+    private final ChannelManager channelManager;
 
     public Reload(CubespacePlugin plugin) {
         this.plugin = plugin;
         this.channelManager = plugin.getManagerRegistry().getManager("channelManager");
     }
 
+    @SuppressWarnings("unused")
     @Command(command = "cc:reload", arguments = 0)
     public void reloadCommand(CommandSender sender, String[] args) {
         channelManager.reload();

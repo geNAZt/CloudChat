@@ -13,8 +13,8 @@ import net.cubespace.lib.EventBus.Listener;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class PlayerJoinListener implements Listener {
-    private PlayerManager playerManager;
-    private MuteModule muteModule;
+    private final PlayerManager playerManager;
+    private final MuteModule muteModule;
 
     public PlayerJoinListener(MuteModule muteModule, CubespacePlugin plugin) {
         this.muteModule = muteModule;

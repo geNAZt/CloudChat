@@ -9,7 +9,6 @@ import net.md_5.bungee.event.EventPriority;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 28.11.13 11:24
  */
 public class PlayerQuitListener implements Listener {
     private final CloudChatPlugin plugin;

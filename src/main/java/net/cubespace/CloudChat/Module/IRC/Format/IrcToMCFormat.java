@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 30.11.13 13:24
  */
 public enum IrcToMCFormat {
     BLACK(Colors.BLACK),
@@ -67,6 +66,7 @@ public enum IrcToMCFormat {
         return this.value;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static String translateString(String value) {
         int length = value.length();
 
@@ -212,7 +212,7 @@ public enum IrcToMCFormat {
                     break;
 
                 case 31:
-                    if(underline) {
+                    if(!underline) {
                         sb.append("&n");
                         underline = true;
                     } else {
