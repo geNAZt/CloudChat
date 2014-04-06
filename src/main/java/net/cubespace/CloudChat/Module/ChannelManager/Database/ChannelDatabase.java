@@ -30,15 +30,15 @@ public class ChannelDatabase extends Config {
     public Boolean Forced;
     public Boolean ForceIntoWhenPermission = false;
     public String Password = "";
-    public final Boolean IsLocal = false;
-    public final Integer LocalRange = 100;
-    public final Boolean FocusOnJoin = false;
-    public final ArrayList<String> CanInvite = new ArrayList<>();
-    public final HashMap<String, String> Formats = new HashMap<>();
+    public Boolean IsLocal = false;
+    public Integer LocalRange = 100;
+    public Boolean FocusOnJoin = false;
+    public ArrayList<String> CanInvite = new ArrayList<>();
+    public HashMap<String, String> Formats = new HashMap<>();
     @Comments({
         "This can be used to configure multiple Formats for different Permission groups",
         "Please care that only Bukkit Groups work. The format is: key => groupname, value => format to use",
         "When the Groupname of a Player is not found in here the default Format will be used"
     })
-    public final HashMap<String, String> GroupFormats = new HashMap<>();
+    public HashMap<String, String> GroupFormats = new HashMap<>();
 }

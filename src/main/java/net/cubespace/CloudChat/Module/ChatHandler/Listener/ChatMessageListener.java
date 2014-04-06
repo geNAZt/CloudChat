@@ -59,7 +59,6 @@ public class ChatMessageListener implements Listener {
         messageBuilder.addEvent("playerMenu", clickEvent).addEvent("focusChannel", clickEvent1);
         messageBuilder.setText(event.getMessage());
 
-
         if (receiptens.get(0).equals("§ALL")) {
             for(ProxiedPlayer player : channelManager.getAllInChannel(event.getSender().getChannel())) {
                 plugin.getAsyncEventBus().callEvent(new PlayerSendMessageEvent(player, messageBuilder, event.getSender(), event.getMessage()));
