@@ -9,5 +9,6 @@ import java.util.ArrayList;
  */
 public class PermissionContainer extends Config {
     public String Access;
-    public final ArrayList<String> Sub = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Sub = new ArrayList<>();
 }

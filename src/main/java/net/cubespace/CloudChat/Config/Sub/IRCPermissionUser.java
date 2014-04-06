@@ -9,7 +9,9 @@ import java.util.ArrayList;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class IRCPermissionUser extends Config {
-    public final String IngameName = "";
+    @SuppressWarnings("CanBeFinal")
+    public String IngameName = "";
     public ArrayList<String> Groups = new ArrayList<>();
-    public final ArrayList<String> Permissions = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
+    public ArrayList<String> Permissions = new ArrayList<>();
 }
