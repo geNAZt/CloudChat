@@ -47,4 +47,7 @@ public class Main extends Config {
     @SuppressWarnings("CanBeFinal")
     @Comment("Timeout after which Conversation requests should timeout (in seconds)")
     public Integer ConversationTimeout = 10;
+    @SuppressWarnings("CanBeFinal")
+    @Comment("Should CloudChat log channel join/left")
+    public Boolean LogChannelActions = true;
 }

@@ -302,7 +302,10 @@ public class ChannelManager implements IManager {
 
             playerJoinedChannels.get(player).add(channel);
 
-            channelManagerModule.getModuleLogger().info("Player " + player.getName() + " entered Channel " + channel.Name);
+            if (((Main) plugin.getConfigManager().getConfig("main")).LogChannelActions) {
+                channelManagerModule.getModuleLogger().info("Player " + player.getName() + " entered Channel " + channel.Name);
+            }
+
             return true;
         }
         
@@ -352,7 +355,10 @@ public class ChannelManager implements IManager {
 
         playerInChannel.get(channelDatabase).remove(player);
         playerJoinedChannels.get(player).remove(channelDatabase);
-        channelManagerModule.getModuleLogger().info("Player " + player.getName() + " left Channel " + channelDatabase.Name);
+
+        if (((Main) plugin.getConfigManager().getConfig("main")).LogChannelActions) {
+            channelManagerModule.getModuleLogger().info("Player " + player.getName() + " left Channel " + channelDatabase.Name);
+        }
     }
 
     @SuppressWarnings("WeakerAccess")

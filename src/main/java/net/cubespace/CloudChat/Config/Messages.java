@@ -266,6 +266,8 @@ public class Messages extends Config {
 
     @SuppressWarnings("CanBeFinal")
     public String Command_BroadCast_Message = "&c[&aBroadcast&c]&r %message";
+    @SuppressWarnings("CanBeFinal")
+    public String Command_BroadCastToChannel_Message = "&c[&a%channel_short&c] [&aBroadcast&c]&r %message";
 
     @SuppressWarnings("CanBeFinal")
     public String Command_SocialSpy_NotPlayer = "&cOnly Players can spy on PMs";
